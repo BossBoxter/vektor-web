@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Секции
     document.querySelectorAll('.section').forEach(section => {
         section.style.opacity = '0';
-        section.style.transform = 'translateY(30px)';
+        section.style.transform = 'translateY(20px)';
         section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(section);
     });
@@ -227,60 +227,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // Карточки услуг
     document.querySelectorAll('.service-card').forEach((card, index) => {
         card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = `opacity 0.4s ease ${index * 0.1}s, transform 0.4s ease ${index * 0.1}s`;
+        card.style.transform = 'translateY(15px)';
+        card.style.transition = `opacity 0.4s ease ${index * 0.08}s, transform 0.4s ease ${index * 0.08}s`;
         observer.observe(card);
     });
     
     // Карточки кейсов
     document.querySelectorAll('.case-card').forEach((card, index) => {
         card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = `opacity 0.4s ease ${index * 0.1}s, transform 0.4s ease ${index * 0.1}s`;
+        card.style.transform = 'translateY(15px)';
+        card.style.transition = `opacity 0.4s ease ${index * 0.08}s, transform 0.4s ease ${index * 0.08}s`;
         observer.observe(card);
     });
     
     // Таймлайн
     document.querySelectorAll('.timeline-step').forEach((step, index) => {
         step.style.opacity = '0';
-        step.style.transform = 'translateY(20px)';
-        step.style.transition = `opacity 0.4s ease ${index * 0.1}s, transform 0.4s ease ${index * 0.1}s`;
+        step.style.transform = 'translateY(15px)';
+        step.style.transition = `opacity 0.4s ease ${index * 0.08}s, transform 0.4s ease ${index * 0.08}s`;
         observer.observe(step);
     });
 });
-
-// ========================================
-// ФУНКЦИЯ ДЛЯ РАСКРЫТИЯ ПОЛИТИКИ КОНФИДЕНЦИАЛЬНОСТИ
-// ========================================
-function togglePrivacyPolicy() {
-    const content = document.getElementById('privacyContent');
-    const button = document.getElementById('togglePrivacy');
-    const buttonText = document.getElementById('privacyToggleText');
-    
-    if (content.style.display === 'block') {
-        content.style.display = 'none';
-        buttonText.textContent = 'Показать политику';
-        button.classList.remove('btn-primary');
-        button.classList.add('btn-outline');
-    } else {
-        content.style.display = 'block';
-        buttonText.textContent = 'Скрыть политику';
-        button.classList.remove('btn-outline');
-        button.classList.add('btn-primary');
-        
-        // Прокрутка к разделу политики
-        setTimeout(() => {
-            const privacySection = document.getElementById('privacy-section');
-            const headerHeight = document.querySelector('.header').offsetHeight;
-            const targetPosition = privacySection.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
-            
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
-        }, 100);
-    }
-}
 
 // ========================================
 // МОДАЛЬНОЕ ОКНО ДЛЯ ФОРМЫ ВЫБОРА ПАКЕТА
@@ -403,7 +370,7 @@ modalForm.addEventListener('submit', function(e) {
 // Плавное появление карточек при наведении на таймлайн
 document.querySelectorAll('.timeline-step').forEach(step => {
     step.addEventListener('mouseenter', () => {
-        step.querySelector('.step-content').style.transform = 'scale(1.02)';
+        step.querySelector('.step-content').style.transform = 'scale(1.01)';
     });
     
     step.addEventListener('mouseleave', () => {
@@ -429,7 +396,7 @@ window.addEventListener('load', () => {
 // Эффект нажатия на кнопки
 document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left').forEach(element => {
     element.addEventListener('mousedown', () => {
-        element.style.transform = 'scale(0.95)';
+        element.style.transform = 'scale(0.97)';
     });
     
     element.addEventListener('mouseup', () => {
@@ -454,7 +421,17 @@ document.addEventListener('DOMContentLoaded', function() {
     if (footerPrivacyLink) {
         footerPrivacyLink.addEventListener('click', function(e) {
             e.preventDefault();
-            togglePrivacyPolicy();
+            // Плавная прокрутка к политике конфиденциальности в футере
+            const privacySection = document.getElementById('privacy-section');
+            if (privacySection) {
+                const headerHeight = document.querySelector('.header').offsetHeight;
+                const targetPosition = privacySection.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
         });
     }
 });
