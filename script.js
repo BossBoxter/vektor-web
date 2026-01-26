@@ -250,6 +250,39 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ========================================
+// ФУНКЦИЯ ДЛЯ РАСКРЫТИЯ ПОЛИТИКИ КОНФИДЕНЦИАЛЬНОСТИ
+// ========================================
+function togglePrivacyPolicy() {
+    const content = document.getElementById('privacyContent');
+    const button = document.getElementById('togglePrivacy');
+    const buttonText = document.getElementById('privacyToggleText');
+    
+    if (content.style.display === 'block') {
+        content.style.display = 'none';
+        buttonText.textContent = 'Показать политику';
+        button.classList.remove('btn-primary');
+        button.classList.add('btn-outline');
+    } else {
+        content.style.display = 'block';
+        buttonText.textContent = 'Скрыть политику';
+        button.classList.remove('btn-outline');
+        button.classList.add('btn-primary');
+        
+        // Прокрутка к разделу политики
+        setTimeout(() => {
+            const privacySection = document.getElementById('privacy-section');
+            const headerHeight = document.querySelector('.header').offsetHeight;
+            const targetPosition = privacySection.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+            
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }, 100);
+    }
+}
+
+// ========================================
 // МОДАЛЬНОЕ ОКНО ДЛЯ ФОРМЫ ВЫБОРА ПАКЕТА
 // ========================================
 const modal = document.getElementById('modal');
@@ -376,4 +409,18 @@ document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .gua
     element.addEventListener('mouseleave', () => {
         element.style.transform = '';
     });
+});
+
+// ========================================
+// ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ
+// ========================================
+document.addEventListener('DOMContentLoaded', function() {
+    // Привязываем кнопку в футере к функции
+    const footerPrivacyLink = document.querySelector('.footer-legal a[href="#privacy-section"]');
+    if (footerPrivacyLink) {
+        footerPrivacyLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            togglePrivacyPolicy();
+        });
+    }
 });
