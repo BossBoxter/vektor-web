@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VEKTOR Web | Сайты и боты для роста бизнеса</title>
+    <meta name="description" content="Разработка сайтов и Telegram-ботов за 5-7 дней с пожизненной гарантией">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header" id="header">
+        <div class="container">
+            <a href="#" class="logo">VEKTOR</a>
+            <nav class="nav" id="nav">
+                <ul class="nav-list">
+                    <li><a href="#services" class="nav-link">Услуги</a></li>
+                    <li><a href="#cases" class="nav-link">Кейсы</a></li>
+                    <li><a href="#process" class="nav-link">Процесс</a></li>
+                    <li><a href="#guarantees" class="nav-link">Гарантии</a></li>
+                    <li><a href="#contacts" class="nav-link">Контакты</a></li>
+                </ul>
+                <button class="btn btn-primary" onclick="scrollToSection('contacts')">Обсудить проект</button>
+            </nav>
+            <button class="burger" id="burger" aria-label="Меню">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">Сайты и боты для вашего роста. Быстро. Надежно. С пожизненной гарантией.</h1>
+                <p class="hero-subtitle">Разрабатываем лендинги, сайты-визитки и Telegram-бота за 5-7 дней. Вы получаете готовый инструмент, который работает.</p>
+                <div class="hero-buttons">
+                    <a href="#services" class="btn btn-secondary">Смотреть пакеты</a>
+                    <a href="#contacts" class="btn btn-primary">Бесплатный разбор →</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <svg viewBox="0 0 400 300" class="hero-svg">
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#0A2463;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#1E3A8A;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <circle cx="200" cy="150" r="120" fill="url(#grad1)" opacity="0.3"/>
+                    <circle cx="200" cy="150" r="80" fill="none" stroke="#FF6B6B" stroke-width="2"/>
+                    <circle cx="200" cy="150" r="40" fill="none" stroke="#FF6B6B" stroke-width="1" opacity="0.5"/>
+                    <line x1="50" y1="150" x2="350" y2="150" stroke="#FF6B6B" stroke-width="1" opacity="0.3"/>
+                    <line x1="200" y1="50" x2="200" y2="250" stroke="#FF6B6B" stroke-width="1" opacity="0.3"/>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- ДЛЯ КОГО -->
+    <section class="section for-whom" id="for-whom">
+        <div class="container">
+            <h2 class="section-title">Это решение для вас, если вы:</h2>
+            <div class="for-whom-grid">
+                <div class="for-whom-card">
+                    <div class="icon-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#FF6B6B" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                    </div>
+                    <h3>Solo-специалист</h3>
+                    <p>Коуч, психолог, юрист — нужна презентация и поток клиентов.</p>
+                </div>
+                <div class="for-whom-card">
+                    <div class="icon-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#FF6B6B" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                        </svg>
+                    </div>
+                    <h3>Небольшой бизнес</h3>
+                    <p>Кафе, магазин, бутик — нужен каталог и онлайн-заказы.</p>
+                </div>
+                <div class="for-whom-card">
+                    <div class="icon-circle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#FF6B6B" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                            <line x1="9" y1="9" x2="9.01" y2="9"/>
+                            <line x1="15" y1="9" x2="15.01" y2="9"/>
+                        </svg>
+                    </div>
+                    <h3>Творческий блогер</h3>
+                    <p>Фотограф, дизайнер, художник — нужно эффектное портфолио.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ПАКЕТЫ И ЦЕНЫ -->
+    <section class="section services" id="services">
+        <div class="container">
+            <h2 class="section-title">Пакеты под ключ. Цена фиксирована.</h2>
+            <div class="services-grid">
+                <!-- Базовый -->
+                <div class="service-card">
+                    <div class="service-card-header">
+                        <h3 class="service-name">Старт</h3>
+                        <p class="service-price">35 000 ₽</p>
+                    </div>
+                    <p class="service-desc">Сайт-визитка для старта</p>
+                    <ul class="service-list">
+                        <li>1 страница</li>
+                        <li>Форма обратной связи</li>
+                        <li>Мобильная адаптация</li>
+                        <li>Базовый SEO</li>
+                        <li>Гарантия 1 месяц</li>
+                    </ul>
+                    <button class="btn btn-outline" onclick="openModal('Старт')">Выбрать пакет</button>
+                </div>
+
+                <!-- Бутик -->
+                <div class="service-card featured">
+                    <div class="service-card-header">
+                        <h3 class="service-name">Бутик</h3>
+                        <p class="service-price">75 000 ₽</p>
+                    </div>
+                    <p class="service-desc">Сайт-каталог для магазина</p>
+                    <ul class="service-list">
+                        <li>До 10 товаров/услуг</li>
+                        <li>Админ-панель</li>
+                        <li>Интеграция с Telegram</li>
+                        <li>Дизайн по твоему бренду</li>
+                        <li>Гарантия 1 месяц</li>
+                    </ul>
+                    <button class="btn btn-primary" onclick="openModal('Бутик')">Выбрать пакет</button>
+                </div>
+
+                <!-- Студия -->
+                <div class="service-card">
+                    <div class="service-card-header">
+                        <h3 class="service-name">Студия</h3>
+                        <p class="service-price">120 000 ₽</p>
+                    </div>
+                    <p class="service-desc">Сайт для портфолио</p>
+                    <ul class="service-list">
+                        <li>До 20 проектов</li>
+                        <li>Админ-панель</li>
+                        <li>Интеграция с Instagram</li>
+                        <li>Анимации и эффекты</li>
+                        <li>Гарантия 2 месяца</li>
+                    </ul>
+                    <button class="btn btn-outline" onclick="openModal('Студия')">Выбрать пакет</button>
+                </div>
+
+                <!-- Бот -->
+                <div class="service-card">
+                    <div class="service-card-header">
+                        <h3 class="service-name">Telegram Бот</h3>
+                        <p class="service-price">50 000 ₽</p>
+                    </div>
+                    <p class="service-desc">Автоматизация продаж</p>
+                    <ul class="service-list">
+                        <li>Базовый бот</li>
+                        <li>Оплата внутри Telegram</li>
+                        <li>Уведомления в CRM</li>
+                        <li>Инструкция по использованию</li>
+                        <li>Гарантия 1 месяц</li>
+                    </ul>
+                    <button class="btn btn-outline" onclick="openModal('Telegram Бот')">Выбрать пакет</button>
+                </div>
+
+                <!-- Премиум -->
+                <div class="service-card">
+                    <div class="service-card-header">
+                        <h3 class="service-name">Премиум</h3>
+                        <p class="service-price">200 000 ₽</p>
+                    </div>
+                    <p class="service-desc">Комплексное решение</p>
+                    <ul class="service-list">
+                        <li>Сайт + бот</li>
+                        <li>Кастомная разработка</li>
+                        <li>Аналитика</li>
+                        <li>Обучение команды</li>
+                        <li>Гарантия 3 месяца</li>
+                    </ul>
+                    <button class="btn btn-outline" onclick="openModal('Премиум')">Выбрать пакет</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- КЕЙСЫ (Дополнительный блок по ТЗ) -->
+    <section class="section cases" id="cases">
+        <div class="container">
+            <h2 class="section-title">Наши кейсы</h2>
+            <div class="cases-grid">
+                <div class="case-card">
+                    <div class="case-image">☕</div>
+                    <h3>Кафе «Уют»</h3>
+                    <p>Сайт-каталог с онлайн-заказом. +40% заказов в первом месяце.</p>
+                </div>
+                <div class="case-card">
+                    <div class="case-image">🎨</div>
+                    <h3>Портфолио дизайнера</h3>
+                    <p>Сайт-галерея. +50 новых подписчиков в Instagram за месяц.</p>
+                </div>
+                <div class="case-card">
+                    <div class="case-image">🤖</div>
+                    <h3>Telegram-бот для коуча</h3>
+                    <p>Автоматизация записи на сессии. Экономия 5 часов в неделю.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- КАК МЫ РАБОТАЕМ -->
+    <section class="section process" id="process">
+        <div class="container">
+            <h2 class="section-title">Понятный процесс за 7 дней</h2>
+            <div class="timeline">
+                <div class="timeline-step">
+                    <div class="step-circle">1</div>
+                    <div class="step-content">
+                        <h3>Заявка и бриф</h3>
+                        <p>Вы заполняете простую форму. Мы задаем уточняющие вопросы.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-circle">2</div>
+                    <div class="step-content">
+                        <h3>Бесплатный разбор 20 мин</h3>
+                        <p>Аудит задачи, рекомендации по пакету и срокам.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-circle">3</div>
+                    <div class="step-content">
+                        <h3>Аванс 50% + договор</h3>
+                        <p>Заключаем договор, вы вносите аванс. Начинаем работу.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-circle">4</div>
+                    <div class="step-content">
+                        <h3>Прототип за 2 дня</h3>
+                        <p>Вы получаете структуру и дизайн для согласования.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-circle">5</div>
+                    <div class="step-content">
+                        <h3>Согласование и разработка</h3>
+                        <p>Учитываем правки. Разрабатываем функционал.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-circle">6</div>
+                    <div class="step-content">
+                        <h3>Тестирование</h3>
+                        <p>Проверяем на всех устройствах, исправляем баги.</p>
+                    </div>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-circle">7</div>
+                    <div class="step-content">
+                        <h3>Финальный расчет и запуск</h3>
+                        <p>Вы вносите остаток. Запускаем проект. Передаем доступы.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ГАРАНТИИ -->
+    <section class="section guarantees" id="guarantees">
+        <div class="container">
+            <h2 class="section-title">Гарантии</h2>
+            <div class="guarantees-grid">
+                <div class="guarantee-left">
+                    <h3>Пожизненная гарантия — это реально</h3>
+                    <p>Мы используем надежные конструкторы (Tilda, Readymag), поэтому даем гарантию на хостинг и базовую работоспособность вашего сайта навсегда. Если что-то сломается по нашей вине — исправим бесплатно и быстро.</p>
+                </div>
+                <div class="guarantee-right">
+                    <div class="guarantee-item">
+                        <div class="icon-check">✓</div>
+                        <div>
+                            <h4>Фиксированные сроки</h4>
+                            <p>Срок срыва — мы платим неустойку 5% в день</p>
+                        </div>
+                    </div>
+                    <div class="guarantee-item">
+                        <div class="icon-check">✓</div>
+                        <div>
+                            <h4>Договор</h4>
+                            <p>Юридическая защита и прозрачные условия</p>
+                        </div>
+                    </div>
+                    <div class="guarantee-item">
+                        <div class="icon-check">✓</div>
+                        <div>
+                            <h4>Поддержка 24/7</h4>
+                            <p>Поможем в любой ситуации без выходных</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA ФОРМА -->
+    <section class="section cta" id="contacts">
+        <div class="container">
+            <div class="cta-container">
+                <div class="cta-text">
+                    <h2 class="section-title">Обсудим ваш проект?</h2>
+                    <p>Пришлите детали — пришлю смету и бриф за 1 час.</p>
+                </div>
+                <form class="cta-form" id="contactForm">
+                    <div class="form-group">
+                        <input type="text" placeholder="Ваше имя" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Email или Telegram" required>
+                    </div>
+                    <div class="form-group">
+                        <select required>
+                            <option value="">Выберите пакет</option>
+                            <option value="Старт">Старт (35 000₽)</option>
+                            <option value="Бутик">Бутик (75 000₽)</option>
+                            <option value="Студия">Студия (120 000₽)</option>
+                            <option value="Telegram Бот">Telegram Бот (50 000₽)</option>
+                            <option value="Премиум">Премиум (200 000₽)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Краткое описание задачи" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="privacy" required>
+                        <label for="privacy">Согласен с политикой конфиденциальности</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-large">Отправить заявку →</button>
+                    <div class="telegram-link">
+                        Или напишите прямо в Telegram: <a href="https://t.me/vektor_web" target="_blank">@vektor_web</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">VEKTOR</div>
+                    <p>Сайты и боты для вашего роста</p>
+                </div>
+                <div class="footer-nav">
+                    <h4>Навигация</h4>
+                    <ul>
+                        <li><a href="#services">Услуги</a></li>
+                        <li><a href="#cases">Кейсы</a></li>
+                        <li><a href="#process">Процесс</a></li>
+                        <li><a href="#guarantees">Гарантии</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contacts">
+                    <h4>Контакты</h4>
+                    <ul>
+                        <li><a href="mailto:hello@vektor-web.ru">hello@vektor-web.ru</a></li>
+                        <li><a href="https://t.me/vektor_web" target="_blank">Telegram</a></li>
+                        <li><a href="https://instagram.com/vektor_web" target="_blank">Instagram</a></li>
+                    </ul>
+                </div>
+                <div class="footer-legal">
+                    <p>ИП Иванов И.И.</p>
+                    <a href="#">Оферта</a>
+                    <a href="#">Политика конфиденциальности</a>
+                    <p class="copyright">© Vektor Web, 2024</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- МОДАЛЬНОЕ ОКНО ФОРМЫ -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <h3>Оставить заявку</h3>
+            <p id="modal-package">Выбранный пакет: <span></span></p>
+            <form id="modalForm">
+                <div class="form-group">
+                    <input type="text" placeholder="Ваше имя" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Email или Telegram" required>
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Краткое описание задачи" rows="4" required></textarea>
+                </div>
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="modal-privacy" required>
+                    <label for="modal-privacy">Согласен с политикой конфиденциальности</label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-large">Отправить заявку →</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- СООБЩЕНИЕ ОБ УСПЕШНОЙ ОТПРАВКЕ -->
+    <div class="success-message" id="successMessage">
+        <div class="success-content">
+            <h3>Спасибо!</h3>
+            <p>Ваша заявка успешно отправлена. Мы свяжемся с вами в течение часа.</p>
+            <button class="btn btn-primary" onclick="hideSuccess()">Отлично!</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
