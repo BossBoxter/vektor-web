@@ -1,30 +1,142 @@
 // ========================================
-// ПЛАВНЫЙ СКРОЛЛ ПО ЯКОРНЫМ ССЫЛКАМ
+// ИНТЕГРАЦИЯ С TELEGRAM BOT @vektorwebbot
 // ========================================
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            const headerHeight = document.querySelector('.header').offsetHeight;
-            const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
-            
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
-            
-            // Закрываем мобильное меню после перехода
-            document.getElementById('nav').classList.remove('active');
-            document.getElementById('burger').classList.remove('active');
+const TELEGRAM_BOT_USERNAME = 'vektorwebbot';
+const TELEGRAM_BOT_URL = `https://t.me/${TELEGRAM_BOT_USERNAME}`;
+
+// Форматирование данных для отправки в бота
+function formatTelegramMessage(data) {
+    return `🎯 *Новая заявка с сайта Vektor Web*
+
+👤 *Имя:* ${data.name}
+📱 *Контакт:* ${data.contact}
+📦 *Пакет:* ${data.package}
+📝 *Описание:*
+${data.description}
+
+🔗 *Страница заявки:* ${window.location.href}
+📅 *Дата:* ${new Date().toLocaleString('ru-RU')}
+
+#заявка #vektorweb`;
+}
+
+// Открытие телеграм бота с данными
+function openTelegramBot(additionalInfo = '') {
+    // Собираем данные из формы (если есть)
+    const formData = {
+        name: document.getElementById('mainName')?.value || '',
+        contact: document.getElementById('mainContact')?.value || '',
+        package: document.getElementById('mainPackage')?.value || '',
+        description: document.getElementById('mainDescription')?.value || ''
+    };
+    
+    // Если вызывается из клика по карточке, создаем сообщение-шаблон
+    let message = '';
+    
+    if (additionalInfo) {
+        message = `Здравствуйте! Меня интересует: ${additionalInfo}`;
+    } else if (formData.name && formData.contact) {
+        message = formatTelegramMessage(formData);
+    } else {
+        message = 'Здравствуйте! Хочу получить консультацию по разработке сайта.';
+    }
+    
+    // Открываем бота с предзаполненным сообщением (в мобильном приложении)
+    const telegramLink = `https://t.me/${TELEGRAM_BOT_USERNAME}?start=${encodeURIComponent(message)}`;
+    
+    // Копируем сообщение в буфер обмена
+    copyToClipboard(message).then(() => {
+        showSuccessMessage('Данные скопированы! Вставьте их в чат с ботом.');
+        // Небольшая задержка перед открытием ссылки
+        setTimeout(() => {
+            window.open(telegramLink, '_blank');
+        }, 500);
+    }).catch(() => {
+        // Если копирование не сработало, просто открываем бота
+        showSuccessMessage('Открываю бота...');
+        setTimeout(() => {
+            window.open(telegramLink, '_blank');
+        }, 500);
+    });
+}
+
+// Копирование в буфер обмена
+function copyToClipboard(text) {
+    return new Promise((resolve, reject) => {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(text)
+                .then(() => resolve())
+                .catch(() => reject());
+        } else {
+            // Fallback для старых браузеров
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                resolve();
+            } catch (err) {
+                reject();
+            } finally {
+                document.body.removeChild(textarea);
+            }
         }
     });
-});
+}
 
-// Функция для скролла к секции (для кнопки в header)
+// Обработка всех форм с отправкой в телеграм
+function handleTelegramSubmit(event, formId) {
+    event.preventDefault();
+    
+    let data = {};
+    
+    if (formId === 'contactForm') {
+        data = {
+            name: document.getElementById('mainName').value,
+            contact: document.getElementById('mainContact').value,
+            package: document.getElementById('mainPackage').value,
+            description: document.getElementById('mainDescription').value
+        };
+    } else if (formId === 'modalForm') {
+        const packageName = document.getElementById('modal-package').querySelector('span').textContent;
+        data = {
+            name: document.getElementById('modalName').value,
+            contact: document.getElementById('modalContact').value,
+            package: packageName,
+            description: document.getElementById('modalDescription').value
+        };
+    }
+    
+    // Формируем сообщение
+    const telegramMessage = formatTelegramMessage(data);
+    
+    // Копируем в буфер и показываем инструкцию
+    copyToClipboard(telegramMessage).then(() => {
+        showSuccessMessage('Данные скопированы! Теперь вставьте их в чат с ботом.', true);
+    }).catch(() => {
+        showSuccessMessage('Не удалось скопировать. Открываю бота...', false);
+    });
+    
+    // Очищаем форму
+    if (formId === 'contactForm') {
+        event.target.reset();
+    } else if (formId === 'modalForm') {
+        event.target.reset();
+        closeModal();
+    }
+    
+    // Небольшая задержка перед открытием бота
+    setTimeout(() => {
+        window.open(TELEGRAM_BOT_URL, '_blank');
+    }, 1000);
+}
+
+// ========================================
+// УНИВЕРСАЛЬНЫЕ ФУНКЦИИ
+// ========================================
 function scrollToSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -35,6 +147,10 @@ function scrollToSection(sectionId) {
             top: targetPosition,
             behavior: 'smooth'
         });
+        
+        // Закрываем мобильное меню после перехода
+        document.getElementById('nav').classList.remove('active');
+        document.getElementById('burger').classList.remove('active');
     }
 }
 
@@ -144,12 +260,6 @@ function openModal(packageName) {
     modalPackage.textContent = packageName;
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
-    
-    // Заполняем поле "Пакет" в форме
-    const select = modalForm.querySelector('select');
-    if (select) {
-        select.value = packageName;
-    }
 }
 
 function closeModal() {
@@ -175,10 +285,23 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ========================================
-// ОТПРАВКА ФОРМ (ИМИТАЦИЯ)
+// СООБЩЕНИЕ ОБ УСПЕШНОЙ ОТПРАВКЕ
 // ========================================
-function showSuccessMessage() {
+function showSuccessMessage(message = 'Данные скопированы! 🎉', showCopyInfo = true) {
     const successMessage = document.getElementById('successMessage');
+    const successContent = successMessage.querySelector('.success-content');
+    
+    // Обновляем текст
+    successContent.querySelector('h3').textContent = 'Отлично!';
+    successContent.querySelector('p').textContent = message;
+    
+    if (showCopyInfo) {
+        successContent.querySelector('.copy-hint').textContent = 'Бот уже получил ваши данные, просто подтвердите отправку в чате.';
+        successContent.querySelector('.copy-hint').style.display = 'block';
+    } else {
+        successContent.querySelector('.copy-hint').style.display = 'none';
+    }
+    
     successMessage.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
@@ -189,33 +312,26 @@ function hideSuccess() {
     document.body.style.overflow = '';
 }
 
-// Обработка основной формы
-document.getElementById('contactForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    // Имитация отправки (в реальном проекте здесь будет AJAX запрос)
-    showSuccessMessage();
-    
-    // Сбрасываем форму
-    e.target.reset();
+function openBotAndClose() {
+    hideSuccess();
+    window.open(TELEGRAM_BOT_URL, '_blank');
+}
+
+// ========================================
+// ОБРАБОТЧИКИ ФОРМ
+// ========================================
+// Основная форма
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    handleTelegramSubmit(e, 'contactForm');
 });
 
-// Обработка формы в модальном окне
-modalForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    // Имитация отправки
-    showSuccessMessage();
-    
-    // Закрываем модальное окно
-    closeModal();
-    
-    // Сбрасываем форму
-    e.target.reset();
+// Форма в модальном окне
+modalForm.addEventListener('submit', function(e) {
+    handleTelegramSubmit(e, 'modalForm');
 });
 
 // ========================================
-// ДОПОЛНИТЕЛЬНЫЕ ЭФФЕКТЫ
+// АНИМАЦИИ
 // ========================================
 // Плавное появление карточек при наведении на таймлайн
 document.querySelectorAll('.timeline-step').forEach(step => {
@@ -233,12 +349,31 @@ window.addEventListener('load', () => {
     const heroSvg = document.querySelector('.hero-svg');
     if (heroSvg) {
         heroSvg.style.opacity = '0';
-        heroSvg.style.transform = 'scale(0.8)';
+        heroSvg.style.transform = 'scale(0.8) rotate(-10deg)';
         heroSvg.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
         
         setTimeout(() => {
             heroSvg.style.opacity = '1';
-            heroSvg.style.transform = 'scale(1)';
+            heroSvg.style.transform = 'scale(1) rotate(0deg)';
         }, 300);
     }
+});
+
+// Эффект нажатия на кнопки
+document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left').forEach(element => {
+    element.addEventListener('mousedown', () => {
+        element.style.transform = 'scale(0.95)';
+    });
+    
+    element.addEventListener('mouseup', () => {
+        setTimeout(() => {
+            if (!element.matches(':hover')) {
+                element.style.transform = '';
+            }
+        }, 100);
+    });
+    
+    element.addEventListener('mouseleave', () => {
+        element.style.transform = '';
+    });
 });
