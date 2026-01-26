@@ -2,6 +2,9 @@
    НЕОНОВАЯ ТЕМА - ПЕРЕМЕННЫЕ
    ======================================== */
 :root {
+    /* Уменьшаем масштаб всего интерфейса на 20% */
+    --scale-factor: 0.8;
+    
     --bg-primary: #0A0A0A;
     --bg-secondary: #151515;
     --bg-card: rgba(255, 255, 255, 0.03);
@@ -40,6 +43,9 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     position: relative;
+    transform: scale(var(--scale-factor));
+    transform-origin: top center;
+    height: calc(100% / var(--scale-factor));
 }
 
 h1, h2, h3, h4 {
@@ -97,11 +103,15 @@ ul {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    transform: scale(var(--scale-factor));
+    transform-origin: top center;
 }
 
 .section {
-    padding: 100px 0;
+    padding: 80px 0;
     position: relative;
+    transform: scale(var(--scale-factor));
+    transform-origin: top center;
 }
 
 .section-title {
@@ -231,6 +241,8 @@ ul {
     z-index: 1000;
     padding: 15px 0;
     transition: var(--transition);
+    transform: scale(var(--scale-factor));
+    transform-origin: top center;
 }
 
 .header.scrolled {
@@ -343,6 +355,8 @@ ul {
     background: radial-gradient(ellipse at center, #1a1a1a 0%, var(--bg-primary) 70%);
     position: relative;
     overflow: hidden;
+    transform: scale(var(--scale-factor));
+    transform-origin: top center;
 }
 
 .hero::before {
@@ -970,9 +984,11 @@ ul {
    ======================================== */
 .cta {
     background: linear-gradient(135deg, var(--bg-secondary), #0a0a2a);
-    padding: 100px 0;
+    padding: 80px 0;
     position: relative;
     overflow: hidden;
+    transform: scale(var(--scale-factor));
+    transform-origin: top center;
 }
 
 .cta::before {
@@ -1113,6 +1129,8 @@ ul {
     border-top: 1px solid var(--border);
     padding: 60px 0 100px;
     position: relative;
+    transform: scale(var(--scale-factor));
+    transform-origin: top center;
 }
 
 .privacy-policy .section-title {
@@ -1207,6 +1225,8 @@ ul {
     padding: 60px 0 30px;
     border-top: 1px solid var(--border);
     position: relative;
+    transform: scale(var(--scale-factor));
+    transform-origin: top center;
 }
 
 .footer::before {
@@ -1415,6 +1435,20 @@ ul {
     text-shadow: 0 0 10px rgba(255, 0, 240, 0.3);
 }
 
+/* Стили для скроллбара */
+.modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+    background: var(--neon-pink);
+    border-radius: 3px;
+}
+
 /* ========================================
    СООБЩЕНИЕ ОБ УСПЕШНОЙ ОТПРАВКЕ
    ======================================== */
@@ -1472,6 +1506,44 @@ ul {
     color: var(--text-secondary);
     margin-top: 10px;
     font-style: italic;
+}
+
+/* Стили для модального окна оферты */
+#offer-modal .offer-text {
+    text-align: left;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+#offer-modal .offer-text p, 
+#offer-modal .offer-text ol {
+    margin-bottom: 15px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+#offer-modal .offer-text ol {
+    padding-left: 20px;
+}
+
+#offer-modal .offer-text li {
+    margin-bottom: 8px;
+}
+
+/* Стили для скроллбара */
+#offer-modal .offer-text::-webkit-scrollbar {
+    width: 6px;
+}
+
+#offer-modal .offer-text::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+#offer-modal .offer-text::-webkit-scrollbar-thumb {
+    background: var(--neon-pink);
+    border-radius: 3px;
 }
 
 /* ========================================
@@ -1662,7 +1734,7 @@ ul {
 @media (max-width: 480px) {
     /* Общие */
     .section {
-        padding: 60px 0;
+        padding: 64px 0;
     }
     
     /* Hero */
@@ -1691,17 +1763,17 @@ ul {
     
     /* CTA форма */
     .cta {
-        padding: 60px 0;
+        padding: 48px 0;
     }
     
     /* Footer */
     .footer {
-        padding: 40px 0 20px;
+        padding: 32px 0 20px;
     }
     
     /* Политика конфиденциальности */
     .privacy-policy {
-        padding: 40px 0 60px;
+        padding: 32px 0 64px;
     }
     
     .privacy-info h3 {
