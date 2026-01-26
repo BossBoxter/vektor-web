@@ -318,6 +318,39 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ========================================
+// МОДАЛЬНОЕ ОКНО ДЛЯ ПУБЛИЧНОЙ ОФЕРТЫ
+// ========================================
+function openOfferModal() {
+    const offerModal = document.getElementById('offer-modal');
+    offerModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeOfferModal() {
+    const offerModal = document.getElementById('offer-modal');
+    offerModal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Обработчики для модального окна оферты
+document.addEventListener('click', (e) => {
+    const offerModal = document.getElementById('offer-modal');
+    if (offerModal.classList.contains('active') && e.target === offerModal) {
+        closeOfferModal();
+    }
+});
+
+// Закрытие по Escape для модального окна оферты
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const offerModal = document.getElementById('offer-modal');
+        if (offerModal.classList.contains('active')) {
+            closeOfferModal();
+        }
+    }
+});
+
+// ========================================
 // СООБЩЕНИЕ ОБ УСПЕШНОЙ ОТПРАВКЕ
 // ========================================
 function showSuccessMessage(message = 'Данные скопированы! 🎉', showCopyInfo = true) {
@@ -337,17 +370,18 @@ function showSuccessMessage(message = 'Данные скопированы! 🎉
     
     successMessage.classList.add('active');
     document.body.style.overflow = 'hidden';
+    
+    // Автоматически открываем бота через 1.5 секунды
+    setTimeout(() => {
+        hideSuccess();
+        window.open(TELEGRAM_BOT_URL, '_blank');
+    }, 1500);
 }
 
 function hideSuccess() {
     const successMessage = document.getElementById('successMessage');
     successMessage.classList.remove('active');
     document.body.style.overflow = '';
-}
-
-function openBotAndClose() {
-    hideSuccess();
-    window.open(TELEGRAM_BOT_URL, '_blank');
 }
 
 // ========================================
