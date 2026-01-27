@@ -2,61 +2,67 @@
 // ИНТЕГРАЦИЯ С TELEGRAM BOT @vektorwebbot
 // ========================================
 const TELEGRAM_BOT_USERNAME = 'vektorwebbot';
-const TELEGRAM_BOT_URL = `https://t.me/${TELEGRAM_BOT_USERNAME}`;
 
-// Форматирование данных для отправки в бота
+// ВАЖНО: start-пейлоад короткий и служебный.
+// Мы используем его только чтобы бот понял "пользователь пришёл с сайта".
+const TELEGRAM_BOT_DEEPLINK = `https://t.me/${TELEGRAM_BOT_USERNAME}?start=site`;
+
+// Форматирование данных для вставки в чат бота (обычный текст, без Markdown)
 function formatTelegramMessage(data) {
-    return `🎯 *Новая заявка с сайта Vektor Web*
+    const now = new Date().toLocaleString('ru-RU');
+    const page = window.location.href;
 
-👤 *Имя:* ${data.name}
-📱 *Контакт:* ${data.contact}
-📦 *Пакет:* ${data.package}
-📝 *Описание:*
-${data.description}
+    // Убираем пустые поля красиво
+    const name = (data.name || '').trim();
+    const contact = (data.contact || '').trim();
+    const pkg = (data.package || '').trim();
+    const desc = (data.description || '').trim();
 
-🔗 *Страница заявки:* ${window.location.href}
-📅 *Дата:* ${new Date().toLocaleString('ru-RU')}
-
-#заявка #vektorweb`;
+    return [
+        "Заявка с сайта VEKTOR Web",
+        "",
+        `Имя: ${name || "-"}`,
+        `Контакт: ${contact || "-"}`,
+        `Пакет: ${pkg || "-"}`,
+        "",
+        "Описание:",
+        desc || "-",
+        "",
+        `Страница: ${page}`,
+        `Дата: ${now}`
+    ].join("\n");
 }
 
-// Открытие телеграм бота с данными
+// Открытие телеграм бота + копирование текста
 function openTelegramBot(additionalInfo = '') {
-    // Собираем данные из формы (если есть)
+    // Данные из основной формы (если есть)
     const formData = {
         name: document.getElementById('mainName')?.value || '',
         contact: document.getElementById('mainContact')?.value || '',
         package: document.getElementById('mainPackage')?.value || '',
         description: document.getElementById('mainDescription')?.value || ''
     };
-    
-    // Если вызывается из клика по карточке, создаем сообщение-шаблон
+
     let message = '';
-    
+
     if (additionalInfo) {
-        message = `Здравствуйте! Меня интересует: ${additionalInfo}`;
-    } else if (formData.name && formData.contact) {
+        // Клики по карточкам/кейсам/гарантиям
+        message = `Здравствуйте! Меня интересует: ${additionalInfo}\n\nКоротко опишите задачу, сроки и желаемый результат.`;
+    } else if ((formData.name || '').trim() || (formData.contact || '').trim() || (formData.description || '').trim()) {
+        // Есть введённые данные
         message = formatTelegramMessage(formData);
     } else {
-        message = 'Здравствуйте! Хочу получить консультацию по разработке сайта.';
+        // Общий сценарий
+        message = 'Здравствуйте! Хочу получить консультацию по разработке сайта/бота.\n\nОпишите задачу, сроки и примеры.';
     }
-    
-    // Открываем бота с предзаполненным сообщением (в мобильном приложении)
-    const telegramLink = `https://t.me/${TELEGRAM_BOT_USERNAME}?start=${encodeURIComponent(message)}`;
-    
-    // Копируем сообщение в буфер обмена
+
+    // Копируем сообщение в буфер и открываем бота
     copyToClipboard(message).then(() => {
-        showSuccessMessage('Данные скопированы! Вставьте их в чат с ботом.');
-        // Небольшая задержка перед открытием ссылки
-        setTimeout(() => {
-            window.open(telegramLink, '_blank');
-        }, 500);
+        showSuccessMessage('Данные скопированы. Открою бота — вставьте сообщение в чат.', true);
+        setTimeout(() => window.open(TELEGRAM_BOT_DEEPLINK, '_blank'), 400);
     }).catch(() => {
-        // Если копирование не сработало, просто открываем бота
-        showSuccessMessage('Открываю бота...');
-        setTimeout(() => {
-            window.open(telegramLink, '_blank');
-        }, 500);
+        showSuccessMessage('Не удалось скопировать. Открою бота.', false);
+        setTimeout(() => window.open(TELEGRAM_BOT_DEEPLINK, '_blank'), 400);
     });
 }
 
@@ -64,11 +70,8 @@ function openTelegramBot(additionalInfo = '') {
 function copyToClipboard(text) {
     return new Promise((resolve, reject) => {
         if (navigator.clipboard) {
-            navigator.clipboard.writeText(text)
-                .then(() => resolve())
-                .catch(() => reject());
+            navigator.clipboard.writeText(text).then(resolve).catch(reject);
         } else {
-            // Fallback для старых браузеров
             const textarea = document.createElement('textarea');
             textarea.value = text;
             textarea.style.position = 'fixed';
@@ -79,7 +82,7 @@ function copyToClipboard(text) {
                 document.execCommand('copy');
                 resolve();
             } catch (err) {
-                reject();
+                reject(err);
             } finally {
                 document.body.removeChild(textarea);
             }
@@ -87,12 +90,12 @@ function copyToClipboard(text) {
     });
 }
 
-// Обработка всех форм с отправкой в телеграм
+// Обработка отправки форм: копируем текст -> открываем бота
 function handleTelegramSubmit(event, formId) {
     event.preventDefault();
-    
+
     let data = {};
-    
+
     if (formId === 'contactForm') {
         data = {
             name: document.getElementById('mainName').value,
@@ -109,29 +112,24 @@ function handleTelegramSubmit(event, formId) {
             description: document.getElementById('modalDescription').value
         };
     }
-    
-    // Формируем сообщение
+
     const telegramMessage = formatTelegramMessage(data);
-    
-    // Копируем в буфер и показываем инструкцию
+
     copyToClipboard(telegramMessage).then(() => {
-        showSuccessMessage('Данные скопированы! Теперь вставьте их в чат с ботом.', true);
+        showSuccessMessage('Данные скопированы. Открою бота — вставьте сообщение в чат.', true);
     }).catch(() => {
-        showSuccessMessage('Не удалось скопировать. Открываю бота...', false);
+        showSuccessMessage('Не удалось скопировать. Открою бота.', false);
     });
-    
-    // Очищаем форму
+
+    // Сбрасываем форму
     if (formId === 'contactForm') {
         event.target.reset();
     } else if (formId === 'modalForm') {
         event.target.reset();
         closeModal();
     }
-    
-    // Небольшая задержка перед открытием бота
-    setTimeout(() => {
-        window.open(TELEGRAM_BOT_URL, '_blank');
-    }, 1000);
+
+    setTimeout(() => window.open(TELEGRAM_BOT_DEEPLINK, '_blank'), 700);
 }
 
 // ========================================
@@ -142,13 +140,9 @@ function scrollToSection(sectionId) {
     if (section) {
         const headerHeight = document.querySelector('.header').offsetHeight;
         const targetPosition = section.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
-        
-        window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-        });
-        
-        // Закрываем мобильное меню после перехода
+
+        window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+
         document.getElementById('nav').classList.remove('active');
         document.getElementById('burger').classList.remove('active');
     }
@@ -161,11 +155,8 @@ const header = document.getElementById('header');
 const scrollThreshold = 50;
 
 window.addEventListener('scroll', () => {
-    if (window.scrollY > scrollThreshold) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
-    }
+    if (window.scrollY > scrollThreshold) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
 });
 
 // ========================================
@@ -177,20 +168,11 @@ const nav = document.getElementById('nav');
 burger.addEventListener('click', () => {
     burger.classList.toggle('active');
     nav.classList.toggle('active');
-    
-    // Блокируем прокрутку body при открытом меню
-    if (nav.classList.contains('active')) {
-        document.body.style.overflow = 'hidden';
-    } else {
-        document.body.style.overflow = '';
-    }
+    document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : '';
 });
 
-// Закрытие меню при клике вне его
 document.addEventListener('click', (e) => {
-    if (nav.classList.contains('active') && 
-        !nav.contains(e.target) && 
-        !burger.contains(e.target)) {
+    if (nav.classList.contains('active') && !nav.contains(e.target) && !burger.contains(e.target)) {
         nav.classList.remove('active');
         burger.classList.remove('active');
         document.body.style.overflow = '';
@@ -200,10 +182,7 @@ document.addEventListener('click', (e) => {
 // ========================================
 // ПОЯВЛЕНИЕ ЭЛЕМЕНТОВ ПРИ СКРОЛЛЕ (FADE-IN)
 // ========================================
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
+const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -214,33 +193,28 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Наблюдаем за всеми секциями и карточками
 document.addEventListener('DOMContentLoaded', () => {
-    // Секции
     document.querySelectorAll('.section').forEach(section => {
         section.style.opacity = '0';
         section.style.transform = 'translateY(15px)';
         section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(section);
     });
-    
-    // Карточки услуг
+
     document.querySelectorAll('.service-card').forEach((card, index) => {
         card.style.opacity = '0';
         card.style.transform = 'translateY(12px)';
         card.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
         observer.observe(card);
     });
-    
-    // Карточки кейсов
+
     document.querySelectorAll('.case-card').forEach((card, index) => {
         card.style.opacity = '0';
         card.style.transform = 'translateY(12px)';
         card.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
         observer.observe(card);
     });
-    
-    // Таймлайн
+
     document.querySelectorAll('.timeline-step').forEach((step, index) => {
         step.style.opacity = '0';
         step.style.transform = 'translateY(12px)';
@@ -250,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ========================================
-// МОДАЛЬНОЕ ОКНО ДЛЯ ФОРМЫ ВЫБОРА ПАКЕТА
+// МОДАЛЬНОЕ ОКНО
 // ========================================
 const modal = document.getElementById('modal');
 const modalPackage = document.getElementById('modal-package').querySelector('span');
@@ -265,50 +239,41 @@ function openModal(packageName) {
 function closeModal() {
     modal.classList.remove('active');
     document.body.style.overflow = '';
-    
-    // Сбрасываем форму
     modalForm.reset();
 }
 
-// Закрытие при клике на фон
 modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-        closeModal();
-    }
+    if (e.target === modal) closeModal();
 });
 
-// Закрытие по Escape
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('active')) {
-        closeModal();
-    }
+    if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
 });
 
 // ========================================
 // СООБЩЕНИЕ ОБ УСПЕШНОЙ ОТПРАВКЕ
 // ========================================
-function showSuccessMessage(message = 'Данные скопированы! 🎉', showCopyInfo = true) {
+function showSuccessMessage(message = 'Данные скопированы.', showCopyInfo = true) {
     const successMessage = document.getElementById('successMessage');
     const successContent = successMessage.querySelector('.success-content');
-    
-    // Обновляем текст
-    successContent.querySelector('h3').textContent = 'Отлично!';
+
+    successContent.querySelector('h3').textContent = 'Готово';
     successContent.querySelector('p').textContent = message;
-    
+
+    const hint = successContent.querySelector('.copy-hint');
     if (showCopyInfo) {
-        successContent.querySelector('.copy-hint').textContent = 'Бот уже получил ваши данные, просто подтвердите отправку в чате.';
-        successContent.querySelector('.copy-hint').style.display = 'block';
+        hint.textContent = 'Откроется бот. Вставьте скопированный текст в чат и отправьте.';
+        hint.style.display = 'block';
     } else {
-        successContent.querySelector('.copy-hint').style.display = 'none';
+        hint.style.display = 'none';
     }
-    
+
     successMessage.classList.add('active');
     document.body.style.overflow = 'hidden';
-    
-    // Автоматически открываем бота через 1.5 секунды
+
     setTimeout(() => {
         hideSuccess();
-        window.open(TELEGRAM_BOT_URL, '_blank');
+        window.open(TELEGRAM_BOT_DEEPLINK, '_blank');
     }, 1500);
 }
 
@@ -321,12 +286,10 @@ function hideSuccess() {
 // ========================================
 // ОБРАБОТЧИКИ ФОРМ
 // ========================================
-// Основная форма
 document.getElementById('contactForm').addEventListener('submit', function(e) {
     handleTelegramSubmit(e, 'contactForm');
 });
 
-// Форма в модальном окне
 modalForm.addEventListener('submit', function(e) {
     handleTelegramSubmit(e, 'modalForm');
 });
@@ -334,25 +297,23 @@ modalForm.addEventListener('submit', function(e) {
 // ========================================
 // АНИМАЦИИ
 // ========================================
-// Плавное появление карточек при наведении на таймлайн
 document.querySelectorAll('.timeline-step').forEach(step => {
     step.addEventListener('mouseenter', () => {
         step.querySelector('.step-content').style.transform = 'scale(1.005)';
     });
-    
+
     step.addEventListener('mouseleave', () => {
         step.querySelector('.step-content').style.transform = 'scale(1)';
     });
 });
 
-// Анимация SVG в Hero при загрузке
 window.addEventListener('load', () => {
     const heroSvg = document.querySelector('.hero-svg');
     if (heroSvg) {
         heroSvg.style.opacity = '0';
         heroSvg.style.transform = 'scale(0.8) rotate(-10deg)';
         heroSvg.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-        
+
         setTimeout(() => {
             heroSvg.style.opacity = '1';
             heroSvg.style.transform = 'scale(1) rotate(0deg)';
@@ -360,21 +321,12 @@ window.addEventListener('load', () => {
     }
 });
 
-// Эффект нажатия на кнопки
 document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left').forEach(element => {
-    element.addEventListener('mousedown', () => {
-        element.style.transform = 'scale(0.99)';
-    });
-    
+    element.addEventListener('mousedown', () => { element.style.transform = 'scale(0.99)'; });
+
     element.addEventListener('mouseup', () => {
-        setTimeout(() => {
-            if (!element.matches(':hover')) {
-                element.style.transform = '';
-            }
-        }, 100);
+        setTimeout(() => { if (!element.matches(':hover')) element.style.transform = ''; }, 100);
     });
-    
-    element.addEventListener('mouseleave', () => {
-        element.style.transform = '';
-    });
+
+    element.addEventListener('mouseleave', () => { element.style.transform = ''; });
 });
