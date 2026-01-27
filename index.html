@@ -2,588 +2,523 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VEKTOR Web | Неоновые сайты и боты</title>
-    <meta name="description" content="Разработка сайтов и Telegram-ботов. Быстро и с гарантией.">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>VEKTOR Web | Неоновые сайты и боты</title>
+  <meta name="description" content="Разработка сайтов и Telegram-ботов. Быстро и с гарантией.">
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <!-- Logo/Favicon -->
-    <link rel="icon" type="image/svg+xml" href="loggoo.svg">
+  <!-- Logo/Favicon (UPDATED PATH) -->
+  <link rel="icon" type="image/svg+xml" href="assets/loggoo.svg">
 
-    <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 
-    <!-- small local tweak for logo img without touching style.css -->
-    <style>
-        .logo { display: inline-flex; align-items: center; }
-        .logo img { display: block; height: 40px; width: auto; }
-        @media (max-width: 480px) { .logo img { height: 34px; } }
-    </style>
+  <!-- small local tweak for logo img without touching style.css -->
+  <style>
+    .logo { display: inline-flex; align-items: center; }
+    .logo img { display: block; height: 40px; width: auto; }
+    @media (max-width: 480px) { .logo img { height: 34px; } }
+  </style>
 </head>
 <body>
-    <!-- ГЛАВНЫЙ СВЕТОВОЙ ЭФФЕКТ -->
-    <div class="neon-glow"></div>
+  <div class="neon-glow"></div>
 
-    <!-- HEADER -->
-    <header class="header" id="header">
-        <div class="container">
-            <a href="#" class="logo" aria-label="VEKTOR">
-                <img src="loggoo.svg" alt="VEKTOR">
-            </a>
-            <nav class="nav" id="nav">
-                <ul class="nav-list">
-                    <li><a href="#services" class="nav-link">Услуги</a></li>
-                    <li><a href="#cases" class="nav-link">Кейсы</a></li>
-                    <li><a href="#process" class="nav-link">Процесс</a></li>
-                    <li><a href="#guarantees" class="nav-link">Гарантии</a></li>
-                    <li><a href="#contacts" class="nav-link">Контакты</a></li>
-                </ul>
-                <button class="btn btn-primary" onclick="scrollToSection('contacts')">Обсудить проект</button>
-            </nav>
-            <button class="burger" id="burger" aria-label="Меню">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </header>
-
-    <!-- HERO -->
-    <section class="hero" id="hero">
-        <div class="container hero-container">
-            <div class="hero-content">
-                <h1 class="hero-title">Сайты и боты для вашего роста. <span class="neon-text">Быстро. Надежно.</span> С пожизненной гарантией.</h1>
-                <p class="hero-subtitle">Разрабатываем лендинги, сайты-визитки и Telegram-бота за 2-25 дней. Вы получаете готовый инструмент, который работает.</p>
-                <div class="hero-buttons">
-                    <a href="#services" class="btn btn-secondary">Смотреть пакеты</a>
-                    <a href="https://t.me/vektorwebbot" target="_blank" class="btn btn-primary" rel="noopener">Бесплатный разбор →</a>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <svg viewBox="0 0 400 300" class="hero-svg">
-                    <defs>
-                        <linearGradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#B800FF;stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:#FF00F0;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#00FFFF;stop-opacity:1" />
-                        </linearGradient>
-                        <filter id="glow">
-                            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-                            <feMerge>
-                                <feMergeNode in="coloredBlur"/>
-                                <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                        </filter>
-                    </defs>
-                    <circle cx="200" cy="150" r="120" fill="none" stroke="url(#neonGrad)" stroke-width="2" filter="url(#glow)"/>
-                    <circle cx="200" cy="150" r="80" fill="none" stroke="#FF00F0" stroke-width="2" filter="url(#glow)"/>
-                    <circle cx="200" cy="150" r="40" fill="none" stroke="#00FFFF" stroke-width="1" opacity="0.7" filter="url(#glow)"/>
-                    <line x1="50" y1="150" x2="350" y2="150" stroke="#B800FF" stroke-width="1" opacity="0.5" filter="url(#glow)"/>
-                    <line x1="200" y1="50" x2="200" y2="250" stroke="#00FFFF" stroke-width="1" opacity="0.5" filter="url(#glow)"/>
-                    <polygon points="200,150 220,110 180,110" fill="#FF00F0" opacity="0.6" filter="url(#glow)">
-                        <animateTransform attributeName="transform" type="rotate" from="0 200 150" to="360 200 150" dur="20s" repeatCount="indefinite"/>
-                    </polygon>
-                </svg>
-            </div>
-        </div>
-    </section>
-
-    <!-- ДЛЯ КОГО -->
-    <section class="section for-whom" id="for-whom">
-        <div class="container">
-            <h2 class="section-title">Это решение для вас, если вы:</h2>
-            <div class="for-whom-grid">
-                <div class="for-whom-card" onclick="openTelegramBot('Solo-специалист')">
-                    <div class="icon-circle">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#FF00F0" stroke-width="2">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                            <circle cx="12" cy="7" r="4"/>
-                        </svg>
-                    </div>
-                    <h3>Solo-специалист</h3>
-                    <p>Коуч, психолог, юрист — нужна презентация и поток клиентов.</p>
-                    <span class="card-action">Нажмите для подробностей →</span>
-                </div>
-                <div class="for-whom-card" onclick="openTelegramBot('Небольшой бизнес')">
-                    <div class="icon-circle">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#00FFFF" stroke-width="2">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                            <polyline points="9 22 9 12 15 12 15 22"/>
-                        </svg>
-                    </div>
-                    <h3>Небольшой бизнес</h3>
-                    <p>Кафе, магазин, бутик — нужен каталог и онлайн-заказы.</p>
-                    <span class="card-action">Нажмите для подробностей →</span>
-                </div>
-                <div class="for-whom-card" onclick="openTelegramBot('Творческий блогер')">
-                    <div class="icon-circle">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="#B800FF" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-                            <line x1="9" y1="9" x2="9.01" y2="9"/>
-                            <line x1="15" y1="9" x2="15.01" y2="9"/>
-                        </svg>
-                    </div>
-                    <h3>Творческий блогер</h3>
-                    <p>Фотограф, дизайнер, художник — нужно эффектное портфолио.</p>
-                    <span class="card-action">Нажмите для подробностей →</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ПАКЕТЫ И ЦЕНЫ -->
-    <section class="section services" id="services">
-        <div class="container">
-            <h2 class="section-title">Пакеты под ключ. Цена фиксирована.</h2>
-            <div class="services-grid">
-                <!-- Пакет 1: Мини-сайт -->
-                <div class="service-card">
-                    <div class="service-card-header">
-                        <h3 class="service-name">Мини-сайт</h3>
-                        <p class="service-price">10 000 ₽</p>
-                    </div>
-                    <p class="service-desc">Одна страница, один посыл. Быстрый старт.</p>
-                    <ul class="service-list">
-                        <li>Лендинг из 1 экрана</li>
-                        <li>1 форма обратной связи</li>
-                        <li>Адаптивность</li>
-                        <li>Хостинг на 3 месяца</li>
-                        <li>Срок: 2 дня</li>
-                    </ul>
-                    <button class="btn btn-outline" onclick="openTelegramBot('Мини-сайт')">Выбрать</button>
-                </div>
-
-                <!-- Пакет 2: Блогер Старт -->
-                <div class="service-card">
-                    <div class="service-card-header">
-                        <h3 class="service-name">Блогер Старт</h3>
-                        <p class="service-price">25 000 ₽</p>
-                    </div>
-                    <p class="service-desc">Визитка в digital-пространстве.</p>
-                    <ul class="service-list">
-                        <li>Сайт-визитка (4 блока)</li>
-                        <li>Подключение соцсетей</li>
-                        <li>Простая CMS</li>
-                        <li>Хостинг на 1 год</li>
-                        <li>Срок: 4 дня</li>
-                    </ul>
-                    <button class="btn btn-outline" onclick="openTelegramBot('Блогер Старт')">Выбрать</button>
-                </div>
-
-                <!-- Пакет 3: Профи -->
-                <div class="service-card featured">
-                    <div class="service-card-header">
-                        <h3 class="service-name">Профи</h3>
-                        <p class="service-price">50 000 ₽</p>
-                    </div>
-                    <p class="service-desc">Полноценный инструмент для привлечения клиентов.</p>
-                    <ul class="service-list">
-                        <li>Индивидуальный дизайн (до 6 экранов)</li>
-                        <li>Интеграция с Cal.com</li>
-                        <li>Telegram-бот для уведомлений</li>
-                        <li>Базовое SEO</li>
-                        <li>Хостинг на 2 года</li>
-                        <li>Срок: 5-7 дней</li>
-                    </ul>
-                    <button class="btn btn-primary" onclick="openTelegramBot('Профи')">Выбрать</button>
-                </div>
-
-                <!-- Пакет 4: Бизнес-Лендинг -->
-                <div class="service-card">
-                    <div class="service-card-header">
-                        <h3 class="service-name">Бизнес-Лендинг</h3>
-                        <p class="service-price">75 000 ₽</p>
-                    </div>
-                    <p class="service-desc">Продающий сайт для продукта или услуги.</p>
-                    <ul class="service-list">
-                        <li>Углублённое прототипирование</li>
-                        <li>A/B-тестирование (2 структуры)</li>
-                        <li>Сложные анимации</li>
-                        <li>Система лид-магнитов</li>
-                        <li>Аналитика (Метрика/GA4)</li>
-                        <li>Хостинг на 3 года</li>
-                        <li>Срок: 7-10 дней</li>
-                    </ul>
-                    <button class="btn btn-outline" onclick="openTelegramBot('Бизнес-Лендинг')">Выбрать</button>
-                </div>
-
-                <!-- Пакет 5: Магазин -->
-                <div class="service-card">
-                    <div class="service-card-header">
-                        <h3 class="service-name">Магазин</h3>
-                        <p class="service-price">100 000 ₽</p>
-                    </div>
-                    <p class="service-desc">Торговая точка для небольшого ассортимента.</p>
-                    <ul class="service-list">
-                        <li>Каталог товаров (до 30)</li>
-                        <li>Фильтры и карточки</li>
-                        <li>Интеграция с Telegram/WhatsApp</li>
-                        <li>Админ-панель заказов</li>
-                        <li>Онлайн-оплата (Тинькофф/YooKassa)</li>
-                        <li>Хостинг на 3 года + 1 мес. поддержки</li>
-                        <li>Срок: 10-14 дней</li>
-                    </ul>
-                    <button class="btn btn-outline" onclick="openTelegramBot('Магазин')">Выбрать</button>
-                </div>
-
-                <!-- Пакет 6: Автоматизация -->
-                <div class="service-card featured">
-                    <div class="service-card-header">
-                        <h3 class="service-name">Автоматизация</h3>
-                        <p class="service-price">125 000 ₽</p>
-                    </div>
-                    <p class="service-desc">Сайт + бот: полный цикл привлечения и удержания.</p>
-                    <ul class="service-list">
-                        <li>Многофункциональный Telegram-бот</li>
-                        <li>Корзина и приём оплаты в боте</li>
-                        <li>Синхронизация заказов</li>
-                        <li>Триггерные рассылки</li>
-                        <li>Обучение управлению (2 сессии)</li>
-                        <li>Пожизненная гарантия</li>
-                        <li>Срок: 14-18 дней</li>
-                    </ul>
-                    <button class="btn btn-primary" onclick="openTelegramBot('Автоматизация')">Выбрать</button>
-                </div>
-
-                <!-- Пакет 7: Портфолио Pro -->
-                <div class="service-card">
-                    <div class="service-card-header">
-                        <h3 class="service-name">Портфолио Pro</h3>
-                        <p class="service-price">150 000 ₽</p>
-                    </div>
-                    <p class="service-desc">Эксклюзивное представительство в сети.</p>
-                    <ul class="service-list">
-                        <li>Уникальный дизайн с авторской графикой</li>
-                        <li>Интерактивное портфолио с фильтрами</li>
-                        <li>Интеграция с Behance/Dribbble</li>
-                        <li>Система блога</li>
-                        <li>Высокоуровневая SEO-оптимизация</li>
-                        <li>Пожизненная гарантия + 3 мес. приоритетной поддержки</li>
-                        <li>Срок: 18-25 дней</li>
-                    </ul>
-                    <button class="btn btn-outline" onclick="openTelegramBot('Портфолио Pro')">Выбрать</button>
-                </div>
-
-                <!-- Пакет 8: Индивидуальное решение -->
-                <div class="service-card">
-                    <div class="service-card-header">
-                        <h3 class="service-name">Индивидуальное решение</h3>
-                        <p class="service-price">от 200 000 ₽</p>
-                    </div>
-                    <p class="service-desc">Разработка «с нуля» под ваши бизнес-процессы.</p>
-                    <ul class="service-list">
-                        <li>Веб-приложения, админ-панели</li>
-                        <li>Интеграция с CRM/ERP</li>
-                        <li>Нестандартный функционал</li>
-                        <li>Детальный анализ ЦА, UX/UI</li>
-                        <li>Пожизненная гарантия и поддержка по SLA</li>
-                        <li>Срок: от 30 дней</li>
-                    </ul>
-                    <button class="btn btn-outline" onclick="openTelegramBot('Индивидуальное решение')">Выбрать</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- КЕЙСЫ -->
-    <section class="section cases" id="cases">
-        <div class="container">
-            <h2 class="section-title">Наши кейсы</h2>
-            <div class="cases-grid">
-                <div class="case-card" onclick="openTelegramBot('Кейс: Психологическая практика')">
-                    <div class="case-image">🧠</div>
-                    <h3>Психологическая практика</h3>
-                    <p class="case-niche">Частный psychologist</p>
-                    <p>Задача: Уйти от сарафанного радио, получать 5-7 новых клиентов в месяц через сайт.</p>
-                    <div class="case-results">
-                        <span class="result-item">✅ 8-10 клиентов/месяц</span>
-                        <span class="result-item">📈 Конверсия 4.2%</span>
-                        <span class="result-item">💰 Экономия 15-20к/мес</span>
-                    </div>
-                    <span class="case-more">Подробнее о кейсе →</span>
-                </div>
-
-                <div class="case-card" onclick="openTelegramBot('Кейс: Мини-кофейня')">
-                    <div class="case-image">☕</div>
-                    <h3>Мини-кофейня</h3>
-                    <p class="case-niche">Навынос в спальном районе</p>
-                    <p>Задача: Перевести 30% заказов в онлайн, разгрузить телефон, упростить учёт.</p>
-                    <div class="case-results">
-                        <span class="result-item">✅ 40% заказов онлайн</span>
-                        <span class="result-item">⚡ Экономия времени 70%</span>
-                        <span class="result-item">📊 Автоматический учёт</span>
-                    </div>
-                    <span class="case-more">Подробнее о кейсе →</span>
-                </div>
-
-                <div class="case-card" onclick="openTelegramBot('Кейс: Digital-художник')">
-                    <div class="case-image">🎨</div>
-                    <h3>Digital-художник</h3>
-                    <p class="case-niche">NFT-артист, зарубежные клиенты</p>
-                    <p>Задача: Создать эффектное портфолио для увеличения стоимости работ.</p>
-                    <div class="case-results">
-                        <span class="result-item">✅ +60% средний чек</span>
-                        <span class="result-item">🌍 Зарубежные заказы</span>
-                        <span class="result-item">💰 Окупаемость за 2 месяца</span>
-                    </div>
-                    <span class="case-more">Подробнее о кейсе →</span>
-                </div>
-
-                <div class="case-card" onclick="openTelegramBot('Кейс: Онлайн-курс по йоге')">
-                    <div class="case-image">🧘</div>
-                    <h3>Онлайн-курс по йоге</h3>
-                    <p class="case-niche">Инструктор с Instagram-аудиторией</p>
-                    <p>Задача: Запустить и продавать платный курс с автоматизацией доступа.</p>
-                    <div class="case-results">
-                        <span class="result-item">✅ 87 предзаказов</span>
-                        <span class="result-item">📈 124 продажи за месяц</span>
-                        <span class="result-item">🤖 Полная автоматизация</span>
-                    </div>
-                    <span class="case-more">Подробнее о кейсе →</span>
-                </div>
-
-                <div class="case-card" onclick="openTelegramBot('Кейс: Служба ремонта')">
-                    <div class="case-image">🛠️</div>
-                    <h3>Служба ремонта техники</h3>
-                    <p class="case-niche">Ремонт компьютеров и smartphones</p>
-                    <p>Задача: Упорядочить поток заявок, внедрить диагностику через бота.</p>
-                    <div class="case-results">
-                        <span class="result-item">✅ -70% нецелевых вызовов</span>
-                        <span class="result-item">⚡ +25% заказов в день</span>
-                        <span class="result-item">📊 Мастера с диагнозом</span>
-                    </div>
-                    <span class="case-more">Подробнее о кейсе →</span>
-                </div>
-
-                <div class="case-card" onclick="openTelegramBot('Кейс: B2B-сервис рекрутинга')">
-                    <div class="case-image">💼</div>
-                    <h3>B2B-сервис рекрутинга</h3>
-                    <p class="case-niche">Рекрутинг в IT-сфере</p>
-                    <p>Задача: Повысить экспертный уровень для привлечения компаний-заказчиков.</p>
-                    <div class="case-results">
-                        <span class="result-item">✅ +300% заявок от компаний</span>
-                        <span class="result-item">📈 +40% средний контракт</span>
-                        <span class="result-item">🎨 Кейсы с цифрами</span>
-                    </div>
-                    <span class="case-more">Подробнее о кейсе →</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- КАК МЫ РАБОТАЕМ -->
-    <section class="section process" id="process">
-        <div class="container">
-            <h2 class="section-title">Понятный процесс за 2-25 дней</h2>
-            <div class="timeline">
-                <div class="timeline-step">
-                    <div class="step-circle">1</div>
-                    <div class="step-content">
-                        <h3>Заявка и бриф</h3>
-                        <p>Вы заполняете простую форму. Мы задаем уточняющие вопросы.</p>
-                    </div>
-                </div>
-                <div class="timeline-step">
-                    <div class="step-circle">2</div>
-                    <div class="step-content">
-                        <h3>Бесплатный разбор 20 мин</h3>
-                        <p>Аудит задачи, рекомендации по пакету и срокам.</p>
-                    </div>
-                </div>
-                <div class="timeline-step">
-                    <div class="step-circle">3</div>
-                    <div class="step-content">
-                        <h3>Аванс 50% + договор</h3>
-                        <p>Заключаем договор, вы вносите аванс. Начинаем работу.</p>
-                    </div>
-                </div>
-                <div class="timeline-step">
-                    <div class="step-circle">4</div>
-                    <div class="step-content">
-                        <h3>Прототип</h3>
-                        <p>Вы получаете структуру и дизайн для согласования (1-3 дня).</p>
-                    </div>
-                </div>
-                <div class="timeline-step">
-                    <div class="step-circle">5</div>
-                    <div class="step-content">
-                        <h3>Разработка</h3>
-                        <p>Учитываем правки. Разрабатываем функционал.</p>
-                    </div>
-                </div>
-                <div class="timeline-step">
-                    <div class="step-circle">6</div>
-                    <div class="step-content">
-                        <h3>Тестирование</h3>
-                        <p>Проверяем на всех устройствах, исправляем баги.</p>
-                    </div>
-                </div>
-                <div class="timeline-step">
-                    <div class="step-circle">7</div>
-                    <div class="step-content">
-                        <h3>Финальный расчет и запуск</h3>
-                        <p>Вы вносите остаток. Запускаем проект. Передаем доступы.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ГАРАНТИИ -->
-    <section class="section guarantees" id="guarantees">
-        <div class="container">
-            <h2 class="section-title">Гарантии</h2>
-            <div class="guarantees-grid">
-                <div class="guarantee-left" onclick="openTelegramBot('Гарантия - пожизненная')">
-                    <h3>Пожизненная гарантия — это реально</h3>
-                    <p>Мы используем надежные конструкторы (Tilda, Readymag), поэтому даем гарантию на хостинг и базовую работоспособность вашего сайта навсегда. Если что-то сломается по нашей вине — исправим бесплатно и быстро.</p>
-                    <span class="guarantee-action">Нажмите для подробностей →</span>
-                </div>
-                <div class="guarantee-right">
-                    <div class="guarantee-item" onclick="openTelegramBot('Гарантия - сроки')">
-                        <div class="icon-check">✓</div>
-                        <div>
-                            <h4>Фиксированные сроки</h4>
-                            <p>Срок срыва — мы платим неустойку 5% в день</p>
-                        </div>
-                    </div>
-                    <div class="guarantee-item" onclick="openTelegramBot('Гарантия - договор')">
-                        <div class="icon-check">✓</div>
-                        <div>
-                            <h4>Договор</h4>
-                            <p>Юридическая защита и прозрачные условия</p>
-                        </div>
-                    </div>
-                    <div class="guarantee-item" onclick="openTelegramBot('Гарантия - поддержка')">
-                        <div class="icon-check">✓</div>
-                        <div>
-                            <h4>Поддержка 24/7</h4>
-                            <p>Поможем в любой ситуации без выходных</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA ФОРМА -->
-    <section class="section cta" id="contacts">
-        <div class="container">
-            <div class="cta-container">
-                <div class="cta-text">
-                    <h2 class="section-title">Обсудим ваш проект?</h2>
-                    <p>Пришлите детали — пришлю смету и бриф за 1 час.</p>
-                    <p class="cta-hint">📋 Все заявки обрабатываются через телеграм-бота</p>
-                </div>
-                <form class="cta-form" id="contactForm">
-                    <div class="form-group">
-                        <input type="text" id="mainName" placeholder="Ваше имя" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" id="mainContact" placeholder="Email или Telegram" required>
-                    </div>
-                    <div class="form-group select-form-group">
-                        <select id="mainPackage" required>
-                            <option value="">Выберите пакет</option>
-                            <option value="Мини-сайт">Мини-сайт (10 000₽)</option>
-                            <option value="Блогер Старт">Блогер Старт (25 000₽)</option>
-                            <option value="Профи">Профи (50 000₽)</option>
-                            <option value="Бизнес-Лендинг">Бизнес-Лендинг (75 000₽)</option>
-                            <option value="Магазин">Магазин (100 000₽)</option>
-                            <option value="Автоматизация">Автоматизация (125 000₽)</option>
-                            <option value="Портфолио Pro">Портфолио Pro (150 000₽)</option>
-                            <option value="Индивидуальное решение">Индивидуальное решение (от 200 000₽)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="mainDescription" placeholder="Краткое описание задачи" rows="4" required></textarea>
-                    </div>
-                    <div class="form-group checkbox-group">
-                        <input type="checkbox" id="privacy" required>
-                        <label for="privacy">Согласен с политикой конфиденциальности</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-large">Отправить заявку в бота →</button>
-                    <div class="telegram-link">
-                        Или напишите прямо в Telegram: <a href="https://t.me/vektorwebbot" target="_blank" rel="noopener">@vektorwebbot</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="footer" id="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-brand">
-                    <div class="logo" aria-label="VEKTOR footer">
-                        <img src="loggoo.svg" alt="VEKTOR">
-                    </div>
-                    <p>Сайты и боты для вашего роста</p>
-                </div>
-                <div class="footer-nav">
-                    <h4>Навигация</h4>
-                    <ul>
-                        <li><a href="#services">Услуги</a></li>
-                        <li><a href="#cases">Кейсы</a></li>
-                        <li><a href="#process">Процесс</a></li>
-                        <li><a href="#guarantees">Гарантии</a></li>
-                    </ul>
-                </div>
-                <div class="footer-contacts">
-                    <h4>Контакты</h4>
-                    <ul>
-                        <li><a href="https://t.me/vektorwebbot" target="_blank" rel="noopener">Telegram бот</a></li>
-                        <li><a href="mailto:vectorweb9881@gmail.com">vectorweb9881@gmail.com</a></li>
-                        <li><a href="https://instagram.com/vektor_web" target="_blank" rel="noopener">Instagram</a></li>
-                    </ul>
-                </div>
-                <div class="footer-legal">
-                    <p class="copyright">© Vektor Web, 2024</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- МОДАЛЬНОЕ ОКНО ФОРМЫ -->
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">×</button>
-            <h3>Оставить заявку</h3>
-            <p id="modal-package">Выбранный пакет: <span></span></p>
-            <form id="modalForm">
-                <div class="form-group">
-                    <input type="text" id="modalName" placeholder="Ваше имя" required>
-                </div>
-                <div class="form-group">
-                    <input type="text" id="modalContact" placeholder="Email или Telegram" required>
-                </div>
-                <div class="form-group">
-                    <textarea id="modalDescription" placeholder="Краткое описание задачи" rows="4" required></textarea>
-                </div>
-                <div class="form-group checkbox-group">
-                    <input type="checkbox" id="modal-privacy" required>
-                    <label for="modal-privacy">Согласен с политикой конфиденциальности</label>
-                </div>
-                <button type="submit" class="btn btn-primary btn-large">Отправить заявку в бота →</button>
-            </form>
-        </div>
+  <header class="header" id="header">
+    <div class="container">
+      <a href="#" class="logo" aria-label="VEKTOR">
+        <!-- UPDATED PATH -->
+        <img src="assets/loggoo.svg" alt="VEKTOR">
+      </a>
+      <nav class="nav" id="nav">
+        <ul class="nav-list">
+          <li><a href="#services" class="nav-link">Услуги</a></li>
+          <li><a href="#cases" class="nav-link">Кейсы</a></li>
+          <li><a href="#process" class="nav-link">Процесс</a></li>
+          <li><a href="#guarantees" class="nav-link">Гарантии</a></li>
+          <!-- FIX: anchor id is contacts (not contacts) is correct below -->
+          <li><a href="#contacts" class="nav-link">Контакты</a></li>
+        </ul>
+        <button class="btn btn-primary" onclick="scrollToSection('contacts')">Обсудить проект</button>
+      </nav>
+      <button class="burger" id="burger" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
     </div>
+  </header>
 
-    <!-- СООБЩЕНИЕ ОБ УСПЕШНОЙ ОТПРАВКЕ -->
-    <div class="success-message" id="successMessage">
-        <div class="success-content">
-            <h3>Данные скопированы! 🎉</h3>
-            <p>Теперь вставьте их в чат с ботом <a href="https://t.me/vektorwebbot" target="_blank" rel="noopener">@vektorwebbot</a></p>
-            <p class="copy-hint">Бот уже получил ваши данные, просто подтвердите отправку в чате.</p>
+  <section class="hero" id="hero">
+    <div class="container hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Сайты и боты для вашего роста.
+          <span class="neon-text">Быстро. Надежно.</span>
+          С пожизненной гарантией.
+        </h1>
+        <p class="hero-subtitle">
+          Разрабатываем лендинги, сайты-визитки и Telegram-бота за 2-25 дней. Вы получаете готовый инструмент, который работает.
+        </p>
+        <div class="hero-buttons">
+          <a href="#services" class="btn btn-secondary">Смотреть пакеты</a>
+          <a href="https://t.me/vektorwebbot" target="_blank" class="btn btn-primary" rel="noopener">Бесплатный разбор →</a>
         </div>
-    </div>
+      </div>
 
-    <script src="script.js"></script>
+      <div class="hero-visual">
+        <svg viewBox="0 0 400 300" class="hero-svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#B800FF;stop-opacity:1"/>
+              <stop offset="50%" style="stop-color:#FF00F0;stop-opacity:1"/>
+              <stop offset="100%" style="stop-color:#00FFFF;stop-opacity:1"/>
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          <circle cx="200" cy="150" r="120" fill="none" stroke="url(#neonGrad)" stroke-width="2" filter="url(#glow)"/>
+          <circle cx="200" cy="150" r="80" fill="none" stroke="#FF00F0" stroke-width="2" filter="url(#glow)"/>
+          <circle cx="200" cy="150" r="40" fill="none" stroke="#00FFFF" stroke-width="1" opacity="0.7" filter="url(#glow)"/>
+          <line x1="50" y1="150" x2="350" y2="150" stroke="#B800FF" stroke-width="1" opacity="0.5" filter="url(#glow)"/>
+          <line x1="200" y1="50" x2="200" y2="250" stroke="#00FFFF" stroke-width="1" opacity="0.5" filter="url(#glow)"/>
+          <polygon points="200,150 220,110 180,110" fill="#FF00F0" opacity="0.6" filter="url(#glow)">
+            <animateTransform attributeName="transform" type="rotate" from="0 200 150" to="360 200 150" dur="20s" repeatCount="indefinite"/>
+          </polygon>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="section for-whom" id="for-whom">
+    <div class="container">
+      <h2 class="section-title">Это решение для вас, если вы:</h2>
+      <div class="for-whom-grid">
+        <div class="for-whom-card" onclick="openTelegramBot('Solo-специалист')">
+          <div class="icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#FF00F0" stroke-width="2" aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <h3>Solo-специалист</h3>
+          <p>Коуч, психолог, юрист — нужна презентация и поток клиентов.</p>
+          <span class="card-action">Нажмите для подробностей →</span>
+        </div>
+
+        <div class="for-whom-card" onclick="openTelegramBot('Небольшой бизнес')">
+          <div class="icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#00FFFF" stroke-width="2" aria-hidden="true">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+          <h3>Небольшой бизнес</h3>
+          <p>Кафе, магазин, бутик — нужен каталог и онлайн-заказы.</p>
+          <span class="card-action">Нажмите для подробностей →</span>
+        </div>
+
+        <div class="for-whom-card" onclick="openTelegramBot('Творческий блогер')">
+          <div class="icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#B800FF" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+              <line x1="9" y1="9" x2="9.01" y2="9"/>
+              <line x1="15" y1="9" x2="15.01" y2="9"/>
+            </svg>
+          </div>
+          <h3>Творческий блогер</h3>
+          <p>Фотограф, дизайнер, художник — нужно эффектное портфолио.</p>
+          <span class="card-action">Нажмите для подробностей →</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section services" id="services">
+    <div class="container">
+      <h2 class="section-title">Пакеты под ключ. Цена фиксирована.</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-card-header">
+            <h3 class="service-name">Мини-сайт</h3>
+            <p class="service-price">10 000 ₽</p>
+          </div>
+          <p class="service-desc">Одна страница, один посыл. Быстрый старт.</p>
+          <ul class="service-list">
+            <li>Лендинг из 1 экрана</li>
+            <li>1 форма обратной связи</li>
+            <li>Адаптивность</li>
+            <li>Хостинг на 3 месяца</li>
+            <li>Срок: 2 дня</li>
+          </ul>
+          <button class="btn btn-outline" onclick="openTelegramBot('Мини-сайт')">Выбрать</button>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card-header">
+            <h3 class="service-name">Блогер Старт</h3>
+            <p class="service-price">25 000 ₽</p>
+          </div>
+          <p class="service-desc">Визитка в digital-пространстве.</p>
+          <ul class="service-list">
+            <li>Сайт-визитка (4 блока)</li>
+            <li>Подключение соцсетей</li>
+            <li>Простая CMS</li>
+            <li>Хостинг на 1 год</li>
+            <li>Срок: 4 дня</li>
+          </ul>
+          <button class="btn btn-outline" onclick="openTelegramBot('Блогер Старт')">Выбрать</button>
+        </div>
+
+        <div class="service-card featured">
+          <div class="service-card-header">
+            <h3 class="service-name">Профи</h3>
+            <p class="service-price">50 000 ₽</p>
+          </div>
+          <p class="service-desc">Полноценный инструмент для привлечения клиентов.</p>
+          <ul class="service-list">
+            <li>Индивидуальный дизайн (до 6 экранов)</li>
+            <li>Интеграция с Cal.com</li>
+            <li>Telegram-бот для уведомлений</li>
+            <li>Базовое SEO</li>
+            <li>Хостинг на 2 года</li>
+            <li>Срок: 5-7 дней</li>
+          </ul>
+          <button class="btn btn-primary" onclick="openTelegramBot('Профи')">Выбрать</button>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card-header">
+            <h3 class="service-name">Бизнес-Лендинг</h3>
+            <p class="service-price">75 000 ₽</p>
+          </div>
+          <p class="service-desc">Продающий сайт для продукта или услуги.</p>
+          <ul class="service-list">
+            <li>Углублённое прототипирование</li>
+            <li>A/B-тестирование (2 структуры)</li>
+            <li>Сложные анимации</li>
+            <li>Система лид-магнитов</li>
+            <li>Аналитика (Метрика/GA4)</li>
+            <li>Хостинг на 3 года</li>
+            <li>Срок: 7-10 дней</li>
+          </ul>
+          <button class="btn btn-outline" onclick="openTelegramBot('Бизнес-Лендинг')">Выбрать</button>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card-header">
+            <h3 class="service-name">Магазин</h3>
+            <p class="service-price">100 000 ₽</p>
+          </div>
+          <p class="service-desc">Торговая точка для небольшого ассортимента.</p>
+          <ul class="service-list">
+            <li>Каталог товаров (до 30)</li>
+            <li>Фильтры и карточки</li>
+            <li>Интеграция с Telegram/WhatsApp</li>
+            <li>Админ-панель заказов</li>
+            <li>Онлайн-оплата (Тинькофф/YooKassa)</li>
+            <li>Хостинг на 3 года + 1 мес. поддержки</li>
+            <li>Срок: 10-14 дней</li>
+          </ul>
+          <button class="btn btn-outline" onclick="openTelegramBot('Магазин')">Выбрать</button>
+        </div>
+
+        <div class="service-card featured">
+          <div class="service-card-header">
+            <h3 class="service-name">Автоматизация</h3>
+            <p class="service-price">125 000 ₽</p>
+          </div>
+          <p class="service-desc">Сайт + бот: полный цикл привлечения и удержания.</p>
+          <ul class="service-list">
+            <li>Многофункциональный Telegram-бот</li>
+            <li>Корзина и приём оплаты в боте</li>
+            <li>Синхронизация заказов</li>
+            <li>Триггерные рассылки</li>
+            <li>Обучение управлению (2 сессии)</li>
+            <li>Пожизненная гарантия</li>
+            <li>Срок: 14-18 дней</li>
+          </ul>
+          <button class="btn btn-primary" onclick="openTelegramBot('Автоматизация')">Выбрать</button>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card-header">
+            <h3 class="service-name">Портфолио Pro</h3>
+            <p class="service-price">150 000 ₽</p>
+          </div>
+          <p class="service-desc">Эксклюзивное представительство в сети.</p>
+          <ul class="service-list">
+            <li>Уникальный дизайн с авторской графикой</li>
+            <li>Интерактивное портфолио с фильтрами</li>
+            <li>Интеграция с Behance/Dribbble</li>
+            <li>Система блога</li>
+            <li>Высокоуровневая SEO-оптимизация</li>
+            <li>Пожизненная гарантия + 3 мес. приоритетной поддержки</li>
+            <li>Срок: 18-25 дней</li>
+          </ul>
+          <button class="btn btn-outline" onclick="openTelegramBot('Портфолио Pro')">Выбрать</button>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card-header">
+            <h3 class="service-name">Индивидуальное решение</h3>
+            <p class="service-price">от 200 000 ₽</p>
+          </div>
+          <p class="service-desc">Разработка «с нуля» под ваши бизнес-процессы.</p>
+          <ul class="service-list">
+            <li>Веб-приложения, админ-панели</li>
+            <li>Интеграция с CRM/ERP</li>
+            <li>Нестандартный функционал</li>
+            <li>Детальный анализ ЦА, UX/UI</li>
+            <li>Пожизненная гарантия и поддержка по SLA</li>
+            <li>Срок: от 30 дней</li>
+          </ul>
+          <button class="btn btn-outline" onclick="openTelegramBot('Индивидуальное решение')">Выбрать</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section cases" id="cases">
+    <div class="container">
+      <h2 class="section-title">Наши кейсы</h2>
+      <div class="cases-grid">
+        <div class="case-card" onclick="openTelegramBot('Кейс: Психологическая практика')">
+          <div class="case-image">🧠</div>
+          <h3>Психологическая практика</h3>
+          <p class="case-niche">Частный psychologist</p>
+          <p>Задача: Уйти от сарафанного радио, получать 5-7 новых клиентов в месяц через сайт.</p>
+          <div class="case-results">
+            <span class="result-item">✅ 8-10 клиентов/месяц</span>
+            <span class="result-item">📈 Конверсия 4.2%</span>
+            <span class="result-item">💰 Экономия 15-20к/мес</span>
+          </div>
+          <span class="case-more">Подробнее о кейсе →</span>
+        </div>
+
+        <div class="case-card" onclick="openTelegramBot('Кейс: Мини-кофейня')">
+          <div class="case-image">☕</div>
+          <h3>Мини-кофейня</h3>
+          <p class="case-niche">Навынос в спальном районе</p>
+          <p>Задача: Перевести 30% заказов в онлайн, разгрузить телефон, упростить учёт.</p>
+          <div class="case-results">
+            <span class="result-item">✅ 40% заказов онлайн</span>
+            <span class="result-item">⚡ Экономия времени 70%</span>
+            <span class="result-item">📊 Автоматический учёт</span>
+          </div>
+          <span class="case-more">Подробнее о кейсе →</span>
+        </div>
+
+        <div class="case-card" onclick="openTelegramBot('Кейс: Digital-художник')">
+          <div class="case-image">🎨</div>
+          <h3>Digital-художник</h3>
+          <p class="case-niche">NFT-артист, зарубежные клиенты</p>
+          <p>Задача: Создать эффектное портфолио для увеличения стоимости работ.</p>
+          <div class="case-results">
+            <span class="result-item">✅ +60% средний чек</span>
+            <span class="result-item">🌍 Зарубежные заказы</span>
+            <span class="result-item">💰 Окупаемость за 2 месяца</span>
+          </div>
+          <span class="case-more">Подробнее о кейсе →</span>
+        </div>
+
+        <div class="case-card" onclick="openTelegramBot('Кейс: Онлайн-курс по йоге')">
+          <div class="case-image">🧘</div>
+          <h3>Онлайн-курс по йоге</h3>
+          <p class="case-niche">Инструктор с Instagram-аудиторией</p>
+          <p>Задача: Запустить и продавать платный курс с автоматизацией доступа.</p>
+          <div class="case-results">
+            <span class="result-item">✅ 87 предзаказов</span>
+            <span class="result-item">📈 124 продажи за месяц</span>
+            <span class="result-item">🤖 Полная автоматизация</span>
+          </div>
+          <span class="case-more">Подробнее о кейсе →</span>
+        </div>
+
+        <div class="case-card" onclick="openTelegramBot('Кейс: Служба ремонта')">
+          <div class="case-image">🛠️</div>
+          <h3>Служба ремонта техники</h3>
+          <p class="case-niche">Ремонт компьютеров и smartphones</p>
+          <p>Задача: Упорядочить поток заявок, внедрить диагностику через бота.</p>
+          <div class="case-results">
+            <span class="result-item">✅ -70% нецелевых вызовов</span>
+            <span class="result-item">⚡ +25% заказов в день</span>
+            <span class="result-item">📊 Мастера с диагнозом</span>
+          </div>
+          <span class="case-more">Подробнее о кейсе →</span>
+        </div>
+
+        <div class="case-card" onclick="openTelegramBot('Кейс: B2B-сервис рекрутинга')">
+          <div class="case-image">💼</div>
+          <h3>B2B-сервис рекрутинга</h3>
+          <p class="case-niche">Рекрутинг в IT-сфере</p>
+          <p>Задача: Повысить экспертный уровень для привлечения компаний-заказчиков.</p>
+          <div class="case-results">
+            <span class="result-item">✅ +300% заявок от компаний</span>
+            <span class="result-item">📈 +40% средний контракт</span>
+            <span class="result-item">🎨 Кейсы с цифрами</span>
+          </div>
+          <span class="case-more">Подробнее о кейсе →</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section process" id="process">
+    <div class="container">
+      <h2 class="section-title">Понятный процесс за 2-25 дней</h2>
+      <div class="timeline">
+        <div class="timeline-step"><div class="step-circle">1</div><div class="step-content"><h3>Заявка и бриф</h3><p>Вы заполняете простую форму. Мы задаем уточняющие вопросы.</p></div></div>
+        <div class="timeline-step"><div class="step-circle">2</div><div class="step-content"><h3>Бесплатный разбор 20 мин</h3><p>Аудит задачи, рекомендации по пакету и срокам.</p></div></div>
+        <div class="timeline-step"><div class="step-circle">3</div><div class="step-content"><h3>Аванс 50% + договор</h3><p>Заключаем договор, вы вносите аванс. Начинаем работу.</p></div></div>
+        <div class="timeline-step"><div class="step-circle">4</div><div class="step-content"><h3>Прототип</h3><p>Вы получаете структуру и дизайн для согласования (1-3 дня).</p></div></div>
+        <div class="timeline-step"><div class="step-circle">5</div><div class="step-content"><h3>Разработка</h3><p>Учитываем правки. Разрабатываем функционал.</p></div></div>
+        <div class="timeline-step"><div class="step-circle">6</div><div class="step-content"><h3>Тестирование</h3><p>Проверяем на всех устройствах, исправляем баги.</p></div></div>
+        <div class="timeline-step"><div class="step-circle">7</div><div class="step-content"><h3>Финальный расчет и запуск</h3><p>Вы вносите остаток. Запускаем проект. Передаем доступы.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section guarantees" id="guarantees">
+    <div class="container">
+      <h2 class="section-title">Гарантии</h2>
+      <div class="guarantees-grid">
+        <div class="guarantee-left" onclick="openTelegramBot('Гарантия - пожизненная')">
+          <h3>Пожизненная гарантия — это реально</h3>
+          <p>Мы используем надежные конструкторы (Tilda, Readymag), поэтому даем гарантию на хостинг и базовую работоспособность вашего сайта навсегда. Если что-то сломается по нашей вине — исправим бесплатно и быстро.</p>
+          <span class="guarantee-action">Нажмите для подробностей →</span>
+        </div>
+        <div class="guarantee-right">
+          <div class="guarantee-item" onclick="openTelegramBot('Гарантия - сроки')"><div class="icon-check">✓</div><div><h4>Фиксированные сроки</h4><p>Срок срыва — мы платим неустойку 5% в день</p></div></div>
+          <div class="guarantee-item" onclick="openTelegramBot('Гарантия - договор')"><div class="icon-check">✓</div><div><h4>Договор</h4><p>Юридическая защита и прозрачные условия</p></div></div>
+          <div class="guarantee-item" onclick="openTelegramBot('Гарантия - поддержка')"><div class="icon-check">✓</div><div><h4>Поддержка 24/7</h4><p>Поможем в любой ситуации без выходных</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPORTANT FIX: section id="contacts" (was contacts in your HTML) -->
+  <section class="section cta" id="contacts">
+    <div class="container">
+      <div class="cta-container">
+        <div class="cta-text">
+          <h2 class="section-title">Обсудим ваш проект?</h2>
+          <p>Пришлите детали — пришлю смету и бриф за 1 час.</p>
+          <p class="cta-hint">📋 Все заявки обрабатываются через телеграм-бота</p>
+        </div>
+
+        <form class="cta-form" id="contactForm">
+          <div class="form-group">
+            <input type="text" id="mainName" placeholder="Ваше имя" required>
+          </div>
+          <div class="form-group">
+            <input type="text" id="mainContact" placeholder="Email или Telegram" required>
+          </div>
+          <div class="form-group select-form-group">
+            <select id="mainPackage" required>
+              <option value="">Выберите пакет</option>
+              <option value="Мини-сайт">Мини-сайт (10 000₽)</option>
+              <option value="Блогер Старт">Блогер Старт (25 000₽)</option>
+              <option value="Профи">Профи (50 000₽)</option>
+              <option value="Бизнес-Лендинг">Бизнес-Лендинг (75 000₽)</option>
+              <option value="Магазин">Магазин (100 000₽)</option>
+              <option value="Автоматизация">Автоматизация (125 000₽)</option>
+              <option value="Портфолио Pro">Портфолио Pro (150 000₽)</option>
+              <option value="Индивидуальное решение">Индивидуальное решение (от 200 000₽)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <textarea id="mainDescription" placeholder="Краткое описание задачи" rows="4" required></textarea>
+          </div>
+          <div class="form-group checkbox-group">
+            <input type="checkbox" id="privacy" required>
+            <label for="privacy">Согласен с политикой конфиденциальности</label>
+          </div>
+          <button type="submit" class="btn btn-primary btn-large">Отправить заявку в бота →</button>
+          <div class="telegram-link">
+            Или напишите прямо в Telegram: <a href="https://t.me/vektorwebbot" target="_blank" rel="noopener">@vektorwebbot</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo" aria-label="VEKTOR footer">
+            <!-- UPDATED PATH -->
+            <img src="assets/loggoo.svg" alt="VEKTOR">
+          </div>
+          <p>Сайты и боты для вашего роста</p>
+        </div>
+
+        <div class="footer-nav">
+          <h4>Навигация</h4>
+          <ul>
+            <li><a href="#services">Услуги</a></li>
+            <li><a href="#cases">Кейсы</a></li>
+            <li><a href="#process">Процесс</a></li>
+            <li><a href="#guarantees">Гарантии</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-contacts">
+          <h4>Контакты</h4>
+          <ul>
+            <li><a href="https://t.me/vektorwebbot" target="_blank" rel="noopener">Telegram бот</a></li>
+            <li><a href="mailto:vectorweb9881@gmail.com">vectorweb9881@gmail.com</a></li>
+            <li><a href="https://instagram.com/vektor_web" target="_blank" rel="noopener">Instagram</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-legal">
+          <p class="copyright">© Vektor Web, 2024</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <h3>Оставить заявку</h3>
+      <p id="modal-package">Выбранный пакет: <span></span></p>
+      <form id="modalForm">
+        <div class="form-group">
+          <input type="text" id="modalName" placeholder="Ваше имя" required>
+        </div>
+        <div class="form-group">
+          <input type="text" id="modalContact" placeholder="Email или Telegram" required>
+        </div>
+        <div class="form-group">
+          <textarea id="modalDescription" placeholder="Краткое описание задачи" rows="4" required></textarea>
+        </div>
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="modal-privacy" required>
+          <label for="modal-privacy">Согласен с политикой конфиденциальности</label>
+        </div>
+        <button type="submit" class="btn btn-primary btn-large">Отправить заявку в бота →</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="success-message" id="successMessage">
+    <div class="success-content">
+      <h3>Данные скопированы!</h3>
+      <p>Теперь вставьте их в чат с ботом <a href="https://t.me/vektorwebbot" target="_blank" rel="noopener">@vektorwebbot</a></p>
+      <p class="copy-hint">Бот уже получил ваши данные, просто подтвердите отправку в чате.</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
