@@ -1,0 +1,56 @@
+<!-- FILE: loggoo.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="64" viewBox="0 0 260 64" role="img" aria-label="VEKTOR logo">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FF00F0"/>
+      <stop offset="0.55" stop-color="#B800FF"/>
+      <stop offset="1" stop-color="#00FFFF"/>
+    </linearGradient>
+
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3.2" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="b2"/>
+      <feColorMatrix in="b2" type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 0.55 0"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- icon -->
+  <g transform="translate(14,10)">
+    <circle cx="22" cy="22" r="21" fill="none" stroke="url(#g)" stroke-width="2" filter="url(#softGlow)"/>
+    <path d="M8 10 L22 34 L36 10" fill="none" stroke="url(#g)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+    <path d="M13 10 L22 26 L31 10" fill="none" stroke="#00FFFF" stroke-opacity="0.5" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="22" cy="22" r="2.4" fill="#FF00F0" filter="url(#glow)"/>
+  </g>
+
+  <!-- wordmark -->
+  <g transform="translate(70,40)">
+    <text x="0" y="0"
+          font-family="Orbitron, system-ui, -apple-system, Segoe UI, Arial, sans-serif"
+          font-size="26"
+          font-weight="900"
+          letter-spacing="2"
+          fill="url(#g)"
+          filter="url(#glow)">VEKTOR</text>
+    <text x="2" y="16"
+          font-family="Space Grotesk, system-ui, -apple-system, Segoe UI, Arial, sans-serif"
+          font-size="11"
+          font-weight="600"
+          letter-spacing="1.2"
+          fill="#A0A0A0">web • neon • bots</text>
+  </g>
+</svg>
