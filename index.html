@@ -23,25 +23,22 @@
     .logo {
       display: inline-flex;
       align-items: center;
+      gap: 10px;
+      text-decoration: none;
     }
     .logo img {
       display: block;
-      height: 40px;
+      height: 44px;
       width: auto;
+      filter: drop-shadow(0 0 10px rgba(0,255,255,.25)) drop-shadow(0 0 16px rgba(255,0,240,.18));
     }
     @media (max-width: 480px) {
-      .logo img {
-        height: 34px;
-      }
+      .logo img { height: 38px; }
     }
 
     /* GLOBAL SCALE +15% */
-    html {
-      overflow-x: hidden;
-    }
-    body {
-      overflow-x: hidden;
-    }
+    html { overflow-x: hidden; }
+    body { overflow-x: hidden; }
     .site-scale {
       transform: scale(1.15);
       transform-origin: top center;
@@ -60,9 +57,10 @@
   <!-- HEADER -->
   <header class="header" id="header">
     <div class="container">
-      <a href="#" class="logo" aria-label="VEKTOR">
-        <img src="assets/loggoo.svg" alt="VEKTOR">
+      <a href="#" class="logo" aria-label="Vector Web">
+        <img src="assets/loggoo.svg" alt="Vector Web">
       </a>
+
       <nav class="nav" id="nav">
         <ul class="nav-list">
           <li><a href="#services" class="nav-link">Услуги</a></li>
@@ -75,6 +73,7 @@
           Обсудить проект
         </button>
       </nav>
+
       <button class="burger" id="burger" aria-label="Меню">
         <span></span><span></span><span></span>
       </button>
@@ -92,6 +91,7 @@
           <a href="https://t.me/vektorwebbot" target="_blank" class="btn btn-primary" rel="noopener">Бесплатный разбор →</a>
         </div>
       </div>
+
       <div class="hero-visual">
         <svg viewBox="0 0 400 300" class="hero-svg">
           <defs>
@@ -546,8 +546,8 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="logo" aria-label="VEKTOR footer">
-            <img src="assets/loggoo.svg" alt="VEKTOR">
+          <div class="logo" aria-label="Vector Web footer">
+            <img src="assets/loggoo.svg" alt="Vector Web">
           </div>
           <p>Сайты и боты для вашего роста</p>
         </div>
@@ -609,6 +609,8 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+</div><!-- /.site-scale -->
+
+<script src="script.js"></script>
 </body>
 </html>
