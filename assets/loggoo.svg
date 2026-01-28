@@ -1,58 +1,69 @@
-<svg
-  width="260"
-  height="72"
-  viewBox="0 0 260 72"
-  xmlns="http://www.w3.org/2000/svg"
-  role="img"
-  aria-label="Vector Web logo"
->
+<!-- FILE: loggoo.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="64" viewBox="0 0 260 64" role="img" aria-label="Vector logo">
   <defs>
-    <!-- Neon gradient -->
-    <linearGradient id="neonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#B800FF"/>
-      <stop offset="50%" stop-color="#FF00F0"/>
-      <stop offset="100%" stop-color="#00FFFF"/>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#B800FF"/>
+      <stop offset="0.5" stop-color="#FF00F0"/>
+      <stop offset="1" stop-color="#00FFFF"/>
     </linearGradient>
 
-    <!-- Strong glow -->
-    <filter id="neonGlow" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="5" result="blur"/>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3.6" result="b"/>
       <feMerge>
-        <feMergeNode in="blur"/>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="7" result="b2"/>
+      <feColorMatrix in="b2" type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 0.55 0"/>
+      <feMerge>
+        <feMergeNode in="b2"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
   </defs>
 
-  <!-- Neon V -->
-  <path
-    d="M18 14 L36 58 L48 58 L66 14 L54 14 L42 44 L30 14 Z"
-    fill="url(#neonGradient)"
-    filter="url(#neonGlow)"
-  />
+  <!-- icon: Neon V -->
+  <g transform="translate(14,9)">
+    <!-- V body -->
+    <path
+      d="M6 2 L22 46 L32 46 L48 2 L38 2 L27 31 L16 2 Z"
+      fill="url(#g)"
+      filter="url(#softGlow)"
+    />
+    <!-- inner highlight -->
+    <path
+      d="M14 6 L27 40 L40 6"
+      fill="none"
+      stroke="#00FFFF"
+      stroke-opacity="0.35"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      filter="url(#glow)"
+    />
+  </g>
 
-  <!-- Bold neon divider -->
-  <rect
-    x="88"
-    y="18"
-    width="6"
-    height="36"
-    rx="3"
-    fill="url(#neonGradient)"
-    filter="url(#neonGlow)"
-  />
+  <!-- bold neon divider -->
+  <g transform="translate(78,0)">
+    <rect x="0" y="14" width="6" height="36" rx="3" fill="url(#g)" filter="url(#softGlow)"/>
+    <rect x="1" y="16" width="4" height="32" rx="2" fill="#00FFFF" opacity="0.22"/>
+  </g>
 
-  <!-- Text Vector -->
-  <text
-    x="112"
-    y="48"
-    font-size="32"
-    font-weight="700"
-    letter-spacing="1.5"
-    fill="url(#neonGradient)"
-    filter="url(#neonGlow)"
-    font-family="Orbitron, Space Grotesk, Arial, sans-serif"
-  >
-    Vector
-  </text>
+  <!-- wordmark: Vector -->
+  <g transform="translate(100,42)">
+    <text x="0" y="0"
+          font-family="Orbitron, system-ui, -apple-system, Segoe UI, Arial, sans-serif"
+          font-size="28"
+          font-weight="900"
+          letter-spacing="1.4"
+          fill="url(#g)"
+          filter="url(#glow)">Vector</text>
+  </g>
 </svg>
