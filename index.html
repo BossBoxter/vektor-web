@@ -12,20 +12,48 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Logo/Favicon -->
+  <!-- Logo / Favicon -->
   <link rel="icon" type="image/svg+xml" href="assets/loggoo.svg">
 
   <link rel="stylesheet" href="style.css">
 
-  <!-- small local tweak for logo img without touching style.css -->
+  <!-- LOCAL FIXES -->
   <style>
-    .logo { display: inline-flex; align-items: center; }
-    .logo img { display: block; height: 40px; width: auto; }
-    @media (max-width: 480px) { .logo img { height: 34px; } }
+    /* LOGO */
+    .logo {
+      display: inline-flex;
+      align-items: center;
+    }
+    .logo img {
+      display: block;
+      height: 40px;
+      width: auto;
+    }
+    @media (max-width: 480px) {
+      .logo img {
+        height: 34px;
+      }
+    }
+
+    /* GLOBAL SCALE +15% */
+    html {
+      overflow-x: hidden;
+    }
+    body {
+      overflow-x: hidden;
+    }
+    .site-scale {
+      transform: scale(1.15);
+      transform-origin: top center;
+      width: 100%;
+    }
   </style>
 </head>
 
 <body>
+
+<div class="site-scale">
+
   <!-- ГЛАВНЫЙ СВЕТОВОЙ ЭФФЕКТ -->
   <div class="neon-glow"></div>
 
@@ -43,7 +71,9 @@
           <li><a href="#guarantees" class="nav-link">Гарантии</a></li>
           <li><a href="#contacts" class="nav-link">Контакты</a></li>
         </ul>
-        <button class="btn btn-primary" onclick="scrollToSection('contacts')">Обсудить проект</button>
+        <button class="btn btn-primary" onclick="scrollToSection('contacts')">
+          Обсудить проект
+        </button>
       </nav>
       <button class="burger" id="burger" aria-label="Меню">
         <span></span><span></span><span></span>
