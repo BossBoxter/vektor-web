@@ -1,334 +1,329 @@
 // ========================================
-// ИНТЕГРАЦИЯ С TELEGRAM BOT @vektorwebbot
+// VEKTOR WEB — отправка заявки через Cloudflare Worker
+// Worker URL: https://vektor-web.anton-bezzz2003.workers.dev
 // ========================================
-const TELEGRAM_BOT_USERNAME = 'vektorwebbot';
 
-// ВАЖНО: start-пейлоад короткий и служебный.
-// Мы используем его только чтобы бот понял "пользователь пришёл с сайта".
-const TELEGRAM_BOT_DEEPLINK = `https://t.me/${TELEGRAM_BOT_USERNAME}?start=site`;
+const WORKER_ENDPOINT = 'https://vektor-web.anton-bezzz2003.workers.dev/lead';
 
-// Форматирование данных для вставки в чат бота (обычный текст, без Markdown)
-function formatTelegramMessage(data) {
-    const now = new Date().toLocaleString('ru-RU');
-    const page = window.location.href;
+// ========================================
+// helpers
+// ========================================
+function safeTrim(v) {
+  return (v ?? '').toString().trim();
+}
 
-    const name = (data.name || '').trim();
-    const contact = (data.contact || '').trim();
-    const pkg = (data.package || '').trim();
-    const desc = (data.description || '').trim();
+function getPageUrl() {
+  return window.location.href;
+}
 
-    return [
-        "Заявка с сайта VEKTOR Web",
-        "",
-        `Имя: ${name || "-"}`,
-        `Контакт: ${contact || "-"}`,
-        `Пакет: ${pkg || "-"}`,
-        "",
-        "Описание:",
-        desc || "-",
-        "",
-        `Страница: ${page}`,
-        `Дата: ${now}`
-    ].join("\n");
+function formatRuDateTime() {
+  try {
+    return new Date().toLocaleString('ru-RU');
+  } catch {
+    return new Date().toISOString();
+  }
 }
 
 // ========================================
-// СООБЩЕНИЕ (универсальное)
+// UI: success overlay (использует существующий #successMessage из твоего HTML/CSS)
 // ========================================
 function showSuccessMessage(message, opts = {}) {
-    const {
-        title = 'Заявка отправлена',
-        hint = '',
-        autoHideMs = 3500
-    } = opts;
+  const { title = 'Заявка отправлена', hint = '', autoHideMs = 3500 } = opts;
 
-    const successMessage = document.getElementById('successMessage');
-    const successContent = successMessage.querySelector('.success-content');
+  const successMessage = document.getElementById('successMessage');
+  if (!successMessage) return;
 
-    const h3 = successContent.querySelector('h3');
-    const p = successContent.querySelector('p');
-    const hintEl = successContent.querySelector('.copy-hint');
+  const successContent = successMessage.querySelector('.success-content');
+  if (!successContent) return;
 
-    h3.textContent = title;
-    p.textContent = message;
+  const h3 = successContent.querySelector('h3');
+  const p = successContent.querySelector('p');
+  const hintEl = successContent.querySelector('.copy-hint');
 
-    if (hint && hintEl) {
-        hintEl.textContent = hint;
-        hintEl.style.display = 'block';
-    } else if (hintEl) {
-        hintEl.style.display = 'none';
+  if (h3) h3.textContent = title;
+  if (p) p.textContent = message;
+
+  if (hintEl) {
+    if (hint) {
+      hintEl.textContent = hint;
+      hintEl.style.display = 'block';
+    } else {
+      hintEl.style.display = 'none';
     }
+  }
 
-    successMessage.classList.add('active');
-    document.body.style.overflow = 'hidden';
+  successMessage.classList.add('active');
+  document.body.style.overflow = 'hidden';
 
-    if (autoHideMs && autoHideMs > 0) {
-        setTimeout(() => hideSuccess(), autoHideMs);
-    }
+  if (autoHideMs && autoHideMs > 0) {
+    setTimeout(() => hideSuccess(), autoHideMs);
+  }
 }
 
 function hideSuccess() {
-    const successMessage = document.getElementById('successMessage');
-    successMessage.classList.remove('active');
-    document.body.style.overflow = '';
+  const successMessage = document.getElementById('successMessage');
+  if (!successMessage) return;
+  successMessage.classList.remove('active');
+  document.body.style.overflow = '';
 }
 
 // ========================================
-// Открытие телеграм бота + копирование текста (для карточек/кнопок вне формы)
+// API: отправка лида в Worker
 // ========================================
-function openTelegramBot(additionalInfo = '') {
-    const formData = {
-        name: document.getElementById('mainName')?.value || '',
-        contact: document.getElementById('mainContact')?.value || '',
-        package: document.getElementById('mainPackage')?.value || '',
-        description: document.getElementById('mainDescription')?.value || ''
-    };
+async function sendLeadToWorker(payload) {
+  const res = await fetch(WORKER_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
 
-    let message = '';
+  let data = null;
+  try {
+    data = await res.json();
+  } catch {
+    // ignore
+  }
 
-    if (additionalInfo) {
-        message = `Здравствуйте! Меня интересует: ${additionalInfo}\n\nКоротко опишите задачу, сроки и желаемый результат.`;
-    } else if ((formData.name || '').trim() || (formData.contact || '').trim() || (formData.description || '').trim()) {
-        message = formatTelegramMessage(formData);
-    } else {
-        message = 'Здравствуйте! Хочу получить консультацию по разработке сайта/бота.\n\nОпишите задачу, сроки и примеры.';
-    }
+  if (!res.ok) {
+    const msg = (data && (data.error || data.message)) || `HTTP ${res.status}`;
+    throw new Error(msg);
+  }
 
-    copyToClipboard(message).then(() => {
-        showSuccessMessage('Данные скопированы. Откроется Telegram — вставьте текст в чат и отправьте.', {
-            title: 'Готово',
-            hint: '',
-            autoHideMs: 1800
-        });
-        setTimeout(() => window.open(TELEGRAM_BOT_DEEPLINK, '_blank'), 450);
-    }).catch(() => {
-        showSuccessMessage('Откроется Telegram.', { title: 'Готово', autoHideMs: 1400 });
-        setTimeout(() => window.open(TELEGRAM_BOT_DEEPLINK, '_blank'), 450);
-    });
-}
-
-// Копирование в буфер обмена
-function copyToClipboard(text) {
-    return new Promise((resolve, reject) => {
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(text).then(resolve).catch(reject);
-        } else {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.select();
-            try {
-                document.execCommand('copy');
-                resolve();
-            } catch (err) {
-                reject(err);
-            } finally {
-                document.body.removeChild(textarea);
-            }
-        }
-    });
+  return data;
 }
 
 // ========================================
-// Отправка форм: БЕЗ Telegram, просто сообщение
+// forms: main + modal
 // ========================================
-function handleTelegramSubmit(event, formId) {
-    event.preventDefault();
+async function handleLeadSubmit(event, formId) {
+  event.preventDefault();
 
-    // (данные собираем, чтобы оставить структуру — можно использовать позже)
-    if (formId === 'contactForm') {
-        const name = document.getElementById('mainName').value;
-        const contact = document.getElementById('mainContact').value;
-        const pkg = document.getElementById('mainPackage').value;
-        const desc = document.getElementById('mainDescription').value;
-        void formatTelegramMessage({ name, contact, package: pkg, description: desc });
-    } else if (formId === 'modalForm') {
-        const packageName = document.getElementById('modal-package').querySelector('span').textContent;
-        const name = document.getElementById('modalName').value;
-        const contact = document.getElementById('modalContact').value;
-        const desc = document.getElementById('modalDescription').value;
-        void formatTelegramMessage({ name, contact, package: packageName, description: desc });
-    }
+  const page = getPageUrl();
+  const createdAt = formatRuDateTime();
+
+  let name = '';
+  let contact = '';
+  let pkg = '';
+  let description = '';
+
+  if (formId === 'contactForm') {
+    name = safeTrim(document.getElementById('mainName')?.value);
+    contact = safeTrim(document.getElementById('mainContact')?.value);
+    pkg = safeTrim(document.getElementById('mainPackage')?.value);
+    description = safeTrim(document.getElementById('mainDescription')?.value);
+  } else if (formId === 'modalForm') {
+    const packageName = safeTrim(document.getElementById('modal-package')?.querySelector('span')?.textContent);
+    name = safeTrim(document.getElementById('modalName')?.value);
+    contact = safeTrim(document.getElementById('modalContact')?.value);
+    pkg = packageName;
+    description = safeTrim(document.getElementById('modalDescription')?.value);
+  }
+
+  const payload = {
+    source: 'vektor-web-site',
+    name,
+    contact,
+    package: pkg,
+    description,
+    page,
+    createdAt
+  };
+
+  try {
+    await sendLeadToWorker(payload);
 
     showSuccessMessage('Заявка отправлена. Ожидайте — менеджер свяжется с вами в ближайшие 30 минут.', {
-        title: 'Заявка в обработке',
-        hint: '',
-        autoHideMs: 4000
+      title: 'Заявка в обработке',
+      hint: '',
+      autoHideMs: 4500
     });
 
-    // Сбрасываем форму
+    // reset
     if (formId === 'contactForm') {
-        event.target.reset();
+      event.target.reset();
     } else if (formId === 'modalForm') {
-        event.target.reset();
-        closeModal();
+      event.target.reset();
+      closeModal();
     }
+  } catch (err) {
+    showSuccessMessage('Не удалось отправить заявку. Попробуйте ещё раз или напишите в Telegram @vektorwebbot.', {
+      title: 'Ошибка отправки',
+      hint: String(err?.message || err || ''),
+      autoHideMs: 6500
+    });
+  }
 }
 
 // ========================================
-// УНИВЕРСАЛЬНЫЕ ФУНКЦИИ
+// navigation
 // ========================================
 function scrollToSection(sectionId) {
-    const section = document.getElementById(sectionId);
-    if (section) {
-        const headerHeight = document.querySelector('.header').offsetHeight;
-        const targetPosition = section.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+  const section = document.getElementById(sectionId);
+  if (!section) return;
 
-        window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+  const headerHeight = document.querySelector('.header')?.offsetHeight || 0;
+  const targetPosition = section.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
 
-        document.getElementById('nav').classList.remove('active');
-        document.getElementById('burger').classList.remove('active');
-    }
+  window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+
+  document.getElementById('nav')?.classList.remove('active');
+  document.getElementById('burger')?.classList.remove('active');
+  document.body.style.overflow = '';
 }
 
 // ========================================
-// HEADER: ИЗМЕНЕНИЕ ФОНА ПРИ СКРОЛЛЕ
+// header: scroll
 // ========================================
 const header = document.getElementById('header');
 const scrollThreshold = 50;
 
 window.addEventListener('scroll', () => {
-    if (window.scrollY > scrollThreshold) header.classList.add('scrolled');
-    else header.classList.remove('scrolled');
+  if (!header) return;
+  if (window.scrollY > scrollThreshold) header.classList.add('scrolled');
+  else header.classList.remove('scrolled');
 });
 
 // ========================================
-// МОБИЛЬНОЕ МЕНЮ (ГАМБУРГЕР)
+// mobile menu
 // ========================================
 const burger = document.getElementById('burger');
 const nav = document.getElementById('nav');
 
-burger.addEventListener('click', () => {
+if (burger && nav) {
+  burger.addEventListener('click', () => {
     burger.classList.toggle('active');
     nav.classList.toggle('active');
     document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : '';
-});
+  });
 
-document.addEventListener('click', (e) => {
+  document.addEventListener('click', (e) => {
     if (nav.classList.contains('active') && !nav.contains(e.target) && !burger.contains(e.target)) {
-        nav.classList.remove('active');
-        burger.classList.remove('active');
-        document.body.style.overflow = '';
+      nav.classList.remove('active');
+      burger.classList.remove('active');
+      document.body.style.overflow = '';
     }
-});
+  });
+}
 
 // ========================================
-// ПОЯВЛЕНИЕ ЭЛЕМЕНТОВ ПРИ СКРОЛЛЕ (FADE-IN)
+// fade-in on scroll
 // ========================================
 const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
 
 const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
 }, observerOptions);
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.section').forEach(section => {
-        section.style.opacity = '0';
-        section.style.transform = 'translateY(15px)';
-        section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(section);
-    });
+  document.querySelectorAll('.section').forEach((section) => {
+    section.style.opacity = '0';
+    section.style.transform = 'translateY(15px)';
+    section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(section);
+  });
 
-    document.querySelectorAll('.service-card').forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(12px)';
-        card.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
-        observer.observe(card);
-    });
+  document.querySelectorAll('.service-card').forEach((card, index) => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(12px)';
+    card.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
+    observer.observe(card);
+  });
 
-    document.querySelectorAll('.case-card').forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(12px)';
-        card.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
-        observer.observe(card);
-    });
+  document.querySelectorAll('.case-card').forEach((card, index) => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(12px)';
+    card.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
+    observer.observe(card);
+  });
 
-    document.querySelectorAll('.timeline-step').forEach((step, index) => {
-        step.style.opacity = '0';
-        step.style.transform = 'translateY(12px)';
-        step.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
-        observer.observe(step);
-    });
+  document.querySelectorAll('.timeline-step').forEach((step, index) => {
+    step.style.opacity = '0';
+    step.style.transform = 'translateY(12px)';
+    step.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
+    observer.observe(step);
+  });
 });
 
 // ========================================
-// МОДАЛЬНОЕ ОКНО
+// modal
 // ========================================
 const modal = document.getElementById('modal');
-const modalPackage = document.getElementById('modal-package').querySelector('span');
+const modalPackage = document.getElementById('modal-package')?.querySelector('span');
 const modalForm = document.getElementById('modalForm');
 
 function openModal(packageName) {
-    modalPackage.textContent = packageName;
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
+  if (modalPackage) modalPackage.textContent = packageName;
+  if (modal) modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
 
 function closeModal() {
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-    modalForm.reset();
+  if (modal) modal.classList.remove('active');
+  document.body.style.overflow = '';
+  modalForm?.reset();
 }
 
-modal.addEventListener('click', (e) => {
+if (modal) {
+  modal.addEventListener('click', (e) => {
     if (e.target === modal) closeModal();
-});
+  });
+}
 
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+  if (e.key === 'Escape' && modal?.classList.contains('active')) closeModal();
 });
 
 // ========================================
-// ОБРАБОТЧИКИ ФОРМ
+// forms: wire up submit handlers
 // ========================================
-document.getElementById('contactForm').addEventListener('submit', function(e) {
-    handleTelegramSubmit(e, 'contactForm');
+document.getElementById('contactForm')?.addEventListener('submit', function (e) {
+  handleLeadSubmit(e, 'contactForm');
 });
 
-modalForm.addEventListener('submit', function(e) {
-    handleTelegramSubmit(e, 'modalForm');
+modalForm?.addEventListener('submit', function (e) {
+  handleLeadSubmit(e, 'modalForm');
 });
 
 // ========================================
-// АНИМАЦИИ
+// animations: hero svg intro + press effects
 // ========================================
-document.querySelectorAll('.timeline-step').forEach(step => {
-    step.addEventListener('mouseenter', () => {
-        step.querySelector('.step-content').style.transform = 'scale(1.005)';
-    });
-
-    step.addEventListener('mouseleave', () => {
-        step.querySelector('.step-content').style.transform = 'scale(1)';
-    });
-});
-
 window.addEventListener('load', () => {
-    const heroSvg = document.querySelector('.hero-svg');
-    if (heroSvg) {
-        heroSvg.style.opacity = '0';
-        heroSvg.style.transform = 'scale(0.8) rotate(-10deg)';
-        heroSvg.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+  const heroSvg = document.querySelector('.hero-svg');
+  if (!heroSvg) return;
 
-        setTimeout(() => {
-            heroSvg.style.opacity = '1';
-            heroSvg.style.transform = 'scale(1) rotate(0deg)';
-        }, 300);
-    }
+  heroSvg.style.opacity = '0';
+  heroSvg.style.transform = 'scale(0.8) rotate(-10deg)';
+  heroSvg.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+
+  setTimeout(() => {
+    heroSvg.style.opacity = '1';
+    heroSvg.style.transform = 'scale(1) rotate(0deg)';
+  }, 300);
 });
 
-document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left').forEach(element => {
-    element.addEventListener('mousedown', () => { element.style.transform = 'scale(0.99)'; });
+document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left').forEach((el) => {
+  el.addEventListener('mousedown', () => {
+    el.style.transform = 'scale(0.99)';
+  });
 
-    element.addEventListener('mouseup', () => {
-        setTimeout(() => { if (!element.matches(':hover')) element.style.transform = ''; }, 100);
-    });
+  el.addEventListener('mouseup', () => {
+    setTimeout(() => {
+      if (!el.matches(':hover')) el.style.transform = '';
+    }, 100);
+  });
 
-    element.addEventListener('mouseleave', () => { element.style.transform = ''; });
+  el.addEventListener('mouseleave', () => {
+    el.style.transform = '';
+  });
 });
+
+// ========================================
+// optional: cards click => open modal (если где-то используешь openModal)
+// (оставлено как есть — твой HTML сейчас вызывает openTelegramBot, можешь заменить на openModal)
+// ========================================
+// function openTelegramBot(additionalInfo = '') { ... }  // УДАЛЕНО намеренно: теперь заявки идут через Worker
