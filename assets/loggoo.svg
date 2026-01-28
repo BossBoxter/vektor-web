@@ -1,28 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <svg
-  width="440"
-  height="120"
-  viewBox="0 0 440 120"
+  width="260"
+  height="72"
+  viewBox="0 0 260 72"
   xmlns="http://www.w3.org/2000/svg"
   role="img"
-  aria-label="VEKTOR Web logo"
+  aria-label="Vector Web logo"
 >
   <defs>
-    <!-- Градиенты -->
-    <linearGradient id="v-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#7A00FF"/>
-      <stop offset="50%" stop-color="#FF00E5"/>
-      <stop offset="100%" stop-color="#00E5FF"/>
+    <!-- Neon gradient -->
+    <linearGradient id="neonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B800FF"/>
+      <stop offset="50%" stop-color="#FF00F0"/>
+      <stop offset="100%" stop-color="#00FFFF"/>
     </linearGradient>
 
-    <linearGradient id="web-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#00E5FF"/>
-      <stop offset="100%" stop-color="#8CFFFF"/>
-    </linearGradient>
-
-    <!-- Неоновый эффект -->
-    <filter id="soft-glow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+    <!-- Strong glow -->
+    <filter id="neonGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
       <feMerge>
         <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
@@ -30,53 +24,35 @@
     </filter>
   </defs>
 
-  <!-- ИКОНКА -->
-  <g transform="translate(24,18)" filter="url(#soft-glow)">
-    <!-- Левая грань V -->
-    <path
-      d="M0 0 L28 84 L52 84 L24 0 Z"
-      fill="url(#v-grad)"
-    />
-    <!-- Правая грань V -->
-    <path
-      d="M52 84 L80 0 L56 0 L40 56 Z"
-      fill="#00E5FF"
-    />
-    <!-- Вертикальная ось (вектор) -->
-    <rect
-      x="92"
-      y="10"
-      width="6"
-      height="74"
-      rx="3"
-      fill="#00E5FF"
-      opacity="0.8"
-    />
-  </g>
+  <!-- Neon V -->
+  <path
+    d="M18 14 L36 58 L48 58 L66 14 L54 14 L42 44 L30 14 Z"
+    fill="url(#neonGradient)"
+    filter="url(#neonGlow)"
+  />
 
-  <!-- ТЕКСТ -->
-  <g transform="translate(150,78)">
-    <text
-      x="0"
-      y="0"
-      font-family="Orbitron, Arial, sans-serif"
-      font-size="40"
-      font-weight="800"
-      fill="#FFFFFF"
-      letter-spacing="3"
-    >
-      VEKTOR
-    </text>
+  <!-- Bold neon divider -->
+  <rect
+    x="88"
+    y="18"
+    width="6"
+    height="36"
+    rx="3"
+    fill="url(#neonGradient)"
+    filter="url(#neonGlow)"
+  />
 
-    <text
-      x="215"
-      y="0"
-      font-family="Space Grotesk, Arial, sans-serif"
-      font-size="34"
-      font-weight="600"
-      fill="url(#web-grad)"
-    >
-      Web
-    </text>
-  </g>
+  <!-- Text Vector -->
+  <text
+    x="112"
+    y="48"
+    font-size="32"
+    font-weight="700"
+    letter-spacing="1.5"
+    fill="url(#neonGradient)"
+    filter="url(#neonGlow)"
+    font-family="Orbitron, Space Grotesk, Arial, sans-serif"
+  >
+    Vector
+  </text>
 </svg>
