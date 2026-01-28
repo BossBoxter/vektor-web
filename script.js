@@ -12,7 +12,6 @@ function formatTelegramMessage(data) {
     const now = new Date().toLocaleString('ru-RU');
     const page = window.location.href;
 
-    // Убираем пустые поля красиво
     const name = (data.name || '').trim();
     const contact = (data.contact || '').trim();
     const pkg = (data.package || '').trim();
@@ -33,9 +32,51 @@ function formatTelegramMessage(data) {
     ].join("\n");
 }
 
-// Открытие телеграм бота + копирование текста
+// ========================================
+// СООБЩЕНИЕ (универсальное)
+// ========================================
+function showSuccessMessage(message, opts = {}) {
+    const {
+        title = 'Заявка отправлена',
+        hint = '',
+        autoHideMs = 3500
+    } = opts;
+
+    const successMessage = document.getElementById('successMessage');
+    const successContent = successMessage.querySelector('.success-content');
+
+    const h3 = successContent.querySelector('h3');
+    const p = successContent.querySelector('p');
+    const hintEl = successContent.querySelector('.copy-hint');
+
+    h3.textContent = title;
+    p.textContent = message;
+
+    if (hint && hintEl) {
+        hintEl.textContent = hint;
+        hintEl.style.display = 'block';
+    } else if (hintEl) {
+        hintEl.style.display = 'none';
+    }
+
+    successMessage.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    if (autoHideMs && autoHideMs > 0) {
+        setTimeout(() => hideSuccess(), autoHideMs);
+    }
+}
+
+function hideSuccess() {
+    const successMessage = document.getElementById('successMessage');
+    successMessage.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// ========================================
+// Открытие телеграм бота + копирование текста (для карточек/кнопок вне формы)
+// ========================================
 function openTelegramBot(additionalInfo = '') {
-    // Данные из основной формы (если есть)
     const formData = {
         name: document.getElementById('mainName')?.value || '',
         contact: document.getElementById('mainContact')?.value || '',
@@ -46,23 +87,23 @@ function openTelegramBot(additionalInfo = '') {
     let message = '';
 
     if (additionalInfo) {
-        // Клики по карточкам/кейсам/гарантиям
         message = `Здравствуйте! Меня интересует: ${additionalInfo}\n\nКоротко опишите задачу, сроки и желаемый результат.`;
     } else if ((formData.name || '').trim() || (formData.contact || '').trim() || (formData.description || '').trim()) {
-        // Есть введённые данные
         message = formatTelegramMessage(formData);
     } else {
-        // Общий сценарий
         message = 'Здравствуйте! Хочу получить консультацию по разработке сайта/бота.\n\nОпишите задачу, сроки и примеры.';
     }
 
-    // Копируем сообщение в буфер и открываем бота
     copyToClipboard(message).then(() => {
-        showSuccessMessage('Данные скопированы. Открою бота — вставьте сообщение в чат.', true);
-        setTimeout(() => window.open(TELEGRAM_BOT_DEEPLINK, '_blank'), 400);
+        showSuccessMessage('Данные скопированы. Откроется Telegram — вставьте текст в чат и отправьте.', {
+            title: 'Готово',
+            hint: '',
+            autoHideMs: 1800
+        });
+        setTimeout(() => window.open(TELEGRAM_BOT_DEEPLINK, '_blank'), 450);
     }).catch(() => {
-        showSuccessMessage('Не удалось скопировать. Открою бота.', false);
-        setTimeout(() => window.open(TELEGRAM_BOT_DEEPLINK, '_blank'), 400);
+        showSuccessMessage('Откроется Telegram.', { title: 'Готово', autoHideMs: 1400 });
+        setTimeout(() => window.open(TELEGRAM_BOT_DEEPLINK, '_blank'), 450);
     });
 }
 
@@ -90,35 +131,31 @@ function copyToClipboard(text) {
     });
 }
 
-// Обработка отправки форм: копируем текст -> открываем бота
+// ========================================
+// Отправка форм: БЕЗ Telegram, просто сообщение
+// ========================================
 function handleTelegramSubmit(event, formId) {
     event.preventDefault();
 
-    let data = {};
-
+    // (данные собираем, чтобы оставить структуру — можно использовать позже)
     if (formId === 'contactForm') {
-        data = {
-            name: document.getElementById('mainName').value,
-            contact: document.getElementById('mainContact').value,
-            package: document.getElementById('mainPackage').value,
-            description: document.getElementById('mainDescription').value
-        };
+        const name = document.getElementById('mainName').value;
+        const contact = document.getElementById('mainContact').value;
+        const pkg = document.getElementById('mainPackage').value;
+        const desc = document.getElementById('mainDescription').value;
+        void formatTelegramMessage({ name, contact, package: pkg, description: desc });
     } else if (formId === 'modalForm') {
         const packageName = document.getElementById('modal-package').querySelector('span').textContent;
-        data = {
-            name: document.getElementById('modalName').value,
-            contact: document.getElementById('modalContact').value,
-            package: packageName,
-            description: document.getElementById('modalDescription').value
-        };
+        const name = document.getElementById('modalName').value;
+        const contact = document.getElementById('modalContact').value;
+        const desc = document.getElementById('modalDescription').value;
+        void formatTelegramMessage({ name, contact, package: packageName, description: desc });
     }
 
-    const telegramMessage = formatTelegramMessage(data);
-
-    copyToClipboard(telegramMessage).then(() => {
-        showSuccessMessage('Данные скопированы. Открою бота — вставьте сообщение в чат.', true);
-    }).catch(() => {
-        showSuccessMessage('Не удалось скопировать. Открою бота.', false);
+    showSuccessMessage('Заявка отправлена. Ожидайте — менеджер свяжется с вами в ближайшие 30 минут.', {
+        title: 'Заявка в обработке',
+        hint: '',
+        autoHideMs: 4000
     });
 
     // Сбрасываем форму
@@ -128,8 +165,6 @@ function handleTelegramSubmit(event, formId) {
         event.target.reset();
         closeModal();
     }
-
-    setTimeout(() => window.open(TELEGRAM_BOT_DEEPLINK, '_blank'), 700);
 }
 
 // ========================================
@@ -249,39 +284,6 @@ modal.addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
 });
-
-// ========================================
-// СООБЩЕНИЕ ОБ УСПЕШНОЙ ОТПРАВКЕ
-// ========================================
-function showSuccessMessage(message = 'Данные скопированы.', showCopyInfo = true) {
-    const successMessage = document.getElementById('successMessage');
-    const successContent = successMessage.querySelector('.success-content');
-
-    successContent.querySelector('h3').textContent = 'Готово';
-    successContent.querySelector('p').textContent = message;
-
-    const hint = successContent.querySelector('.copy-hint');
-    if (showCopyInfo) {
-        hint.textContent = 'Откроется бот. Вставьте скопированный текст в чат и отправьте.';
-        hint.style.display = 'block';
-    } else {
-        hint.style.display = 'none';
-    }
-
-    successMessage.classList.add('active');
-    document.body.style.overflow = 'hidden';
-
-    setTimeout(() => {
-        hideSuccess();
-        window.open(TELEGRAM_BOT_DEEPLINK, '_blank');
-    }, 1500);
-}
-
-function hideSuccess() {
-    const successMessage = document.getElementById('successMessage');
-    successMessage.classList.remove('active');
-    document.body.style.overflow = '';
-}
 
 // ========================================
 // ОБРАБОТЧИКИ ФОРМ
