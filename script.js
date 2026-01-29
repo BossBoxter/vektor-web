@@ -1,15 +1,4 @@
-// ========================================
-// VEKTOR WEB — отправка заявок через Cloudflare Worker
-// Worker URL: https://vektor-web.anton-bezzz2003.workers.dev
-// Endpoint:  POST /lead
-// ========================================
 
-const WORKER_BASE_URL = 'https://vektor-web.anton-bezzz2003.workers.dev';
-const WORKER_LEAD_ENDPOINT = `${WORKER_BASE_URL}/lead`;
-
-// ========================================
-// UI: Success message overlay (используем уже существующую верстку #successMessage)
-// ========================================
 function showSuccessMessage(message, opts = {}) {
   const { title = 'Заявка отправлена', hint = '', autoHideMs = 3500 } = opts;
 
