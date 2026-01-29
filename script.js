@@ -1,4 +1,19 @@
+// ========================================
+// VEKTOR WEB — отправка заявок напрямую в Fly.io бот
+// Endpoint: POST https://<fly-app>/lead
+// ========================================
 
+// 1) Укажи публичный URL Fly приложения (без слэша в конце)
+const LEAD_API_BASE_URL = 'https://vektor-web-bot.fly.dev';
+const LEAD_API_ENDPOINT = `${LEAD_API_BASE_URL}/lead`;
+
+// 2) Если включишь секрет на Fly (LEAD_SECRET), пропиши здесь тот же
+// Иначе оставь пустым.
+const LEAD_API_SECRET = ''; // пример: 'my-secret'
+
+// ========================================
+// UI: Success message overlay (#successMessage)
+// ========================================
 function showSuccessMessage(message, opts = {}) {
   const { title = 'Заявка отправлена', hint = '', autoHideMs = 3500 } = opts;
 
@@ -34,33 +49,87 @@ function hideSuccess() {
 }
 
 // ========================================
-// Helper: POST to worker
+// UTM helpers
 // ========================================
-async function sendLeadToWorker(payload) {
-  const res = await fetch(WORKER_LEAD_ENDPOINT, {
+function getUtmFromUrl() {
+  const p = new URLSearchParams(window.location.search);
+  const utmKeys = [
+    'utm_source',
+    'utm_medium',
+    'utm_campaign',
+    'utm_term',
+    'utm_content',
+    'gclid',
+    'yclid',
+    'fbclid'
+  ];
+
+  const utm = {};
+  for (const k of utmKeys) {
+    const v = p.get(k);
+    if (v) utm[k] = v;
+  }
+  return utm;
+}
+
+function persistUtm() {
+  try {
+    const utm = getUtmFromUrl();
+    if (Object.keys(utm).length) {
+      localStorage.setItem('vektor_utm', JSON.stringify(utm));
+    }
+  } catch {}
+}
+
+function readPersistedUtm() {
+  try {
+    const raw = localStorage.getItem('vektor_utm');
+    if (!raw) return {};
+    const utm = JSON.parse(raw);
+    return utm && typeof utm === 'object' ? utm : {};
+  } catch {
+    return {};
+  }
+}
+
+function getUtmMerged() {
+  const fromUrl = getUtmFromUrl();
+  const stored = readPersistedUtm();
+  // URL utm имеет приоритет
+  return { ...stored, ...fromUrl };
+}
+
+// ========================================
+// Helper: POST to Fly /lead
+// Bot expects: name, contact, package, message, page, utm, source
+// ========================================
+async function sendLeadToApi(payload) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (LEAD_API_SECRET) headers['X-Lead-Secret'] = LEAD_API_SECRET;
+
+  const res = await fetch(LEAD_API_ENDPOINT, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
+    headers,
+    body: JSON.stringify(payload),
   });
 
   let data = null;
   try { data = await res.json(); } catch { /* ignore */ }
 
   if (!res.ok || !data || data.ok !== true) {
-    const details = (data && (data.error || data.details)) ? ` (${data.error || data.details})` : '';
-    throw new Error(`Worker error${details}`);
+    const code = data && data.code ? data.code : '';
+    throw new Error(code || `http_${res.status}`);
   }
 
   return data;
 }
 
 // ========================================
-// Формы: отправка заявки в Worker, без открытия Telegram
+// Forms: отправка заявки на Fly, без открытия Telegram
 // ========================================
 async function handleTelegramSubmit(event, formId) {
   event.preventDefault();
 
-  // Блокируем повторные сабмиты
   const form = event.target;
   const submitBtn = form.querySelector('button[type="submit"]');
   const prevBtnText = submitBtn ? submitBtn.textContent : '';
@@ -71,59 +140,60 @@ async function handleTelegramSubmit(event, formId) {
   }
 
   try {
-    let payload;
+    let name = '';
+    let contact = '';
+    let pkg = '';
+    let description = '';
 
     if (formId === 'contactForm') {
-      const name = document.getElementById('mainName').value.trim();
-      const contact = document.getElementById('mainContact').value.trim();
-      const pkg = document.getElementById('mainPackage').value.trim();
-      const description = document.getElementById('mainDescription').value.trim();
-
-      payload = {
-        name,
-        contact,
-        package: pkg,
-        description,
-        page: window.location.href,
-        createdAt: new Date().toLocaleString('ru-RU')
-      };
+      name = document.getElementById('mainName').value.trim();
+      contact = document.getElementById('mainContact').value.trim();
+      pkg = document.getElementById('mainPackage').value.trim();
+      description = document.getElementById('mainDescription').value.trim();
     } else if (formId === 'modalForm') {
-      const packageName = document.getElementById('modal-package').querySelector('span').textContent.trim();
-      const name = document.getElementById('modalName').value.trim();
-      const contact = document.getElementById('modalContact').value.trim();
-      const description = document.getElementById('modalDescription').value.trim();
-
-      payload = {
-        name,
-        contact,
-        package: packageName,
-        description,
-        page: window.location.href,
-        createdAt: new Date().toLocaleString('ru-RU')
-      };
+      pkg = document.getElementById('modal-package').querySelector('span').textContent.trim();
+      name = document.getElementById('modalName').value.trim();
+      contact = document.getElementById('modalContact').value.trim();
+      description = document.getElementById('modalDescription').value.trim();
     } else {
-      throw new Error('Unknown form');
+      throw new Error('unknown_form');
     }
 
-    // Простая валидация на клиенте
-    if (!payload.name || !payload.contact || !payload.package || !payload.description) {
-      throw new Error('Заполните все поля формы');
+    if (!name || !contact || !pkg || !description) {
+      throw new Error('fill_all_fields');
     }
 
-    await sendLeadToWorker(payload);
+    const payload = {
+      name,
+      contact,
+      package: pkg,
+      message: description,            // важно: bot ждёт поле message
+      page: window.location.href,
+      utm: getUtmMerged(),
+      source: 'site_form',
+    };
+
+    await sendLeadToApi(payload);
 
     showSuccessMessage(
-      'Заявка отправлена, ожидайте, с вами свяжется менеджер в ближайшие 30 минут.',
-      { title: 'Заявка в обработке', hint: '', autoHideMs: 4000 }
+      'Заявка отправлена. Менеджер напишет вам в ближайшие 30 минут.',
+      { title: 'Заявка принята', hint: '', autoHideMs: 4500 }
     );
 
-    // Сброс формы
     form.reset();
     if (formId === 'modalForm') closeModal();
   } catch (err) {
+    const msg = (err && err.message) ? String(err.message) : '';
+
+    let hint = '';
+    if (msg === 'cors_blocked') hint = 'CORS: домен сайта не добавлен в ALLOWED_ORIGINS на Fly.';
+    else if (msg === 'bad_secret') hint = 'Секрет не совпал: проверь X-Lead-Secret и LEAD_SECRET.';
+    else if (msg === 'fill_all_fields') hint = 'Заполните все поля.';
+    else hint = msg;
+
     showSuccessMessage(
-      'Ошибка отправки заявки. Попробуйте ещё раз или напишите в Telegram @vektorwebbot.',
-      { title: 'Не удалось отправить', hint: String(err && err.message ? err.message : ''), autoHideMs: 4500 }
+      'Не удалось отправить заявку. Напишите в Telegram @vektorwebbot.',
+      { title: 'Ошибка отправки', hint, autoHideMs: 5500 }
     );
   } finally {
     if (submitBtn) {
@@ -134,22 +204,24 @@ async function handleTelegramSubmit(event, formId) {
 }
 
 // ========================================
-// Открытие Telegram (для карточек/кнопок вне формы) — оставляем
+// Открытие Telegram (карточки/кейсы/для кого) — оставляем, но делаем контекстнее
 // ========================================
 function openTelegramBot(additionalInfo = '') {
   const username = 'vektorwebbot';
   const url = `https://t.me/${username}`;
 
-  const message = additionalInfo
-    ? `Здравствуйте! Меня интересует: ${additionalInfo}\n\nКоротко опишите задачу, сроки и желаемый результат.`
-    : 'Здравствуйте! Хочу получить консультацию по разработке сайта/бота.\n\nОпишите задачу, сроки и примеры.';
+  const utm = getUtmMerged();
+  const utmStr = Object.keys(utm).length ? `\n\nUTM: ${JSON.stringify(utm)}` : '';
 
-  // Пытаемся скопировать (не критично)
+  const message = additionalInfo
+    ? `Здравствуйте! Меня интересует: ${additionalInfo}\n\nОпишите задачу, сроки и желаемый результат.${utmStr}`
+    : `Здравствуйте! Хочу консультацию по разработке сайта/бота.\n\nОпишите задачу, сроки и примеры.${utmStr}`;
+
   copyToClipboard(message).catch(() => {});
   window.open(url, '_blank');
 }
 
-// Копирование в буфер обмена (используется openTelegramBot)
+// Clipboard helper
 function copyToClipboard(text) {
   return new Promise((resolve, reject) => {
     if (navigator.clipboard) {
@@ -174,7 +246,7 @@ function copyToClipboard(text) {
 }
 
 // ========================================
-// УНИВЕРСАЛЬНЫЕ ФУНКЦИИ
+// Универсальные функции (без изменений логики)
 // ========================================
 function scrollToSection(sectionId) {
   const section = document.getElementById(sectionId);
@@ -189,9 +261,7 @@ function scrollToSection(sectionId) {
   }
 }
 
-// ========================================
-// HEADER: ИЗМЕНЕНИЕ ФОНА ПРИ СКРОЛЛЕ
-// ========================================
+// Header scroll
 const header = document.getElementById('header');
 const scrollThreshold = 50;
 
@@ -200,9 +270,7 @@ window.addEventListener('scroll', () => {
   else header.classList.remove('scrolled');
 });
 
-// ========================================
-// МОБИЛЬНОЕ МЕНЮ (ГАМБУРГЕР)
-// ========================================
+// Mobile menu
 const burger = document.getElementById('burger');
 const nav = document.getElementById('nav');
 
@@ -220,9 +288,7 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// ========================================
-// ПОЯВЛЕНИЕ ЭЛЕМЕНТОВ ПРИ СКРОЛЛЕ (FADE-IN)
-// ========================================
+// Fade-in observer
 const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
 
 const observer = new IntersectionObserver((entries) => {
@@ -235,6 +301,8 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 document.addEventListener('DOMContentLoaded', () => {
+  persistUtm();
+
   document.querySelectorAll('.section').forEach(section => {
     section.style.opacity = '0';
     section.style.transform = 'translateY(15px)';
@@ -264,9 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ========================================
-// МОДАЛЬНОЕ ОКНО
-// ========================================
+// Modal
 const modal = document.getElementById('modal');
 const modalPackage = document.getElementById('modal-package').querySelector('span');
 const modalForm = document.getElementById('modalForm');
@@ -291,9 +357,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
 });
 
-// ========================================
-// ОБРАБОТЧИКИ ФОРМ
-// ========================================
+// Form handlers
 document.getElementById('contactForm').addEventListener('submit', function(e) {
   handleTelegramSubmit(e, 'contactForm');
 });
@@ -302,9 +366,7 @@ modalForm.addEventListener('submit', function(e) {
   handleTelegramSubmit(e, 'modalForm');
 });
 
-// ========================================
-// АНИМАЦИИ
-// ========================================
+// Animations
 document.querySelectorAll('.timeline-step').forEach(step => {
   step.addEventListener('mouseenter', () => {
     step.querySelector('.step-content').style.transform = 'scale(1.005)';
