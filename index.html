@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VEKTOR Web | Сайты и Telegram-боты</title>
-  <meta name="description" content="Разработка сайтов и Telegram-ботов." />
+  <meta name="description" content="Проекты под ключ: сайт/сервис/бот. Прототип → запуск, доступы и поддержка по пакету." />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,85 +21,179 @@
 <body>
   <div class="neon-glow" aria-hidden="true"></div>
 
-  <!-- HEADER (без логотипов) -->
+  <!-- HEADER -->
   <header class="header" id="header">
     <div class="container header-container">
-      <a href="#hero" class="brand" aria-label="VEKTOR Web">
-        VEKTOR WEB
-      </a>
+      <a href="#hero" class="brand" aria-label="VEKTOR Web">VEKTOR WEB</a>
 
       <nav class="nav" id="nav" aria-label="Навигация">
         <ul class="nav-list">
           <li><a href="#services" class="nav-link">Пакеты</a></li>
-          <li><a href="#cases" class="nav-link">Кейсы</a></li>
-          <li><a href="#process" class="nav-link">Процесс</a></li>
-          <li><a href="#guarantees" class="nav-link">Гарантии</a></li>
+          <li><a href="#how" class="nav-link">Как создаем</a></li>
           <li><a href="#contacts" class="nav-link">Контакты</a></li>
         </ul>
-        <button class="btn btn-primary" type="button" onclick="scrollToSection('contacts')">
-          Обсудить проект
-        </button>
       </nav>
     </div>
   </header>
 
-  <!-- HERO (СТАРТОВЫЙ ЭКРАН / МОДЕРНИЗМ) -->
+  <!-- HERO (стартовый экран) -->
   <section class="hero hero-modern" id="hero">
-    <div class="container hero-container hero-modern-container">
-      <div class="hero-content hero-modern-content">
-        <div class="hero-kicker">Сайты и Telegram-боты под ключ</div>
+    <div class="hero-modern-bg" aria-hidden="true"></div>
 
-        <h1 class="hero-title hero-modern-title">
+    <div class="container hero-container hero-container-start">
+      <div class="hero-content hero-content-start">
+        <div class="hero-kicker">САЙТЫ И TELEGRAM-БОТЫ ПОД КЛЮЧ</div>
+
+        <h1 class="hero-title hero-title-start">
           Vector - ваш помощник в создании актуальных и рабочих решений.
         </h1>
 
-        <p class="hero-subtitle hero-modern-subtitle">
-          Создаем проекты под ключ. Даем годовую гарантию + предоставляем бесплатный хост. Успешно работаем с 2018 года и завершили более 300 проектов за последние 2 года.
+        <p class="hero-subtitle hero-subtitle-start">
+          Собираем рабочий продукт под вашу задачу: от прототипа до запуска, с передачей доступов и поддержкой по пакету.
         </p>
 
-        <div class="hero-buttons hero-modern-buttons">
-          <button class="btn btn-primary btn-hero-primary" type="button" onclick="scrollToSection('contacts')">
-            Обсудить проект
+        <!-- вместо CTA-кнопок: одно действие + скролл -->
+        <div class="hero-inline-action" role="group" aria-label="Быстрый контакт">
+          <div class="hero-inline-field">
+            <span class="hero-inline-label">Контакт</span>
+            <input
+              id="heroContact"
+              class="hero-inline-input"
+              type="text"
+              placeholder="Telegram @username или email"
+              autocomplete="off"
+              inputmode="text"
+            />
+          </div>
+          <button class="hero-inline-go" type="button" onclick="heroStart()"
+                  aria-label="Перейти к форме и вставить контакт">
+            →
           </button>
-          <a href="#services" class="btn btn-secondary btn-hero-secondary">Смотреть пакеты</a>
-          <a href="https://t.me/vektorwebbot" target="_blank" rel="noopener" class="hero-link">
-            Написать в Telegram
-          </a>
         </div>
 
-        <div class="hero-proofline" aria-label="Ключевые факты">
-          <span>Работаем с 2018</span>
-          <span class="dot">•</span>
-          <span>300+ проектов за 2 года</span>
-          <span class="dot">•</span>
-          <span>Гарантия 12 месяцев</span>
-          <span class="dot">•</span>
-          <span>Хостинг включен</span>
+        <div class="hero-scrollhint" role="button" tabindex="0"
+             onclick="scrollToSection('services')" onkeydown="if(event.key==='Enter'){scrollToSection('services')}">
+          Листайте вниз - пакеты и процесс
+          <span class="hero-scrollchev" aria-hidden="true"></span>
         </div>
       </div>
 
-      <div class="hero-modern-art" aria-hidden="true">
-        <div class="art-grid"></div>
-        <div class="art-shape"></div>
-        <div class="art-shape-2"></div>
+      <!-- Вариант A: превью-экран продукта с вкладками -->
+      <div class="hero-preview" aria-label="Превью результата">
+        <div class="preview-shell">
+          <div class="preview-top">
+            <div class="preview-tabs" role="tablist" aria-label="Превью">
+              <button class="preview-tab is-active" type="button" data-tab="landing" role="tab" aria-selected="true">Landing</button>
+              <button class="preview-tab" type="button" data-tab="bot" role="tab" aria-selected="false">Bot</button>
+              <button class="preview-tab" type="button" data-tab="store" role="tab" aria-selected="false">Store</button>
+            </div>
+            <div class="preview-dots" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <div class="preview-stage" id="previewStage">
+            <!-- LANDING -->
+            <div class="preview-screen is-active" data-screen="landing" role="tabpanel">
+              <div class="mock-hero">
+                <div class="mock-badge"></div>
+                <div class="mock-h1"></div>
+                <div class="mock-p"></div>
+                <div class="mock-p short"></div>
+                <div class="mock-cta-row">
+                  <div class="mock-btn primary"></div>
+                  <div class="mock-btn ghost"></div>
+                </div>
+              </div>
+
+              <div class="mock-grid">
+                <div class="mock-card">
+                  <div class="mock-icon"></div>
+                  <div class="mock-line"></div>
+                  <div class="mock-line short"></div>
+                </div>
+                <div class="mock-card">
+                  <div class="mock-icon cyan"></div>
+                  <div class="mock-line"></div>
+                  <div class="mock-line short"></div>
+                </div>
+                <div class="mock-card">
+                  <div class="mock-icon violet"></div>
+                  <div class="mock-line"></div>
+                  <div class="mock-line short"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- BOT -->
+            <div class="preview-screen" data-screen="bot" role="tabpanel">
+              <div class="mock-chat">
+                <div class="mock-chat-head">
+                  <div class="mock-avatar"></div>
+                  <div class="mock-chat-title"></div>
+                  <div class="mock-status"></div>
+                </div>
+                <div class="mock-chat-body">
+                  <div class="bubble left"></div>
+                  <div class="bubble left short"></div>
+                  <div class="bubble right"></div>
+                  <div class="bubble right short"></div>
+                  <div class="bubble left"></div>
+                </div>
+                <div class="mock-chat-input">
+                  <div class="mock-input"></div>
+                  <div class="mock-send"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- STORE -->
+            <div class="preview-screen" data-screen="store" role="tabpanel">
+              <div class="mock-store-top">
+                <div class="mock-search"></div>
+                <div class="mock-cart"></div>
+              </div>
+              <div class="mock-store-grid">
+                <div class="mock-product">
+                  <div class="mock-thumb"></div>
+                  <div class="mock-line"></div>
+                  <div class="mock-price"></div>
+                </div>
+                <div class="mock-product">
+                  <div class="mock-thumb"></div>
+                  <div class="mock-line"></div>
+                  <div class="mock-price"></div>
+                </div>
+                <div class="mock-product">
+                  <div class="mock-thumb"></div>
+                  <div class="mock-line"></div>
+                  <div class="mock-price"></div>
+                </div>
+                <div class="mock-product">
+                  <div class="mock-thumb"></div>
+                  <div class="mock-line"></div>
+                  <div class="mock-price"></div>
+                </div>
+              </div>
+              <div class="mock-store-bar">
+                <div class="mock-total"></div>
+                <div class="mock-btn primary wide"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="preview-glow" aria-hidden="true"></div>
+        </div>
       </div>
     </div>
 
-    <div class="hero-scrollhint" aria-hidden="true">
-      <div class="scroll-line"></div>
-      <div class="scroll-text">листайте вниз</div>
+    <div class="section-divider" aria-hidden="true">
+      <span class="line"></span>
+      <span class="line"></span>
     </div>
   </section>
 
-  <!-- РАЗДЕЛИТЕЛЬ (ДВОЙНАЯ ЧЕРТА) + СТАРТ “ДРУГОГО СТИЛЯ” -->
-  <div class="section-divider" aria-hidden="true">
-    <div class="divider-inner container">
-      <div class="divider-line thick"></div>
-      <div class="divider-line thin"></div>
-    </div>
-  </div>
-
-  <!-- ДЛЯ КОГО (КИБЕР/НЕОН СТИЛЬ) -->
+  <!-- ДЛЯ КОГО -->
   <section class="section for-whom" id="for-whom">
     <div class="container">
       <h2 class="section-title">Это подойдет, если вы:</h2>
@@ -107,7 +201,7 @@
       <div class="for-whom-grid">
         <div class="for-whom-card" onclick="openTelegramBot('Solo-специалист')">
           <div class="icon-circle" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#FF00F0" stroke-width="2">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
               <circle cx="12" cy="7" r="4"/>
             </svg>
@@ -119,7 +213,7 @@
 
         <div class="for-whom-card" onclick="openTelegramBot('Бизнес / агентство')">
           <div class="icon-circle" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#00FFFF" stroke-width="2">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
               <polyline points="9 22 9 12 15 12 15 22"/>
             </svg>
@@ -131,7 +225,7 @@
 
         <div class="for-whom-card" onclick="openTelegramBot('Магазин / каталог / оплата')">
           <div class="icon-circle" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#B800FF" stroke-width="2">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M6 7h15l-1.5 9h-13z"/>
               <path d="M6 7l-2-4H1"/>
               <circle cx="9" cy="20" r="1.5"/>
@@ -149,328 +243,397 @@
   <!-- ПАКЕТЫ -->
   <section class="section services" id="services">
     <div class="container">
-      <h2 class="section-title">Пакеты под ключ</h2>
-      <p class="section-subtitle">Выбор подходящего варианта — под вашу задачу. Детали уточняются в переписке.</p>
+      <div class="section-head">
+        <h2 class="section-title">Пакеты под ключ</h2>
+        <p class="section-subtitle">Визуально выровненные карточки, акцент на результате и формат сдачи.</p>
+      </div>
 
       <div class="services-grid services-grid-3">
 
-        <div class="service-card">
+        <div class="service-card" data-tilt>
           <div class="service-card-header">
             <h3 class="service-name">1) Сайт-визитка</h3>
             <p class="service-price">10 000 ₽</p>
           </div>
-          <p class="service-desc">Кому подходит: простая подача услуги/продукта.</p>
-          <ul class="service-list">
-            <li>Выбор подходящего варианта</li>
-            <li>Построение сайта и логики</li>
-            <li>Гарантия: 1 год</li>
-            <li>Ваш домен или бесплатный домен</li>
-            <li>Первые 3 дня: до 10 правок бесплатно</li>
-            <li>Далее: правка 2 000 ₽</li>
-            <li>Срок: 2 дня</li>
-          </ul>
-          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 1: Сайт-визитка')">Выбрать</button>
+
+          <div class="service-icons" aria-hidden="true">
+            <span class="s-ico cyan" title="срок"></span>
+            <span class="s-ico pink" title="гарантия"></span>
+            <span class="s-ico violet" title="хостинг"></span>
+            <span class="s-ico cyan" title="доступы"></span>
+          </div>
+
+          <p class="service-desc">Простая подача услуги/продукта.</p>
+
+          <div class="service-list-wrap">
+            <ul class="service-list">
+              <li>Выбор подходящего варианта</li>
+              <li>Построение сайта и логики</li>
+              <li>Гарантия: 1 год</li>
+              <li>Ваш домен или бесплатный домен</li>
+              <li>Первые 3 дня: до 10 правок бесплатно</li>
+              <li>Далее: правка 2 000 ₽</li>
+              <li>Срок: 2 дня</li>
+              <li>Доступы и инструкции</li>
+            </ul>
+          </div>
+
+          <div class="service-footer">
+            <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 1: Сайт-визитка')">Выбрать</button>
+          </div>
         </div>
 
-        <div class="service-card">
+        <div class="service-card" data-tilt>
           <div class="service-card-header">
             <h3 class="service-name">2) Сайт-визитка (бизнес/агентство)</h3>
             <p class="service-price">25 000 ₽</p>
           </div>
-          <p class="service-desc">Работа по ТЗ: как нужно именно вам.</p>
-          <ul class="service-list">
-            <li>Работа по ТЗ</li>
-            <li>Структура и логика под процесс</li>
-            <li>Гарантия: 1 год</li>
-            <li>Ваш домен или бесплатный домен</li>
-            <li>Первые 3 дня: до 10 правок бесплатно</li>
-            <li>Далее: правка 2 000 ₽</li>
-            <li>Срок: до 3 дней</li>
-          </ul>
-          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 2: Сайт-визитка для бизнеса/агентства')">Выбрать</button>
+
+          <div class="service-icons" aria-hidden="true">
+            <span class="s-ico cyan"></span>
+            <span class="s-ico pink"></span>
+            <span class="s-ico violet"></span>
+            <span class="s-ico cyan"></span>
+          </div>
+
+          <p class="service-desc">Работа по ТЗ: под процесс команды.</p>
+
+          <div class="service-list-wrap">
+            <ul class="service-list">
+              <li>Работа по ТЗ</li>
+              <li>Структура и логика под процесс</li>
+              <li>Гарантия: 1 год</li>
+              <li>Ваш домен или бесплатный домен</li>
+              <li>Первые 3 дня: до 10 правок бесплатно</li>
+              <li>Далее: правка 2 000 ₽</li>
+              <li>Срок: до 3 дней</li>
+              <li>Доступы и инструкции</li>
+            </ul>
+          </div>
+
+          <div class="service-footer">
+            <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 2: Сайт-визитка для бизнеса/агентства')">Выбрать</button>
+          </div>
         </div>
 
-        <div class="service-card">
+        <div class="service-card" data-tilt>
           <div class="service-card-header">
             <h3 class="service-name">3) Сайт-магазин + каталог + оплата</h3>
             <p class="service-price">25 000 ₽</p>
           </div>
-          <p class="service-desc">Каталог, данные о компании, корзина, покупка/оплата или аналог по ТЗ.</p>
-          <ul class="service-list">
-            <li>Каталог + корзина</li>
-            <li>Оплата на сайте или аналог по ТЗ</li>
-            <li>Заявка менеджеру или в базу данных</li>
-            <li>Гарантия: 1 год</li>
-            <li>Ваш домен или бесплатный домен</li>
-            <li>Первые 3 дня: до 10 правок бесплатно</li>
-            <li>Далее: правка 2 000 ₽</li>
-            <li>Срок: до 5 дней</li>
-          </ul>
-          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 3: Сайт-магазин + каталог + оплата')">Выбрать</button>
+
+          <div class="service-icons" aria-hidden="true">
+            <span class="s-ico cyan"></span>
+            <span class="s-ico pink"></span>
+            <span class="s-ico violet"></span>
+            <span class="s-ico cyan"></span>
+          </div>
+
+          <p class="service-desc">Витрина, корзина, оплата/заявка по ТЗ.</p>
+
+          <div class="service-list-wrap">
+            <ul class="service-list">
+              <li>Каталог + корзина</li>
+              <li>Оплата на сайте или аналог по ТЗ</li>
+              <li>Заявка менеджеру или в базу данных</li>
+              <li>Гарантия: 1 год</li>
+              <li>Ваш домен или бесплатный домен</li>
+              <li>Первые 3 дня: до 10 правок бесплатно</li>
+              <li>Далее: правка 2 000 ₽</li>
+              <li>Срок: до 5 дней</li>
+            </ul>
+          </div>
+
+          <div class="service-footer">
+            <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 3: Сайт-магазин + каталог + оплата')">Выбрать</button>
+          </div>
         </div>
 
-        <div class="service-card">
+        <div class="service-card" data-tilt>
           <div class="service-card-header">
             <h3 class="service-name">4) Telegram-бот</h3>
             <p class="service-price">10 000 ₽</p>
           </div>
-          <p class="service-desc">Модератор, новости, идеи, картинки, агрегатор — или аналог.</p>
-          <ul class="service-list">
-            <li>Бот под задачу</li>
-            <li>Сценарий и логика</li>
-            <li>Гарантия: 1 год</li>
-            <li>Ваш хост или бесплатный хост</li>
-            <li>Первые 3 дня: до 10 правок бесплатно</li>
-            <li>Далее: правка 2 000 ₽</li>
-            <li>Срок: до 2 дней</li>
-          </ul>
-          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 4: Telegram-бот')">Выбрать</button>
+
+          <div class="service-icons" aria-hidden="true">
+            <span class="s-ico cyan"></span>
+            <span class="s-ico pink"></span>
+            <span class="s-ico violet"></span>
+            <span class="s-ico cyan"></span>
+          </div>
+
+          <p class="service-desc">Сценарии, фильтр, уведомления, интеграции.</p>
+
+          <div class="service-list-wrap">
+            <ul class="service-list">
+              <li>Бот под задачу</li>
+              <li>Сценарий и логика</li>
+              <li>Гарантия: 1 год</li>
+              <li>Ваш хост или бесплатный хост</li>
+              <li>Первые 3 дня: до 10 правок бесплатно</li>
+              <li>Далее: правка 2 000 ₽</li>
+              <li>Срок: до 2 дней</li>
+              <li>Доступы и инструкции</li>
+            </ul>
+          </div>
+
+          <div class="service-footer">
+            <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 4: Telegram-бот')">Выбрать</button>
+          </div>
         </div>
 
-        <div class="service-card">
+        <div class="service-card" data-tilt>
           <div class="service-card-header">
             <h3 class="service-name">5) Telegram-бот магазин/каталог + оплата</h3>
             <p class="service-price">25 000 ₽</p>
           </div>
-          <p class="service-desc">Подключение сервиса, прием оплат, выдача данных клиенту.</p>
-          <ul class="service-list">
-            <li>Каталог/витрина в боте</li>
-            <li>Оплата: карта/крипта</li>
-            <li>Подключение сервиса + выдача данных</li>
-            <li>Гарантия: 1 год</li>
-            <li>Ваш хост или бесплатный хост</li>
-            <li>Первые 3 дня: до 10 правок бесплатно</li>
-            <li>Далее: правка 2 000 ₽</li>
-            <li>Срок: до 5 дней</li>
-          </ul>
-          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 5: Telegram-магазин/каталог + оплата')">Выбрать</button>
+
+          <div class="service-icons" aria-hidden="true">
+            <span class="s-ico cyan"></span>
+            <span class="s-ico pink"></span>
+            <span class="s-ico violet"></span>
+            <span class="s-ico cyan"></span>
+          </div>
+
+          <p class="service-desc">Каталог в боте + приём оплат/выдача.</p>
+
+          <div class="service-list-wrap">
+            <ul class="service-list">
+              <li>Каталог/витрина в боте</li>
+              <li>Оплата: карта/крипта</li>
+              <li>Подключение сервиса + выдача данных</li>
+              <li>Гарантия: 1 год</li>
+              <li>Ваш хост или бесплатный хост</li>
+              <li>Первые 3 дня: до 10 правок бесплатно</li>
+              <li>Далее: правка 2 000 ₽</li>
+              <li>Срок: до 5 дней</li>
+            </ul>
+          </div>
+
+          <div class="service-footer">
+            <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 5: Telegram-магазин/каталог + оплата')">Выбрать</button>
+          </div>
         </div>
 
-        <div class="service-card">
+        <div class="service-card" data-tilt>
           <div class="service-card-header">
             <h3 class="service-name">6) Сайт-визитка + Telegram-бот</h3>
             <p class="service-price">25 000 ₽</p>
           </div>
-          <p class="service-desc">Подойдет для продажи курсов.</p>
-          <ul class="service-list">
-            <li>Сайт-визитка</li>
-            <li>Бот под воронку/обработку</li>
-            <li>Гарантия: 1 год</li>
-            <li>Ваш хост или бесплатный хост</li>
-            <li>Первые 3 дня: до 10 правок бесплатно</li>
-            <li>Далее: правка 2 000 ₽</li>
-            <li>Срок: до 5 дней</li>
-          </ul>
-          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 6: Сайт-визитка + Telegram-бот')">Выбрать</button>
+
+          <div class="service-icons" aria-hidden="true">
+            <span class="s-ico cyan"></span>
+            <span class="s-ico pink"></span>
+            <span class="s-ico violet"></span>
+            <span class="s-ico cyan"></span>
+          </div>
+
+          <p class="service-desc">Связка сайта и бота под воронку/заявки.</p>
+
+          <div class="service-list-wrap">
+            <ul class="service-list">
+              <li>Сайт-визитка</li>
+              <li>Бот под обработку</li>
+              <li>Гарантия: 1 год</li>
+              <li>Ваш хост или бесплатный хост</li>
+              <li>Первые 3 дня: до 10 правок бесплатно</li>
+              <li>Далее: правка 2 000 ₽</li>
+              <li>Срок: до 5 дней</li>
+              <li>Доступы и инструкции</li>
+            </ul>
+          </div>
+
+          <div class="service-footer">
+            <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 6: Сайт-визитка + Telegram-бот')">Выбрать</button>
+          </div>
         </div>
 
-        <div class="service-card featured">
+        <div class="service-card featured" data-tilt>
           <div class="service-card-header">
             <h3 class="service-name">7) Сайт компании/сервиса + Telegram-бот</h3>
             <p class="service-price">25 000 ₽</p>
           </div>
-          <p class="service-desc">Фильтр заявок и разгрузка менеджера: бот решает простое, сложное — передает.</p>
-          <ul class="service-list">
-            <li>Сайт + бот</li>
-            <li>Фильтр целевых заявок</li>
-            <li>Техподдержка: бот решает типовое</li>
-            <li>Если не удалось — заявка менеджеру</li>
-            <li>Гарантия: 1 год</li>
-            <li>Ваш хост или бесплатный хост</li>
-            <li>Первые 3 дня: до 10 правок бесплатно</li>
-            <li>Далее: правка 2 000 ₽</li>
-            <li>Срок: до 5 дней</li>
-          </ul>
-          <button class="btn btn-primary" type="button" onclick="openTelegramBot('Пакет 7: Сайт сервиса + Telegram-бот (фильтр/поддержка)')">Выбрать</button>
+
+          <div class="service-icons" aria-hidden="true">
+            <span class="s-ico cyan"></span>
+            <span class="s-ico pink"></span>
+            <span class="s-ico violet"></span>
+            <span class="s-ico cyan"></span>
+          </div>
+
+          <p class="service-desc">Фильтр заявок и разгрузка менеджера.</p>
+
+          <div class="service-list-wrap">
+            <ul class="service-list">
+              <li>Сайт + бот</li>
+              <li>Фильтр целевых заявок</li>
+              <li>Техподдержка: типовые вопросы</li>
+              <li>Сложное: передача менеджеру</li>
+              <li>Гарантия: 1 год</li>
+              <li>Ваш хост или бесплатный хост</li>
+              <li>Первые 3 дня: до 10 правок бесплатно</li>
+              <li>Далее: правка 2 000 ₽</li>
+              <li>Срок: до 5 дней</li>
+            </ul>
+          </div>
+
+          <div class="service-footer">
+            <button class="btn btn-primary" type="button" onclick="openTelegramBot('Пакет 7: Сайт сервиса + Telegram-бот (фильтр/поддержка)')">Выбрать</button>
+          </div>
         </div>
 
-        <div class="service-card">
+        <div class="service-card" data-tilt>
           <div class="service-card-header">
             <h3 class="service-name">8) Полноценный сайт/сервис</h3>
             <p class="service-price">250 000 ₽</p>
           </div>
-          <p class="service-desc">Сервисный проект: обучение, CRM, онлайн-товары, форум, блог и т.д.</p>
-          <ul class="service-list">
-            <li>Сроки: 5–60 дней (от теста до релиза)</li>
-            <li>Работа/оплата/правки — по договору</li>
-            <li>Правки 1 месяц: до 10 правок бесплатно</li>
-            <li>Далее: правка 10 000 ₽</li>
-            <li>Ваш хост (подниму и передам при необходимости)</li>
-            <li>Юридическая защита: договор о владении проектом</li>
-            <li>Документы физические, бумажные</li>
-          </ul>
-          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 8: Полноценный сайт/сервис (по договору)')">Обсудить</button>
+
+          <div class="service-icons" aria-hidden="true">
+            <span class="s-ico cyan"></span>
+            <span class="s-ico pink"></span>
+            <span class="s-ico violet"></span>
+            <span class="s-ico cyan"></span>
+          </div>
+
+          <p class="service-desc">Сервисный проект: CRM, обучение, кабинет, форум и т.д.</p>
+
+          <div class="service-list-wrap">
+            <ul class="service-list">
+              <li>Сроки: 5–60 дней (от теста до релиза)</li>
+              <li>Работа/оплата/правки — по договору</li>
+              <li>Правки 1 месяц: до 10 правок бесплатно</li>
+              <li>Далее: правка 10 000 ₽</li>
+              <li>Ваш хост (подниму и передам при необходимости)</li>
+              <li>Юридическая фиксация условий</li>
+              <li>Доступы и документация</li>
+            </ul>
+          </div>
+
+          <div class="service-footer">
+            <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 8: Полноценный сайт/сервис (по договору)')">Обсудить</button>
+          </div>
         </div>
 
-        <div class="service-card">
+        <div class="service-card" data-tilt>
           <div class="service-card-header">
             <h3 class="service-name">9) Индивидуальный проект</h3>
             <p class="service-price">по согласованию</p>
           </div>
-          <p class="service-desc">Сроки, цена, гарантии и детали обсуждаются с менеджером.</p>
-          <ul class="service-list">
-            <li>Обсуждение: Telegram / Zoom / Google Meets</li>
-            <li>Яндекс Телемост / Discord</li>
-            <li>Фиксация условий после согласования</li>
-          </ul>
-          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 9: Индивидуальный проект')">Обсудить</button>
+
+          <div class="service-icons" aria-hidden="true">
+            <span class="s-ico cyan"></span>
+            <span class="s-ico pink"></span>
+            <span class="s-ico violet"></span>
+            <span class="s-ico cyan"></span>
+          </div>
+
+          <p class="service-desc">Сроки, цена и условия — после уточнения задачи.</p>
+
+          <div class="service-list-wrap">
+            <ul class="service-list">
+              <li>Обсуждение: Telegram / Zoom / Google Meets</li>
+              <li>Фиксация условий после согласования</li>
+              <li>План работ и этапы сдачи</li>
+              <li>Доступы и инструкция по проекту</li>
+            </ul>
+          </div>
+
+          <div class="service-footer">
+            <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 9: Индивидуальный проект')">Обсудить</button>
+          </div>
         </div>
 
       </div>
     </div>
   </section>
 
-  <!-- КЕЙСЫ -->
-  <section class="section cases" id="cases">
+  <!-- КЕЙСЫ: УДАЛЕНО -->
+
+  <!-- КАК СОЗДАЕМ -->
+  <section class="section process" id="how">
     <div class="container">
-      <h2 class="section-title">Кейсы</h2>
-      <p class="section-subtitle">Примеры задач и формата реализации.</p>
-
-      <div class="cases-grid">
-        <div class="case-card" onclick="openTelegramBot('Кейс: Лендинг/визитка')">
-          <div class="case-badge">WEB</div>
-          <h3>Лендинг/визитка</h3>
-          <p class="case-niche">Структура + подача</p>
-          <p>Сборка страницы, логика блоков, CTA, связка с Telegram.</p>
-          <div class="case-results">
-            <span class="result-item">Структура: по задаче</span>
-            <span class="result-item">Связь: Telegram</span>
-            <span class="result-item">Формат: под ключ</span>
-          </div>
-          <span class="case-more">Запросить детали</span>
-        </div>
-
-        <div class="case-card" onclick="openTelegramBot('Кейс: Бот для заявок/поддержки')">
-          <div class="case-badge">BOT</div>
-          <h3>Бот для заявок/поддержки</h3>
-          <p class="case-niche">Сценарии</p>
-          <p>Вопросы, фильтр, передача менеджеру, уведомления.</p>
-          <div class="case-results">
-            <span class="result-item">Сценарий: по процессу</span>
-            <span class="result-item">Передача: менеджеру</span>
-            <span class="result-item">Логика: под ТЗ</span>
-          </div>
-          <span class="case-more">Запросить детали</span>
-        </div>
-
-        <div class="case-card" onclick="openTelegramBot('Кейс: Магазин/каталог')">
-          <div class="case-badge">SHOP</div>
-          <h3>Магазин/каталог</h3>
-          <p class="case-niche">Корзина/оплата</p>
-          <p>Каталог, корзина, оплата или заявка — по доступности провайдера и ТЗ.</p>
-          <div class="case-results">
-            <span class="result-item">Каталог: по задаче</span>
-            <span class="result-item">Оплата: опционально</span>
-            <span class="result-item">Интеграции: по ТЗ</span>
-          </div>
-          <span class="case-more">Запросить детали</span>
-        </div>
-
-        <div class="case-card" onclick="openTelegramBot('Кейс: Сайт + бот (курс/воронка)')">
-          <div class="case-badge">WEB+BOT</div>
-          <h3>Сайт + бот</h3>
-          <p class="case-niche">Продажа/заявки</p>
-          <p>Связка сайта и бота: сбор данных, выдача материала, заявки менеджеру.</p>
-          <div class="case-results">
-            <span class="result-item">Связка: сайт → бот</span>
-            <span class="result-item">Сценарий: по задаче</span>
-            <span class="result-item">Передача: менеджеру</span>
-          </div>
-          <span class="case-more">Запросить детали</span>
-        </div>
+      <div class="section-head">
+        <h2 class="section-title">Как создаем ваш проект</h2>
+        <p class="section-subtitle">
+          Собираем рабочий продукт под вашу задачу: от прототипа до запуска, с передачей доступов и поддержкой по пакету.
+        </p>
       </div>
-    </div>
-  </section>
-
-  <!-- ПРОЦЕСС -->
-  <section class="section process" id="process">
-    <div class="container">
-      <h2 class="section-title">Процесс</h2>
 
       <div class="timeline">
         <div class="timeline-step">
           <div class="step-circle">1</div>
           <div class="step-content">
-            <h3>Сбор задачи</h3>
-            <p>Формулируем цель, аудиторию, структуру и ограничения.</p>
+            <h3>Контакт</h3>
+            <p>Telegram или Email + короткое описание задачи.</p>
           </div>
         </div>
 
         <div class="timeline-step">
           <div class="step-circle">2</div>
           <div class="step-content">
-            <h3>Структура</h3>
-            <p>Согласуем блоки, логику и сценарии.</p>
+            <h3>Понимаем, какой проект нужен</h3>
+            <p>Цель, аудитория, интеграции, ограничения, сроки.</p>
           </div>
         </div>
 
         <div class="timeline-step">
           <div class="step-circle">3</div>
           <div class="step-content">
-            <h3>Сборка</h3>
-            <p>Сайт/бот, интеграции, базовые проверки.</p>
+            <h3>Минимальный продукт</h3>
+            <p>Делаем прототип/MVP, чтобы показать логику и ключевой сценарий.</p>
           </div>
         </div>
 
         <div class="timeline-step">
           <div class="step-circle">4</div>
           <div class="step-content">
-            <h3>Запуск</h3>
-            <p>Публикация, доступы, инструкция.</p>
+            <h3>Предоплата 50%</h3>
+            <p>После согласования объёма и условий запускаем разработку полной версии.</p>
+          </div>
+        </div>
+
+        <div class="timeline-step">
+          <div class="step-circle">5</div>
+          <div class="step-content">
+            <h3>Сдача под ключ</h3>
+            <p>Деплой, доступы, инструкции. Гарантия 12 месяцев + хост на год по пакету.</p>
+          </div>
+        </div>
+
+        <div class="timeline-step">
+          <div class="step-circle">6</div>
+          <div class="step-content">
+            <h3>Оплата остатка 50%</h3>
+            <p>После сдачи согласованного объёма работ.</p>
+          </div>
+        </div>
+
+        <div class="timeline-step">
+          <div class="step-circle">7</div>
+          <div class="step-content">
+            <h3>Доступ к проекту</h3>
+            <p>Репозиторий (GitHub) и всё, что нужно для поддержки и развития.</p>
+          </div>
+        </div>
+
+        <div class="timeline-step">
+          <div class="step-circle">8</div>
+          <div class="step-content">
+            <h3>Правки после релиза</h3>
+            <p>Работаем по условиям выбранного пакета.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ГАРАНТИИ -->
-  <section class="section guarantees" id="guarantees">
-    <div class="container">
-      <h2 class="section-title">Гарантии</h2>
-
-      <div class="guarantees-grid">
-        <div class="guarantee-left" onclick="openTelegramBot('Уточнить гарантию')">
-          <h3>Гарантия на работоспособность</h3>
-          <p>Условия фиксируются по выбранному пакету и задаче.</p>
-          <span class="guarantee-action">Уточнить условия</span>
-        </div>
-
-        <div class="guarantee-right">
-          <div class="guarantee-item" onclick="openTelegramBot('Уточнить сроки')">
-            <div class="icon-check" aria-hidden="true">✓</div>
-            <div>
-              <h4>Сроки</h4>
-              <p>Согласование и фиксация до старта.</p>
-            </div>
-          </div>
-
-          <div class="guarantee-item" onclick="openTelegramBot('Уточнить состав работ')">
-            <div class="icon-check" aria-hidden="true">✓</div>
-            <div>
-              <h4>Состав работ</h4>
-              <p>Что входит и что считается правкой.</p>
-            </div>
-          </div>
-
-          <div class="guarantee-item" onclick="openTelegramBot('Уточнить поддержку')">
-            <div class="icon-check" aria-hidden="true">✓</div>
-            <div>
-              <h4>Поддержка</h4>
-              <p>По пакету и договоренностям.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
+  <!-- CTA / CONTACTS -->
   <section class="section cta" id="contacts">
     <div class="container">
       <div class="cta-container">
         <div class="cta-text">
-          <h2 class="section-title">Обсудим ваш проект?</h2>
-          <p>Пришлите детали — отвечу по формату, срокам и составу работ.</p>
+          <h2 class="section-title">Связаться</h2>
+          <p>Опишите задачу. Ответ - по формату, срокам и составу работ.</p>
           <p class="cta-hint">Заявки обрабатываются через Telegram</p>
         </div>
 
@@ -521,7 +684,7 @@
     </div>
   </section>
 
-  <!-- FOOTER (без логотипов) -->
+  <!-- FOOTER -->
   <footer class="footer" id="footer">
     <div class="container">
       <div class="footer-grid">
@@ -534,9 +697,7 @@
           <h4>Навигация</h4>
           <ul>
             <li><a href="#services">Пакеты</a></li>
-            <li><a href="#cases">Кейсы</a></li>
-            <li><a href="#process">Процесс</a></li>
-            <li><a href="#guarantees">Гарантии</a></li>
+            <li><a href="#how">Как создаем</a></li>
             <li><a href="#contacts">Контакты</a></li>
           </ul>
         </div>
