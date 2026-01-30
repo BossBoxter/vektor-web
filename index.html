@@ -14,7 +14,6 @@
     href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@400;500;600&display=swap"
     rel="stylesheet"
   />
-
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -40,15 +39,15 @@
   <section class="hero hero-modern" id="hero">
     <div class="hero-modern-bg" aria-hidden="true"></div>
 
-    <div class="container hero-container hero-container-start">
-      <div class="hero-content hero-content-start">
+    <div class="container hero-modern-container">
+      <div class="hero-content">
         <div class="hero-kicker">САЙТЫ И TELEGRAM-БОТЫ ПОД КЛЮЧ</div>
 
-        <h1 class="hero-title hero-title-start">
+        <h1 class="hero-modern-title">
           Vector - ваш помощник в создании актуальных и рабочих решений.
         </h1>
 
-        <p class="hero-subtitle hero-subtitle-start">
+        <p class="hero-modern-subtitle">
           Собираем рабочий продукт под вашу задачу: от прототипа до запуска, с передачей доступов и поддержкой по пакету.
         </p>
 
@@ -65,14 +64,23 @@
               inputmode="text"
             />
           </div>
-          <button class="hero-inline-go" type="button" onclick="heroStart()"
-                  aria-label="Перейти к форме и вставить контакт">
+          <button
+            class="hero-inline-go"
+            type="button"
+            onclick="heroStart()"
+            aria-label="Перейти к форме и вставить контакт"
+          >
             →
           </button>
         </div>
 
-        <div class="hero-scrollhint" role="button" tabindex="0"
-             onclick="scrollToSection('services')" onkeydown="if(event.key==='Enter'){scrollToSection('services')}">
+        <div
+          class="hero-scrollhint"
+          role="button"
+          tabindex="0"
+          onclick="scrollToSection('services')"
+          onkeydown="if(event.key==='Enter'){scrollToSection('services')}"
+        >
           Листайте вниз - пакеты и процесс
           <span class="hero-scrollchev" aria-hidden="true"></span>
         </div>
@@ -187,9 +195,12 @@
       </div>
     </div>
 
+    <!-- двойная черта -->
     <div class="section-divider" aria-hidden="true">
-      <span class="line"></span>
-      <span class="line"></span>
+      <div class="divider-inner container">
+        <span class="divider-line thick"></span>
+        <span class="divider-line thin"></span>
+      </div>
     </div>
   </section>
 
@@ -255,16 +266,7 @@
             <h3 class="service-name">1) Сайт-визитка</h3>
             <p class="service-price">10 000 ₽</p>
           </div>
-
-          <div class="service-icons" aria-hidden="true">
-            <span class="s-ico cyan" title="срок"></span>
-            <span class="s-ico pink" title="гарантия"></span>
-            <span class="s-ico violet" title="хостинг"></span>
-            <span class="s-ico cyan" title="доступы"></span>
-          </div>
-
           <p class="service-desc">Простая подача услуги/продукта.</p>
-
           <div class="service-list-wrap">
             <ul class="service-list">
               <li>Выбор подходящего варианта</li>
@@ -277,7 +279,6 @@
               <li>Доступы и инструкции</li>
             </ul>
           </div>
-
           <div class="service-footer">
             <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 1: Сайт-визитка')">Выбрать</button>
           </div>
@@ -288,16 +289,7 @@
             <h3 class="service-name">2) Сайт-визитка (бизнес/агентство)</h3>
             <p class="service-price">25 000 ₽</p>
           </div>
-
-          <div class="service-icons" aria-hidden="true">
-            <span class="s-ico cyan"></span>
-            <span class="s-ico pink"></span>
-            <span class="s-ico violet"></span>
-            <span class="s-ico cyan"></span>
-          </div>
-
           <p class="service-desc">Работа по ТЗ: под процесс команды.</p>
-
           <div class="service-list-wrap">
             <ul class="service-list">
               <li>Работа по ТЗ</li>
@@ -310,7 +302,6 @@
               <li>Доступы и инструкции</li>
             </ul>
           </div>
-
           <div class="service-footer">
             <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 2: Сайт-визитка для бизнеса/агентства')">Выбрать</button>
           </div>
@@ -321,16 +312,7 @@
             <h3 class="service-name">3) Сайт-магазин + каталог + оплата</h3>
             <p class="service-price">25 000 ₽</p>
           </div>
-
-          <div class="service-icons" aria-hidden="true">
-            <span class="s-ico cyan"></span>
-            <span class="s-ico pink"></span>
-            <span class="s-ico violet"></span>
-            <span class="s-ico cyan"></span>
-          </div>
-
           <p class="service-desc">Витрина, корзина, оплата/заявка по ТЗ.</p>
-
           <div class="service-list-wrap">
             <ul class="service-list">
               <li>Каталог + корзина</li>
@@ -343,7 +325,6 @@
               <li>Срок: до 5 дней</li>
             </ul>
           </div>
-
           <div class="service-footer">
             <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 3: Сайт-магазин + каталог + оплата')">Выбрать</button>
           </div>
@@ -354,16 +335,7 @@
             <h3 class="service-name">4) Telegram-бот</h3>
             <p class="service-price">10 000 ₽</p>
           </div>
-
-          <div class="service-icons" aria-hidden="true">
-            <span class="s-ico cyan"></span>
-            <span class="s-ico pink"></span>
-            <span class="s-ico violet"></span>
-            <span class="s-ico cyan"></span>
-          </div>
-
           <p class="service-desc">Сценарии, фильтр, уведомления, интеграции.</p>
-
           <div class="service-list-wrap">
             <ul class="service-list">
               <li>Бот под задачу</li>
@@ -376,7 +348,6 @@
               <li>Доступы и инструкции</li>
             </ul>
           </div>
-
           <div class="service-footer">
             <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 4: Telegram-бот')">Выбрать</button>
           </div>
@@ -387,16 +358,7 @@
             <h3 class="service-name">5) Telegram-бот магазин/каталог + оплата</h3>
             <p class="service-price">25 000 ₽</p>
           </div>
-
-          <div class="service-icons" aria-hidden="true">
-            <span class="s-ico cyan"></span>
-            <span class="s-ico pink"></span>
-            <span class="s-ico violet"></span>
-            <span class="s-ico cyan"></span>
-          </div>
-
           <p class="service-desc">Каталог в боте + приём оплат/выдача.</p>
-
           <div class="service-list-wrap">
             <ul class="service-list">
               <li>Каталог/витрина в боте</li>
@@ -409,7 +371,6 @@
               <li>Срок: до 5 дней</li>
             </ul>
           </div>
-
           <div class="service-footer">
             <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 5: Telegram-магазин/каталог + оплата')">Выбрать</button>
           </div>
@@ -420,16 +381,7 @@
             <h3 class="service-name">6) Сайт-визитка + Telegram-бот</h3>
             <p class="service-price">25 000 ₽</p>
           </div>
-
-          <div class="service-icons" aria-hidden="true">
-            <span class="s-ico cyan"></span>
-            <span class="s-ico pink"></span>
-            <span class="s-ico violet"></span>
-            <span class="s-ico cyan"></span>
-          </div>
-
           <p class="service-desc">Связка сайта и бота под воронку/заявки.</p>
-
           <div class="service-list-wrap">
             <ul class="service-list">
               <li>Сайт-визитка</li>
@@ -442,7 +394,6 @@
               <li>Доступы и инструкции</li>
             </ul>
           </div>
-
           <div class="service-footer">
             <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 6: Сайт-визитка + Telegram-бот')">Выбрать</button>
           </div>
@@ -453,16 +404,7 @@
             <h3 class="service-name">7) Сайт компании/сервиса + Telegram-бот</h3>
             <p class="service-price">25 000 ₽</p>
           </div>
-
-          <div class="service-icons" aria-hidden="true">
-            <span class="s-ico cyan"></span>
-            <span class="s-ico pink"></span>
-            <span class="s-ico violet"></span>
-            <span class="s-ico cyan"></span>
-          </div>
-
           <p class="service-desc">Фильтр заявок и разгрузка менеджера.</p>
-
           <div class="service-list-wrap">
             <ul class="service-list">
               <li>Сайт + бот</li>
@@ -476,7 +418,6 @@
               <li>Срок: до 5 дней</li>
             </ul>
           </div>
-
           <div class="service-footer">
             <button class="btn btn-primary" type="button" onclick="openTelegramBot('Пакет 7: Сайт сервиса + Telegram-бот (фильтр/поддержка)')">Выбрать</button>
           </div>
@@ -487,16 +428,7 @@
             <h3 class="service-name">8) Полноценный сайт/сервис</h3>
             <p class="service-price">250 000 ₽</p>
           </div>
-
-          <div class="service-icons" aria-hidden="true">
-            <span class="s-ico cyan"></span>
-            <span class="s-ico pink"></span>
-            <span class="s-ico violet"></span>
-            <span class="s-ico cyan"></span>
-          </div>
-
           <p class="service-desc">Сервисный проект: CRM, обучение, кабинет, форум и т.д.</p>
-
           <div class="service-list-wrap">
             <ul class="service-list">
               <li>Сроки: 5–60 дней (от теста до релиза)</li>
@@ -508,7 +440,6 @@
               <li>Доступы и документация</li>
             </ul>
           </div>
-
           <div class="service-footer">
             <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 8: Полноценный сайт/сервис (по договору)')">Обсудить</button>
           </div>
@@ -519,16 +450,7 @@
             <h3 class="service-name">9) Индивидуальный проект</h3>
             <p class="service-price">по согласованию</p>
           </div>
-
-          <div class="service-icons" aria-hidden="true">
-            <span class="s-ico cyan"></span>
-            <span class="s-ico pink"></span>
-            <span class="s-ico violet"></span>
-            <span class="s-ico cyan"></span>
-          </div>
-
           <p class="service-desc">Сроки, цена и условия — после уточнения задачи.</p>
-
           <div class="service-list-wrap">
             <ul class="service-list">
               <li>Обсуждение: Telegram / Zoom / Google Meets</li>
@@ -537,7 +459,6 @@
               <li>Доступы и инструкция по проекту</li>
             </ul>
           </div>
-
           <div class="service-footer">
             <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 9: Индивидуальный проект')">Обсудить</button>
           </div>
@@ -546,8 +467,6 @@
       </div>
     </div>
   </section>
-
-  <!-- КЕЙСЫ: УДАЛЕНО -->
 
   <!-- КАК СОЗДАЕМ -->
   <section class="section process" id="how">
@@ -627,7 +546,7 @@
     </div>
   </section>
 
-  <!-- CTA / CONTACTS -->
+  <!-- CONTACTS -->
   <section class="section cta" id="contacts">
     <div class="container">
       <div class="cta-container">
@@ -752,7 +671,7 @@
     </div>
   </footer>
 
-  <!-- МОДАЛКИ (оставлены) -->
+  <!-- МОДАЛКИ (оставлены, функции восстановлены в script.js) -->
   <div class="modal" id="modal" aria-hidden="true">
     <div class="modal-content" role="dialog" aria-modal="true" aria-label="Оставить заявку">
       <button class="modal-close" type="button" onclick="closeModal()" aria-label="Закрыть">×</button>
