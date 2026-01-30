@@ -36,20 +36,12 @@
       .logo img { height: 38px; }
     }
 
-    /* GLOBAL SCALE +15% */
-    html { overflow-x: hidden; }
-    body { overflow-x: hidden; }
-    .site-scale {
-      transform: scale(1.15);
-      transform-origin: top center;
-      width: 100%;
-    }
+    /* Keep horizontal overflow off (safe) */
+    html, body { overflow-x: hidden; }
   </style>
 </head>
 
 <body>
-
-<div class="site-scale">
 
   <!-- ГЛАВНЫЙ СВЕТОВОЙ ЭФФЕКТ -->
   <div class="neon-glow"></div>
@@ -609,8 +601,6 @@
     </div>
   </div>
 
-</div><!-- /.site-scale -->
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
