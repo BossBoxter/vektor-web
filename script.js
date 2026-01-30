@@ -458,7 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Micro interactions (строго после DOM)
-  document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left, .review-card').forEach(el => {
+  document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left,').forEach(el => {
     el.addEventListener('mousedown', () => { el.style.transform = 'scale(0.99)'; });
     el.addEventListener('mouseup', () => { setTimeout(() => { if (!el.matches(':hover')) el.style.transform = ''; }, 100); });
     el.addEventListener('mouseleave', () => { el.style.transform = ''; });
