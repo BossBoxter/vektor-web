@@ -14,22 +14,22 @@ const LEAD_API_SECRET = ''; // пример: 'my-secret'
 // ========================================
 // Lock helpers
 // ========================================
-function lockBody() { document.body.classList.add('is-locked'); }
-function unlockBody() { document.body.classList.remove('is-locked'); }
+function lockBody(){ document.body.classList.add('is-locked'); }
+function unlockBody(){ document.body.classList.remove('is-locked'); }
 
 // ========================================
-// Hero: inline action (вместо CTA)
+// Hero: inline action
 // ========================================
 function heroStart() {
   const v = (document.getElementById('heroContact')?.value || '').trim();
   scrollToSection('contacts');
-  window.setTimeout(() => {
+  setTimeout(() => {
     const contact = document.getElementById('mainContact');
     if (contact) {
       if (v) contact.value = v;
       contact.focus();
     }
-  }, 220);
+  }, 240);
 }
 
 // ========================================
@@ -62,7 +62,7 @@ function showSuccessMessage(message, opts = {}) {
   successMessage.setAttribute('aria-hidden', 'false');
   lockBody();
 
-  if (autoHideMs && autoHideMs > 0) window.setTimeout(() => hideSuccess(), autoHideMs);
+  if (autoHideMs && autoHideMs > 0) setTimeout(() => hideSuccess(), autoHideMs);
 }
 
 function hideSuccess() {
@@ -71,13 +71,7 @@ function hideSuccess() {
 
   successMessage.classList.remove('active');
   successMessage.setAttribute('aria-hidden', 'true');
-
-  const modal = document.getElementById('modal');
-  const privacyModal = document.getElementById('privacyModal');
-  const modalOpen = modal && modal.classList.contains('active');
-  const privacyOpen = privacyModal && privacyModal.classList.contains('active');
-
-  if (!modalOpen && !privacyOpen) unlockBody();
+  unlockBody();
 }
 
 // Закрытие success по клику на фон
@@ -104,69 +98,12 @@ function closePrivacyModal() {
 
   privacyModal.classList.remove('active');
   privacyModal.setAttribute('aria-hidden', 'true');
-
-  const modal = document.getElementById('modal');
-  const sm = document.getElementById('successMessage');
-  const modalOpen = modal && modal.classList.contains('active');
-  const smOpen = sm && sm.classList.contains('active');
-
-  if (!modalOpen && !smOpen) unlockBody();
+  unlockBody();
 }
 
 document.addEventListener('click', (e) => {
   const pm = document.getElementById('privacyModal');
   if (pm && pm.classList.contains('active') && e.target === pm) closePrivacyModal();
-});
-
-// ========================================
-// Modal (оставить заявку) — восстановлено, чтобы не было ошибок
-// ========================================
-function openModal(packageName) {
-  const modal = document.getElementById('modal');
-  if (!modal) return;
-
-  const span = document.getElementById('modal-package')?.querySelector('span');
-  if (span) span.textContent = packageName || '';
-
-  modal.classList.add('active');
-  modal.setAttribute('aria-hidden', 'false');
-  lockBody();
-
-  window.setTimeout(() => {
-    document.getElementById('modalName')?.focus();
-  }, 60);
-}
-
-function closeModal() {
-  const modal = document.getElementById('modal');
-  if (!modal) return;
-
-  modal.classList.remove('active');
-  modal.setAttribute('aria-hidden', 'true');
-
-  const pm = document.getElementById('privacyModal');
-  const sm = document.getElementById('successMessage');
-  const pmOpen = pm && pm.classList.contains('active');
-  const smOpen = sm && sm.classList.contains('active');
-
-  if (!pmOpen && !smOpen) unlockBody();
-}
-
-document.addEventListener('click', (e) => {
-  const m = document.getElementById('modal');
-  if (m && m.classList.contains('active') && e.target === m) closeModal();
-});
-
-// ESC для всех оверлеев
-document.addEventListener('keydown', (e) => {
-  if (e.key !== 'Escape') return;
-  const sm = document.getElementById('successMessage');
-  const pm = document.getElementById('privacyModal');
-  const m = document.getElementById('modal');
-
-  if (sm && sm.classList.contains('active')) hideSuccess();
-  else if (pm && pm.classList.contains('active')) closePrivacyModal();
-  else if (m && m.classList.contains('active')) closeModal();
 });
 
 // ========================================
@@ -233,9 +170,9 @@ async function sendLeadToApi(payload) {
 }
 
 // ========================================
-// Forms submit (без открытия Telegram)
+// Forms submit
 // ========================================
-async function handleTelegramSubmit(event, formId) {
+async function handleTelegramSubmit(event) {
   event.preventDefault();
 
   const form = event.target;
@@ -248,25 +185,10 @@ async function handleTelegramSubmit(event, formId) {
   }
 
   try {
-    let name = '';
-    let contact = '';
-    let pkg = '';
-    let description = '';
-
-    if (formId === 'contactForm') {
-      name = (document.getElementById('mainName')?.value || '').trim();
-      contact = (document.getElementById('mainContact')?.value || '').trim();
-      pkg = (document.getElementById('mainPackage')?.value || '').trim();
-      description = (document.getElementById('mainDescription')?.value || '').trim();
-    } else if (formId === 'modalForm') {
-      const pkgSpan = document.getElementById('modal-package')?.querySelector('span');
-      pkg = (pkgSpan ? pkgSpan.textContent : '').trim();
-      name = (document.getElementById('modalName')?.value || '').trim();
-      contact = (document.getElementById('modalContact')?.value || '').trim();
-      description = (document.getElementById('modalDescription')?.value || '').trim();
-    } else {
-      throw new Error('unknown_form');
-    }
+    const name = (document.getElementById('mainName')?.value || '').trim();
+    const contact = (document.getElementById('mainContact')?.value || '').trim();
+    const pkg = (document.getElementById('mainPackage')?.value || '').trim();
+    const description = (document.getElementById('mainDescription')?.value || '').trim();
 
     if (!name || !contact || !pkg || !description) throw new Error('fill_all_fields');
 
@@ -288,7 +210,6 @@ async function handleTelegramSubmit(event, formId) {
     );
 
     if (form && typeof form.reset === 'function') form.reset();
-    if (formId === 'modalForm') closeModal();
   } catch (err) {
     const msg = (err && err.message) ? String(err.message) : '';
     let hint = '';
@@ -311,7 +232,7 @@ async function handleTelegramSubmit(event, formId) {
 }
 
 // ========================================
-// Telegram open helper (карточки/пакеты)
+// Telegram open helper (карточки)
 // ========================================
 function openTelegramBot(additionalInfo = '') {
   const username = 'vektorwebbot';
@@ -347,7 +268,7 @@ function copyToClipboard(text) {
 }
 
 // ========================================
-// Scroll helper (исправлено, без обрыва)
+// Scroll helper (FIX: в твоём коде был обрезан)
 // ========================================
 function scrollToSection(sectionId) {
   const section = document.getElementById(sectionId);
@@ -355,62 +276,88 @@ function scrollToSection(sectionId) {
 
   const header = document.getElementById('header');
   const headerH = header ? header.offsetHeight : 0;
-  const y = section.getBoundingClientRect().top + window.pageYOffset - (headerH + 14);
 
-  window.scrollTo({ top: y, behavior: 'smooth' });
+  const top = section.getBoundingClientRect().top + window.pageYOffset - headerH - 10;
+  window.scrollTo({ top, behavior: 'smooth' });
 }
 
 // ========================================
 // Header scrolled state
 // ========================================
-function syncHeaderScrolled() {
+function onScrollHeader() {
   const header = document.getElementById('header');
   if (!header) return;
-  if (window.scrollY > 8) header.classList.add('scrolled');
+  if (window.scrollY > 10) header.classList.add('scrolled');
   else header.classList.remove('scrolled');
 }
 
 // ========================================
-// Hero preview tabs
+// Preview tabs + autoswitch
 // ========================================
-function initPreviewTabs() {
+function setPreview(tabName) {
   const tabs = Array.from(document.querySelectorAll('.preview-tab'));
   const screens = Array.from(document.querySelectorAll('.preview-screen'));
-  if (!tabs.length || !screens.length) return;
 
-  function activate(name) {
-    tabs.forEach((t) => {
-      const active = t.dataset.tab === name;
-      t.classList.toggle('is-active', active);
-      t.setAttribute('aria-selected', active ? 'true' : 'false');
-    });
-    screens.forEach((s) => s.classList.toggle('is-active', s.dataset.screen === name));
-  }
+  tabs.forEach(t => {
+    const isActive = t.dataset.tab === tabName;
+    t.classList.toggle('is-active', isActive);
+    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
 
-  tabs.forEach((t) => {
-    t.addEventListener('click', () => activate(t.dataset.tab));
+  screens.forEach(s => {
+    const isActive = s.dataset.screen === tabName;
+    s.classList.toggle('is-active', isActive);
   });
 }
 
+function initPreview() {
+  const tabs = Array.from(document.querySelectorAll('.preview-tab'));
+  if (!tabs.length) return;
+
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => setPreview(btn.dataset.tab));
+  });
+
+  const order = tabs.map(t => t.dataset.tab).filter(Boolean);
+  let idx = 0;
+
+  // Автопереключение мягко, если пользователь не кликает
+  let lastUser = Date.now();
+  tabs.forEach(btn => btn.addEventListener('click', () => { lastUser = Date.now(); }));
+
+  setInterval(() => {
+    if (Date.now() - lastUser < 6000) return;
+    idx = (idx + 1) % order.length;
+    setPreview(order[idx]);
+  }, 5000);
+}
+
 // ========================================
-// Tilt (без библиотек): data-tilt
+// Tilt (без библиотек)
 // ========================================
-function initTiltCards() {
+function initTilt() {
   const cards = Array.from(document.querySelectorAll('[data-tilt]'));
   if (!cards.length) return;
 
-  cards.forEach((card) => {
-    const max = 8; // deg
-    const scale = 1.01;
+  const isFinePointer = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
+  if (!isFinePointer) return;
+
+  cards.forEach(card => {
+    const max = 7;
 
     function onMove(e) {
       const r = card.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width;
-      const y = (e.clientY - r.top) / r.height;
-      const rx = (y - 0.5) * -2 * max;
-      const ry = (x - 0.5) *  2 * max;
-      card.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) scale(${scale})`;
+      const x = e.clientX - r.left;
+      const y = e.clientY - r.top;
+      const px = (x / r.width) * 2 - 1;
+      const py = (y / r.height) * 2 - 1;
+
+      const rx = (-py * max).toFixed(2);
+      const ry = (px * max).toFixed(2);
+
+      card.style.transform = `translateY(-2px) rotateX(${rx}deg) rotateY(${ry}deg)`;
     }
+
     function onLeave() {
       card.style.transform = '';
     }
@@ -421,29 +368,27 @@ function initTiltCards() {
 }
 
 // ========================================
-// Footer accordions
+// Legal accordions
 // ========================================
-function initLegalAccordions() {
+function initAccordions() {
   const toggles = Array.from(document.querySelectorAll('.legal-toggle'));
-  if (!toggles.length) return;
-
-  toggles.forEach((btn) => {
+  toggles.forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.getAttribute('data-accordion');
-      if (!id) return;
-      const panel = document.getElementById(id);
+      const panel = id ? document.getElementById(id) : null;
       if (!panel) return;
 
       const isOpen = btn.classList.contains('open');
 
-      toggles.forEach((b) => {
-        const otherId = b.getAttribute('data-accordion');
-        const otherPanel = otherId ? document.getElementById(otherId) : null;
-        b.classList.remove('open');
-        if (otherPanel) {
-          otherPanel.style.maxHeight = '0px';
-          otherPanel.classList.remove('open');
-          otherPanel.setAttribute('aria-hidden', 'true');
+      // close others
+      toggles.forEach(b => {
+        const bid = b.getAttribute('data-accordion');
+        const bp = bid ? document.getElementById(bid) : null;
+        if (bp) {
+          b.classList.remove('open');
+          bp.style.maxHeight = '0px';
+          bp.classList.remove('open');
+          bp.setAttribute('aria-hidden', 'true');
         }
       });
 
@@ -458,32 +403,18 @@ function initLegalAccordions() {
 }
 
 // ========================================
-// Init on load
+// Init
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {
   persistUtm();
 
-  // forms: привязка submit (у тебя этого не было)
-  const mainForm = document.getElementById('contactForm');
-  if (mainForm) {
-    mainForm.addEventListener('submit', (e) => handleTelegramSubmit(e, 'contactForm'));
-  }
+  const form = document.getElementById('contactForm');
+  if (form) form.addEventListener('submit', handleTelegramSubmit);
 
-  const modalForm = document.getElementById('modalForm');
-  if (modalForm) {
-    modalForm.addEventListener('submit', (e) => handleTelegramSubmit(e, 'modalForm'));
-  }
+  window.addEventListener('scroll', onScrollHeader, { passive: true });
+  onScrollHeader();
 
-  initPreviewTabs();
-  initTiltCards();
-  initLegalAccordions();
-
-  syncHeaderScrolled();
-  window.addEventListener('scroll', syncHeaderScrolled, { passive: true });
-  window.addEventListener('resize', () => {
-    // если аккордеон открыт — пересчитать высоту
-    document.querySelectorAll('.legal-panel.open').forEach((p) => {
-      p.style.maxHeight = p.scrollHeight + 'px';
-    });
-  });
+  initPreview();
+  initTilt();
+  initAccordions();
 });
