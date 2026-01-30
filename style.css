@@ -258,7 +258,7 @@ ul{ margin:0; padding:0; list-style:none; }
   font-size:0.92rem;
 }
 
-/* Stars (CSS) */
+/* Stars */
 .stars, .review-stars{
   display:flex;
   gap:6px;
@@ -742,9 +742,7 @@ textarea{ resize:vertical; min-height:110px; }
 }
 
 /* Modals */
-.is-locked{
-  overflow:hidden;
-}
+.is-locked{ overflow:hidden; }
 
 .modal, .policy-modal, .success-message{
   position:fixed;
@@ -756,9 +754,8 @@ textarea{ resize:vertical; min-height:110px; }
   background: rgba(0,0,0,0.55);
   z-index:200;
 }
-.modal.active, .policy-modal.active, .success-message.active{
-  display:flex;
-}
+.modal.active, .policy-modal.active, .success-message.active{ display:flex; }
+
 .modal-content, .policy-content, .success-content{
   width:min(720px, 100%);
   border-radius: var(--r22);
@@ -767,6 +764,7 @@ textarea{ resize:vertical; min-height:110px; }
   backdrop-filter: blur(10px);
   box-shadow: var(--shadow);
   padding:18px;
+  position:relative;
 }
 .modal-content h3, .policy-content h3, .success-content h3{
   font-family:var(--font-head);
@@ -787,23 +785,12 @@ textarea{ resize:vertical; min-height:110px; }
   font-size:22px;
   line-height:36px;
 }
-.policy-content{
-  position:relative;
-}
-.modal-content{
-  position:relative;
-}
-.success-content{
-  position:relative;
-  text-align:center;
-}
+.success-content{ text-align:center; }
 .policy-text p{
   margin: 10px 0;
   color: rgba(234,240,255,0.72);
 }
-.policy-ok, .success-ok{
-  margin-top:12px;
-}
+.policy-ok, .success-ok{ margin-top:12px; }
 
 /* Responsive */
 @media (max-width: 1024px){
@@ -819,16 +806,9 @@ textarea{ resize:vertical; min-height:110px; }
 }
 
 @media (max-width: 720px){
-  /* Убрать меню/бургер (у тебя его и нет в верстке) */
   .nav{ display:none; }
-
-  /* Лого по центру и больше */
-  .header-container{
-    justify-content:center;
-  }
-  .logo img{
-    width:180px;
-  }
+  .header-container{ justify-content:center; }
+  .logo img{ width:180px; }
 
   .hero{ padding: 46px 0 18px; }
   .hero-title{ font-size: 1.8rem; }
@@ -839,7 +819,5 @@ textarea{ resize:vertical; min-height:110px; }
   .services-grid{ grid-template-columns: 1fr; }
   .cases-grid{ grid-template-columns: 1fr; }
 
-  .container{
-    width:min(1180px, calc(100% - 28px));
-  }
+  .container{ width:min(1180px, calc(100% - 28px)); }
 }
