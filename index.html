@@ -7,29 +7,26 @@
   <title>VEKTOR Web | Неоновые сайты и боты</title>
   <meta name="description" content="Разработка сайтов и Telegram-ботов. Быстро и с гарантией." />
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
 
-  <!-- Logo / Favicon -->
-  <link rel="icon" type="image/svg+xml" href="assets/loggoo.svg">
-
+  <link rel="icon" type="image/svg+xml" href="assets/loggoo.svg" />
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <!-- ГЛАВНЫЙ СВЕТОВОЙ ЭФФЕКТ -->
   <div class="neon-glow" aria-hidden="true"></div>
 
-  <!-- HEADER -->
   <header class="header" id="header">
     <div class="container header-container">
       <a href="#hero" class="logo" aria-label="Vector Web">
         <img src="assets/loggoo.svg" alt="Vector Web" />
       </a>
 
-      <!-- На мобильном навигация скрыта (и без бургер-иконки). -->
       <nav class="nav" id="nav" aria-label="Навигация">
         <ul class="nav-list">
           <li><a href="#services" class="nav-link">Услуги</a></li>
@@ -45,7 +42,6 @@
     </div>
   </header>
 
-  <!-- HERO -->
   <section class="hero" id="hero">
     <div class="container hero-container">
       <div class="hero-content">
@@ -64,7 +60,6 @@
           <a href="https://t.me/vektorwebbot" target="_blank" rel="noopener" class="btn btn-primary">Бесплатный разбор</a>
         </div>
 
-        <!-- TRUST STRIP -->
         <div class="trust-strip" role="group" aria-label="Показатели доверия">
           <div class="trust-item">
             <div class="trust-title">Опыт</div>
@@ -75,8 +70,7 @@
           <div class="trust-item">
             <div class="trust-title">Рейтинг</div>
             <div class="trust-value">
-              4.8
-              <span class="trust-muted">/ 5</span>
+              4.8 <span class="trust-muted">/ 5</span>
             </div>
             <div class="stars" aria-hidden="true">
               <span class="star filled"></span>
@@ -105,27 +99,26 @@
               <stop offset="100%" style="stop-color:#00FFFF;stop-opacity:1" />
             </linearGradient>
             <filter id="glow">
-              <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+              <feGaussianBlur stdDeviation="4" result="coloredBlur" />
               <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
+                <feMergeNode in="coloredBlur" />
+                <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
           </defs>
-          <circle cx="200" cy="150" r="120" fill="none" stroke="url(#neonGrad)" stroke-width="2" filter="url(#glow)"/>
-          <circle cx="200" cy="150" r="80" fill="none" stroke="#FF00F0" stroke-width="2" filter="url(#glow)"/>
-          <circle cx="200" cy="150" r="40" fill="none" stroke="#00FFFF" stroke-width="1" opacity="0.7" filter="url(#glow)"/>
-          <line x1="50" y1="150" x2="350" y2="150" stroke="#B800FF" stroke-width="1" opacity="0.5" filter="url(#glow)"/>
-          <line x1="200" y1="50" x2="200" y2="250" stroke="#00FFFF" stroke-width="1" opacity="0.5" filter="url(#glow)"/>
+          <circle cx="200" cy="150" r="120" fill="none" stroke="url(#neonGrad)" stroke-width="2" filter="url(#glow)" />
+          <circle cx="200" cy="150" r="80" fill="none" stroke="#FF00F0" stroke-width="2" filter="url(#glow)" />
+          <circle cx="200" cy="150" r="40" fill="none" stroke="#00FFFF" stroke-width="1" opacity="0.7" filter="url(#glow)" />
+          <line x1="50" y1="150" x2="350" y2="150" stroke="#B800FF" stroke-width="1" opacity="0.5" filter="url(#glow)" />
+          <line x1="200" y1="50" x2="200" y2="250" stroke="#00FFFF" stroke-width="1" opacity="0.5" filter="url(#glow)" />
           <polygon points="200,150 220,110 180,110" fill="#FF00F0" opacity="0.6" filter="url(#glow)">
-            <animateTransform attributeName="transform" type="rotate" from="0 200 150" to="360 200 150" dur="20s" repeatCount="indefinite"/>
+            <animateTransform attributeName="transform" type="rotate" from="0 200 150" to="360 200 150" dur="20s" repeatCount="indefinite" />
           </polygon>
         </svg>
       </div>
     </div>
   </section>
 
-  <!-- ДЛЯ КОГО -->
   <section class="section for-whom" id="for-whom">
     <div class="container">
       <h2 class="section-title">Это решение для вас, если вы:</h2>
@@ -134,8 +127,8 @@
         <div class="for-whom-card" onclick="openTelegramBot('Solo-специалист')">
           <div class="icon-circle" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="#FF00F0" stroke-width="2">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
             </svg>
           </div>
           <h3>Solo-специалист</h3>
@@ -146,8 +139,8 @@
         <div class="for-whom-card" onclick="openTelegramBot('Небольшой бизнес')">
           <div class="icon-circle" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="#00FFFF" stroke-width="2">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-              <polyline points="9 22 9 12 15 12 15 22"/>
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
             </svg>
           </div>
           <h3>Небольшой бизнес</h3>
@@ -158,10 +151,10 @@
         <div class="for-whom-card" onclick="openTelegramBot('E-com / магазин')">
           <div class="icon-circle" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="#B800FF" stroke-width="2">
-              <path d="M6 7h15l-1.5 9h-13z"/>
-              <path d="M6 7l-2-4H1"/>
-              <circle cx="9" cy="20" r="1.5"/>
-              <circle cx="18" cy="20" r="1.5"/>
+              <path d="M6 7h15l-1.5 9h-13z" />
+              <path d="M6 7l-2-4H1" />
+              <circle cx="9" cy="20" r="1.5" />
+              <circle cx="18" cy="20" r="1.5" />
             </svg>
           </div>
           <h3>E-com / магазин</h3>
@@ -172,7 +165,6 @@
     </div>
   </section>
 
-  <!-- ОТЗЫВЫ -->
   <section class="section reviews" id="reviews">
     <div class="container">
       <div class="section-head">
@@ -223,12 +215,11 @@
     </div>
   </section>
 
-  <!-- ПАКЕТЫ И ЦЕНЫ -->
   <section class="section services" id="services">
     <div class="container">
       <h2 class="section-title">Пакеты под ключ. Цена фиксирована.</h2>
-      <div class="services-grid">
 
+      <div class="services-grid">
         <div class="service-card">
           <div class="service-card-header">
             <h3 class="service-name">Мини-сайт</h3>
@@ -365,12 +356,10 @@
           </ul>
           <button class="btn btn-outline" type="button" onclick="openTelegramBot('Индивидуальное решение')">Выбрать</button>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- КЕЙСЫ -->
   <section class="section cases" id="cases">
     <div class="container">
       <h2 class="section-title">Кейсы</h2>
@@ -432,7 +421,6 @@
     </div>
   </section>
 
-  <!-- КАК МЫ РАБОТАЕМ -->
   <section class="section process" id="process">
     <div class="container">
       <h2 class="section-title">Понятный процесс за 2-25 дней</h2>
@@ -497,7 +485,6 @@
     </div>
   </section>
 
-  <!-- ГАРАНТИИ -->
   <section class="section guarantees" id="guarantees">
     <div class="container">
       <h2 class="section-title">Гарантии</h2>
@@ -538,7 +525,6 @@
     </div>
   </section>
 
-  <!-- CTA ФОРМА -->
   <section class="section cta" id="contacts">
     <div class="container">
       <div class="cta-container">
@@ -550,11 +536,11 @@
 
         <form class="cta-form" id="contactForm">
           <div class="form-group">
-            <input type="text" id="mainName" placeholder="Ваше имя" required>
+            <input type="text" id="mainName" placeholder="Ваше имя" required />
           </div>
 
           <div class="form-group">
-            <input type="text" id="mainContact" placeholder="Email или Telegram" required>
+            <input type="text" id="mainContact" placeholder="Email или Telegram" required />
           </div>
 
           <div class="form-group select-form-group">
@@ -576,7 +562,7 @@
           </div>
 
           <div class="form-group checkbox-group">
-            <input type="checkbox" id="privacy" required>
+            <input type="checkbox" id="privacy" required />
             <label for="privacy">
               Согласен с
               <button type="button" class="link-btn" onclick="openPrivacyModal()">политикой конфиденциальности</button>
@@ -594,13 +580,12 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer class="footer" id="footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="logo" aria-label="Vector Web footer">
-            <img src="assets/loggoo.svg" alt="Vector Web">
+            <img src="assets/loggoo.svg" alt="Vector Web" />
           </div>
           <p>Сайты и боты для вашего роста</p>
         </div>
@@ -630,7 +615,6 @@
         </div>
       </div>
 
-      <!-- Legal accordions -->
       <div class="legal-accordions">
         <div class="legal-accordion">
           <button class="legal-toggle" type="button" data-accordion="offer">
@@ -667,7 +651,6 @@
     </div>
   </footer>
 
-  <!-- МОДАЛЬНОЕ ОКНО ФОРМЫ (оставлено, если решишь снова использовать openModal) -->
   <div class="modal" id="modal" aria-hidden="true">
     <div class="modal-content" role="dialog" aria-modal="true" aria-label="Оставить заявку">
       <button class="modal-close" type="button" onclick="closeModal()" aria-label="Закрыть">×</button>
@@ -675,16 +658,16 @@
       <p id="modal-package">Выбранный пакет: <span></span></p>
       <form id="modalForm">
         <div class="form-group">
-          <input type="text" id="modalName" placeholder="Ваше имя" required>
+          <input type="text" id="modalName" placeholder="Ваше имя" required />
         </div>
         <div class="form-group">
-          <input type="text" id="modalContact" placeholder="Email или Telegram" required>
+          <input type="text" id="modalContact" placeholder="Email или Telegram" required />
         </div>
         <div class="form-group">
           <textarea id="modalDescription" placeholder="Краткое описание задачи" rows="4" required></textarea>
         </div>
         <div class="form-group checkbox-group">
-          <input type="checkbox" id="modal-privacy" required>
+          <input type="checkbox" id="modal-privacy" required />
           <label for="modal-privacy">
             Согласен с
             <button type="button" class="link-btn" onclick="openPrivacyModal()">политикой конфиденциальности</button>
@@ -695,7 +678,6 @@
     </div>
   </div>
 
-  <!-- PRIVACY POLICY MODAL (для формы) -->
   <div class="policy-modal" id="privacyModal" aria-hidden="true">
     <div class="policy-content" role="dialog" aria-modal="true" aria-label="Политика конфиденциальности">
       <button class="modal-close" type="button" onclick="closePrivacyModal()" aria-label="Закрыть">×</button>
@@ -725,7 +707,6 @@
     </div>
   </div>
 
-  <!-- СООБЩЕНИЕ ОБ УСПЕШНОЙ ОТПРАВКЕ -->
   <div class="success-message" id="successMessage" aria-hidden="true">
     <div class="success-content" role="status" aria-live="polite">
       <h3>Заявка принята</h3>
