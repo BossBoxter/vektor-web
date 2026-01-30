@@ -18,6 +18,21 @@ function lockBody() { document.body.classList.add('is-locked'); }
 function unlockBody() { document.body.classList.remove('is-locked'); }
 
 // ========================================
+// Hero: inline action (вместо CTA)
+// ========================================
+function heroStart() {
+  const v = (document.getElementById('heroContact')?.value || '').trim();
+  scrollToSection('contacts');
+  setTimeout(() => {
+    const contact = document.getElementById('mainContact');
+    if (contact) {
+      if (v) contact.value = v;
+      contact.focus();
+    }
+  }, 220);
+}
+
+// ========================================
 // Success overlay
 // ========================================
 function showSuccessMessage(message, opts = {}) {
@@ -287,180 +302,4 @@ function scrollToSection(sectionId) {
   const section = document.getElementById(sectionId);
   if (!section) return;
 
-  const headerEl = document.querySelector('.header');
-  const headerHeight = headerEl ? headerEl.offsetHeight : 0;
-  const targetPosition = section.getBoundingClientRect().top + window.pageYOffset - headerHeight - 14;
-
-  window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-}
-
-// ========================================
-// Footer accordions
-// ========================================
-function initFooterAccordions() {
-  const toggles = document.querySelectorAll('.legal-toggle[data-accordion]');
-  if (!toggles || !toggles.length) return;
-
-  toggles.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.getAttribute('data-accordion');
-      const panel = id ? document.getElementById(id) : null;
-      if (!panel) return;
-
-      const isOpen = panel.classList.contains('open');
-
-      document.querySelectorAll('.legal-panel.open').forEach(p => {
-        p.classList.remove('open');
-        p.setAttribute('aria-hidden', 'true');
-        p.style.maxHeight = '0px';
-        const inner = p.querySelector('.legal-panel-inner');
-        if (inner) inner.style.opacity = '0';
-      });
-      document.querySelectorAll('.legal-toggle.open').forEach(b => b.classList.remove('open'));
-
-      if (!isOpen) {
-        btn.classList.add('open');
-        panel.classList.add('open');
-        panel.setAttribute('aria-hidden', 'false');
-
-        const inner = panel.querySelector('.legal-panel-inner');
-        const target = inner ? inner.scrollHeight : panel.scrollHeight;
-
-        panel.style.maxHeight = `${target}px`;
-        if (inner) inner.style.opacity = '1';
-      } else {
-        btn.classList.remove('open');
-        panel.classList.remove('open');
-        panel.setAttribute('aria-hidden', 'true');
-        panel.style.maxHeight = '0px';
-        const inner = panel.querySelector('.legal-panel-inner');
-        if (inner) inner.style.opacity = '0';
-      }
-    });
-  });
-}
-
-// ========================================
-// Modal (оставлено, если понадобится)
-// ========================================
-function openModal(packageName) {
-  const modal = document.getElementById('modal');
-  const pkgSpan = document.getElementById('modal-package')?.querySelector('span');
-  if (!modal || !pkgSpan) return;
-
-  pkgSpan.textContent = packageName;
-  modal.classList.add('active');
-  modal.setAttribute('aria-hidden', 'false');
-  lockBody();
-}
-
-function closeModal() {
-  const modal = document.getElementById('modal');
-  if (!modal) return;
-
-  modal.classList.remove('active');
-  modal.setAttribute('aria-hidden', 'true');
-
-  const modalForm = document.getElementById('modalForm');
-  if (modalForm) modalForm.reset();
-
-  const pm = document.getElementById('privacyModal');
-  const sm = document.getElementById('successMessage');
-  const pmOpen = pm && pm.classList.contains('active');
-  const smOpen = sm && sm.classList.contains('active');
-  if (!pmOpen && !smOpen) unlockBody();
-}
-
-// ========================================
-// Init after DOM ready
-// ========================================
-document.addEventListener('DOMContentLoaded', () => {
-  persistUtm();
-
-  // Header shadow
-  const header = document.getElementById('header');
-  const scrollThreshold = 50;
-  window.addEventListener('scroll', () => {
-    if (!header) return;
-    if (window.scrollY > scrollThreshold) header.classList.add('scrolled');
-    else header.classList.remove('scrolled');
-  });
-
-  // Fade-in observer
-  if ('IntersectionObserver' in window) {
-    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }
-      });
-    }, observerOptions);
-
-    document.querySelectorAll('.section').forEach(section => {
-      section.style.opacity = '0';
-      section.style.transform = 'translateY(15px)';
-      section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-      observer.observe(section);
-    });
-
-    document.querySelectorAll('.service-card').forEach((card, index) => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(12px)';
-      card.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
-      observer.observe(card);
-    });
-
-    document.querySelectorAll('.case-card').forEach((card, index) => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(12px)';
-      card.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
-      observer.observe(card);
-    });
-
-    document.querySelectorAll('.timeline-step').forEach((step, index) => {
-      step.style.opacity = '0';
-      step.style.transform = 'translateY(12px)';
-      step.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
-      observer.observe(step);
-    });
-  }
-
-  // Footer accordions
-  initFooterAccordions();
-
-  // Form handlers
-  const contactForm = document.getElementById('contactForm');
-  if (contactForm) contactForm.addEventListener('submit', (e) => handleTelegramSubmit(e, 'contactForm'));
-
-  const modalForm = document.getElementById('modalForm');
-  if (modalForm) modalForm.addEventListener('submit', (e) => handleTelegramSubmit(e, 'modalForm'));
-
-  // Close modal by background click
-  const modal = document.getElementById('modal');
-  if (modal) {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeModal();
-    });
-  }
-
-  // ESC close (success / privacy / modal)
-  document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape') return;
-
-    const pm = document.getElementById('privacyModal');
-    const sm = document.getElementById('successMessage');
-
-    if (pm && pm.classList.contains('active')) closePrivacyModal();
-    else if (sm && sm.classList.contains('active')) hideSuccess();
-    else if (modal && modal.classList.contains('active')) closeModal();
-  });
-
-  // Micro interactions — FIX: без лишней запятой в селекторе
-  document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left').forEach(el => {
-    el.addEventListener('mousedown', () => { el.style.transform = 'scale(0.99)'; });
-    el.addEventListener('mouseup', () => { setTimeout(() => { if (!el.matches(':hover')) el.style.transform = ''; }, 100); });
-    el.addEventListener('mouseleave', () => { el.style.transform = ''; });
-  });
-});
+  const header
