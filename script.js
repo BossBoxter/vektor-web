@@ -464,18 +464,3 @@ document.addEventListener('DOMContentLoaded', () => {
     el.addEventListener('mouseleave', () => { el.style.transform = ''; });
   });
 });
-
-// Hero svg intro
-window.addEventListener('load', () => {
-  const heroSvg = document.querySelector('.hero-svg');
-  if (!heroSvg) return;
-
-  heroSvg.style.opacity = '0';
-  heroSvg.style.transform = 'scale(0.9) rotate(-8deg)';
-  heroSvg.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-
-  setTimeout(() => {
-    heroSvg.style.opacity = '1';
-    heroSvg.style.transform = 'scale(1) rotate(0deg)';
-  }, 250);
-});
