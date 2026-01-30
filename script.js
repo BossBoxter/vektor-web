@@ -23,7 +23,7 @@ function unlockBody() { document.body.classList.remove('is-locked'); }
 function heroStart() {
   const v = (document.getElementById('heroContact')?.value || '').trim();
   scrollToSection('contacts');
-  setTimeout(() => {
+  window.setTimeout(() => {
     const contact = document.getElementById('mainContact');
     if (contact) {
       if (v) contact.value = v;
@@ -62,7 +62,7 @@ function showSuccessMessage(message, opts = {}) {
   successMessage.setAttribute('aria-hidden', 'false');
   lockBody();
 
-  if (autoHideMs && autoHideMs > 0) setTimeout(() => hideSuccess(), autoHideMs);
+  if (autoHideMs && autoHideMs > 0) window.setTimeout(() => hideSuccess(), autoHideMs);
 }
 
 function hideSuccess() {
@@ -87,7 +87,7 @@ document.addEventListener('click', (e) => {
 });
 
 // ========================================
-// Privacy policy modal (для формы)
+// Privacy policy modal
 // ========================================
 function openPrivacyModal() {
   const privacyModal = document.getElementById('privacyModal');
@@ -116,6 +116,57 @@ function closePrivacyModal() {
 document.addEventListener('click', (e) => {
   const pm = document.getElementById('privacyModal');
   if (pm && pm.classList.contains('active') && e.target === pm) closePrivacyModal();
+});
+
+// ========================================
+// Modal (оставить заявку) — восстановлено, чтобы не было ошибок
+// ========================================
+function openModal(packageName) {
+  const modal = document.getElementById('modal');
+  if (!modal) return;
+
+  const span = document.getElementById('modal-package')?.querySelector('span');
+  if (span) span.textContent = packageName || '';
+
+  modal.classList.add('active');
+  modal.setAttribute('aria-hidden', 'false');
+  lockBody();
+
+  window.setTimeout(() => {
+    document.getElementById('modalName')?.focus();
+  }, 60);
+}
+
+function closeModal() {
+  const modal = document.getElementById('modal');
+  if (!modal) return;
+
+  modal.classList.remove('active');
+  modal.setAttribute('aria-hidden', 'true');
+
+  const pm = document.getElementById('privacyModal');
+  const sm = document.getElementById('successMessage');
+  const pmOpen = pm && pm.classList.contains('active');
+  const smOpen = sm && sm.classList.contains('active');
+
+  if (!pmOpen && !smOpen) unlockBody();
+}
+
+document.addEventListener('click', (e) => {
+  const m = document.getElementById('modal');
+  if (m && m.classList.contains('active') && e.target === m) closeModal();
+});
+
+// ESC для всех оверлеев
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  const sm = document.getElementById('successMessage');
+  const pm = document.getElementById('privacyModal');
+  const m = document.getElementById('modal');
+
+  if (sm && sm.classList.contains('active')) hideSuccess();
+  else if (pm && pm.classList.contains('active')) closePrivacyModal();
+  else if (m && m.classList.contains('active')) closeModal();
 });
 
 // ========================================
@@ -260,7 +311,7 @@ async function handleTelegramSubmit(event, formId) {
 }
 
 // ========================================
-// Telegram open helper (карточки/кейсы)
+// Telegram open helper (карточки/пакеты)
 // ========================================
 function openTelegramBot(additionalInfo = '') {
   const username = 'vektorwebbot';
@@ -296,10 +347,143 @@ function copyToClipboard(text) {
 }
 
 // ========================================
-// Scroll helper
+// Scroll helper (исправлено, без обрыва)
 // ========================================
 function scrollToSection(sectionId) {
   const section = document.getElementById(sectionId);
   if (!section) return;
 
-  const header
+  const header = document.getElementById('header');
+  const headerH = header ? header.offsetHeight : 0;
+  const y = section.getBoundingClientRect().top + window.pageYOffset - (headerH + 14);
+
+  window.scrollTo({ top: y, behavior: 'smooth' });
+}
+
+// ========================================
+// Header scrolled state
+// ========================================
+function syncHeaderScrolled() {
+  const header = document.getElementById('header');
+  if (!header) return;
+  if (window.scrollY > 8) header.classList.add('scrolled');
+  else header.classList.remove('scrolled');
+}
+
+// ========================================
+// Hero preview tabs
+// ========================================
+function initPreviewTabs() {
+  const tabs = Array.from(document.querySelectorAll('.preview-tab'));
+  const screens = Array.from(document.querySelectorAll('.preview-screen'));
+  if (!tabs.length || !screens.length) return;
+
+  function activate(name) {
+    tabs.forEach((t) => {
+      const active = t.dataset.tab === name;
+      t.classList.toggle('is-active', active);
+      t.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    screens.forEach((s) => s.classList.toggle('is-active', s.dataset.screen === name));
+  }
+
+  tabs.forEach((t) => {
+    t.addEventListener('click', () => activate(t.dataset.tab));
+  });
+}
+
+// ========================================
+// Tilt (без библиотек): data-tilt
+// ========================================
+function initTiltCards() {
+  const cards = Array.from(document.querySelectorAll('[data-tilt]'));
+  if (!cards.length) return;
+
+  cards.forEach((card) => {
+    const max = 8; // deg
+    const scale = 1.01;
+
+    function onMove(e) {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top) / r.height;
+      const rx = (y - 0.5) * -2 * max;
+      const ry = (x - 0.5) *  2 * max;
+      card.style.transform = `perspective(900px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg) scale(${scale})`;
+    }
+    function onLeave() {
+      card.style.transform = '';
+    }
+
+    card.addEventListener('mousemove', onMove);
+    card.addEventListener('mouseleave', onLeave);
+  });
+}
+
+// ========================================
+// Footer accordions
+// ========================================
+function initLegalAccordions() {
+  const toggles = Array.from(document.querySelectorAll('.legal-toggle'));
+  if (!toggles.length) return;
+
+  toggles.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-accordion');
+      if (!id) return;
+      const panel = document.getElementById(id);
+      if (!panel) return;
+
+      const isOpen = btn.classList.contains('open');
+
+      toggles.forEach((b) => {
+        const otherId = b.getAttribute('data-accordion');
+        const otherPanel = otherId ? document.getElementById(otherId) : null;
+        b.classList.remove('open');
+        if (otherPanel) {
+          otherPanel.style.maxHeight = '0px';
+          otherPanel.classList.remove('open');
+          otherPanel.setAttribute('aria-hidden', 'true');
+        }
+      });
+
+      if (!isOpen) {
+        btn.classList.add('open');
+        panel.classList.add('open');
+        panel.setAttribute('aria-hidden', 'false');
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+      }
+    });
+  });
+}
+
+// ========================================
+// Init on load
+// ========================================
+document.addEventListener('DOMContentLoaded', () => {
+  persistUtm();
+
+  // forms: привязка submit (у тебя этого не было)
+  const mainForm = document.getElementById('contactForm');
+  if (mainForm) {
+    mainForm.addEventListener('submit', (e) => handleTelegramSubmit(e, 'contactForm'));
+  }
+
+  const modalForm = document.getElementById('modalForm');
+  if (modalForm) {
+    modalForm.addEventListener('submit', (e) => handleTelegramSubmit(e, 'modalForm'));
+  }
+
+  initPreviewTabs();
+  initTiltCards();
+  initLegalAccordions();
+
+  syncHeaderScrolled();
+  window.addEventListener('scroll', syncHeaderScrolled, { passive: true });
+  window.addEventListener('resize', () => {
+    // если аккордеон открыт — пересчитать высоту
+    document.querySelectorAll('.legal-panel.open').forEach((p) => {
+      p.style.maxHeight = p.scrollHeight + 'px';
+    });
+  });
+});
