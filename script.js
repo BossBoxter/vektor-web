@@ -27,12 +27,14 @@ function showSuccessMessage(message, opts = {}) {
   if (!successMessage) return;
 
   const successContent = successMessage.querySelector('.success-content');
+  if (!successContent) return;
+
   const h3 = successContent.querySelector('h3');
   const p = successContent.querySelector('p');
   const hintEl = successContent.querySelector('.copy-hint');
 
-  h3.textContent = title;
-  p.textContent = message;
+  if (h3) h3.textContent = title;
+  if (p) p.textContent = message;
 
   if (hint && hintEl) {
     hintEl.textContent = hint;
@@ -171,7 +173,7 @@ async function handleTelegramSubmit(event, formId) {
   event.preventDefault();
 
   const form = event.target;
-  const submitBtn = form.querySelector('button[type="submit"]');
+  const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
   const prevBtnText = submitBtn ? submitBtn.textContent : '';
 
   if (submitBtn) {
@@ -186,16 +188,16 @@ async function handleTelegramSubmit(event, formId) {
     let description = '';
 
     if (formId === 'contactForm') {
-      name = document.getElementById('mainName').value.trim();
-      contact = document.getElementById('mainContact').value.trim();
-      pkg = document.getElementById('mainPackage').value.trim();
-      description = document.getElementById('mainDescription').value.trim();
+      name = (document.getElementById('mainName')?.value || '').trim();
+      contact = (document.getElementById('mainContact')?.value || '').trim();
+      pkg = (document.getElementById('mainPackage')?.value || '').trim();
+      description = (document.getElementById('mainDescription')?.value || '').trim();
     } else if (formId === 'modalForm') {
       const pkgSpan = document.getElementById('modal-package')?.querySelector('span');
-      pkg = pkgSpan ? pkgSpan.textContent.trim() : '';
-      name = document.getElementById('modalName').value.trim();
-      contact = document.getElementById('modalContact').value.trim();
-      description = document.getElementById('modalDescription').value.trim();
+      pkg = (pkgSpan ? pkgSpan.textContent : '').trim();
+      name = (document.getElementById('modalName')?.value || '').trim();
+      contact = (document.getElementById('modalContact')?.value || '').trim();
+      description = (document.getElementById('modalDescription')?.value || '').trim();
     } else {
       throw new Error('unknown_form');
     }
@@ -219,7 +221,7 @@ async function handleTelegramSubmit(event, formId) {
       { title: 'Заявка принята', hint: '', autoHideMs: 0 }
     );
 
-    form.reset();
+    if (form && typeof form.reset === 'function') form.reset();
     if (formId === 'modalForm') closeModal();
   } catch (err) {
     const msg = (err && err.message) ? String(err.message) : '';
@@ -262,7 +264,7 @@ function openTelegramBot(additionalInfo = '') {
 
 function copyToClipboard(text) {
   return new Promise((resolve, reject) => {
-    if (navigator.clipboard) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(resolve).catch(reject);
     } else {
       const textarea = document.createElement('textarea');
@@ -292,83 +294,26 @@ function scrollToSection(sectionId) {
   window.scrollTo({ top: targetPosition, behavior: 'smooth' });
 }
 
-// Header scroll shadow
-const header = document.getElementById('header');
-const scrollThreshold = 50;
-
-window.addEventListener('scroll', () => {
-  if (!header) return;
-  if (window.scrollY > scrollThreshold) header.classList.add('scrolled');
-  else header.classList.remove('scrolled');
-});
-
-// ========================================
-// Fade-in observer
-// ========================================
-const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
-    }
-  });
-}, observerOptions);
-
-document.addEventListener('DOMContentLoaded', () => {
-  persistUtm();
-
-  document.querySelectorAll('.section').forEach(section => {
-    section.style.opacity = '0';
-    section.style.transform = 'translateY(15px)';
-    section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(section);
-  });
-
-  document.querySelectorAll('.service-card').forEach((card, index) => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(12px)';
-    card.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
-    observer.observe(card);
-  });
-
-  document.querySelectorAll('.case-card').forEach((card, index) => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(12px)';
-    card.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
-    observer.observe(card);
-  });
-
-  document.querySelectorAll('.timeline-step').forEach((step, index) => {
-    step.style.opacity = '0';
-    step.style.transform = 'translateY(12px)';
-    step.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
-    observer.observe(step);
-  });
-
-  // Footer accordions (Не оферта / Политика)
-  initFooterAccordions();
-});
-
 // ========================================
 // Footer accordions
 // ========================================
 function initFooterAccordions() {
   const toggles = document.querySelectorAll('.legal-toggle[data-accordion]');
+  if (!toggles || !toggles.length) return;
+
   toggles.forEach(btn => {
     btn.addEventListener('click', () => {
       const id = btn.getAttribute('data-accordion');
-      const panel = document.getElementById(id);
+      const panel = id ? document.getElementById(id) : null;
       if (!panel) return;
 
       const isOpen = panel.classList.contains('open');
 
-      // Закрыть все, открыть только выбранное
       document.querySelectorAll('.legal-panel.open').forEach(p => {
         p.classList.remove('open');
         p.setAttribute('aria-hidden', 'true');
-        const inner = p.querySelector('.legal-panel-inner');
         p.style.maxHeight = '0px';
+        const inner = p.querySelector('.legal-panel-inner');
         if (inner) inner.style.opacity = '0';
       });
       document.querySelectorAll('.legal-toggle.open').forEach(b => b.classList.remove('open'));
@@ -398,23 +343,25 @@ function initFooterAccordions() {
 // ========================================
 // Modal (оставлено, если понадобится)
 // ========================================
-const modal = document.getElementById('modal');
-const modalPackageEl = document.getElementById('modal-package');
-const modalPackage = modalPackageEl ? modalPackageEl.querySelector('span') : null;
-const modalForm = document.getElementById('modalForm');
-
 function openModal(packageName) {
-  if (!modal || !modalPackage) return;
-  modalPackage.textContent = packageName;
+  const modal = document.getElementById('modal');
+  const pkgSpan = document.getElementById('modal-package')?.querySelector('span');
+  if (!modal || !pkgSpan) return;
+
+  pkgSpan.textContent = packageName;
   modal.classList.add('active');
   modal.setAttribute('aria-hidden', 'false');
   lockBody();
 }
 
 function closeModal() {
+  const modal = document.getElementById('modal');
   if (!modal) return;
+
   modal.classList.remove('active');
   modal.setAttribute('aria-hidden', 'true');
+
+  const modalForm = document.getElementById('modalForm');
   if (modalForm) modalForm.reset();
 
   const pm = document.getElementById('privacyModal');
@@ -424,36 +371,101 @@ function closeModal() {
   if (!pmOpen && !smOpen) unlockBody();
 }
 
-if (modal) {
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
+// ========================================
+// Init after DOM ready (ключевой фикс)
+// ========================================
+document.addEventListener('DOMContentLoaded', () => {
+  persistUtm();
+
+  // Header shadow
+  const header = document.getElementById('header');
+  const scrollThreshold = 50;
+  window.addEventListener('scroll', () => {
+    if (!header) return;
+    if (window.scrollY > scrollThreshold) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
   });
-}
 
-// ESC close (success / privacy / modal)
-document.addEventListener('keydown', (e) => {
-  if (e.key !== 'Escape') return;
+  // Fade-in observer
+  if ('IntersectionObserver' in window) {
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
 
-  const pm = document.getElementById('privacyModal');
-  const sm = document.getElementById('successMessage');
+    document.querySelectorAll('.section').forEach(section => {
+      section.style.opacity = '0';
+      section.style.transform = 'translateY(15px)';
+      section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(section);
+    });
 
-  if (pm && pm.classList.contains('active')) closePrivacyModal();
-  else if (sm && sm.classList.contains('active')) hideSuccess();
-  else if (modal && modal.classList.contains('active')) closeModal();
+    document.querySelectorAll('.service-card').forEach((card, index) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(12px)';
+      card.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
+      observer.observe(card);
+    });
+
+    document.querySelectorAll('.case-card').forEach((card, index) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(12px)';
+      card.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
+      observer.observe(card);
+    });
+
+    document.querySelectorAll('.timeline-step').forEach((step, index) => {
+      step.style.opacity = '0';
+      step.style.transform = 'translateY(12px)';
+      step.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
+      observer.observe(step);
+    });
+  }
+
+  // Footer accordions
+  initFooterAccordions();
+
+  // Form handlers (строго после DOM)
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) contactForm.addEventListener('submit', (e) => handleTelegramSubmit(e, 'contactForm'));
+
+  const modalForm = document.getElementById('modalForm');
+  if (modalForm) modalForm.addEventListener('submit', (e) => handleTelegramSubmit(e, 'modalForm'));
+
+  // Close modal by background click
+  const modal = document.getElementById('modal');
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  }
+
+  // ESC close (success / privacy / modal)
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+
+    const pm = document.getElementById('privacyModal');
+    const sm = document.getElementById('successMessage');
+
+    if (pm && pm.classList.contains('active')) closePrivacyModal();
+    else if (sm && sm.classList.contains('active')) hideSuccess();
+    else if (modal && modal.classList.contains('active')) closeModal();
+  });
+
+  // Micro interactions (строго после DOM)
+  document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left, .review-card').forEach(el => {
+    el.addEventListener('mousedown', () => { el.style.transform = 'scale(0.99)'; });
+    el.addEventListener('mouseup', () => { setTimeout(() => { if (!el.matches(':hover')) el.style.transform = ''; }, 100); });
+    el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+  });
 });
 
-// Form handlers
-const contactForm = document.getElementById('contactForm');
-if (contactForm) contactForm.addEventListener('submit', (e) => handleTelegramSubmit(e, 'contactForm'));
-if (modalForm) modalForm.addEventListener('submit', (e) => handleTelegramSubmit(e, 'modalForm'));
-
-// Micro interactions
-document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left, .review-card').forEach(el => {
-  el.addEventListener('mousedown', () => { el.style.transform = 'scale(0.99)'; });
-  el.addEventListener('mouseup', () => { setTimeout(() => { if (!el.matches(':hover')) el.style.transform = ''; }, 100); });
-  el.addEventListener('mouseleave', () => { el.style.transform = ''; });
-});
-
+// Hero svg intro
 window.addEventListener('load', () => {
   const heroSvg = document.querySelector('.hero-svg');
   if (!heroSvg) return;
