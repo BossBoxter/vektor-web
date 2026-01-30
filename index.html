@@ -1,647 +1,466 @@
-<!-- FILE: index.html -->
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VEKTOR Web | Сайты и Telegram-боты</title>
-  <meta name="description" content="Разработка сайтов и Telegram-ботов." />
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@400;500;600&display=swap"
-    rel="stylesheet"
-  />
-
-  <link rel="stylesheet" href="style.css" />
-</head>
-
-<body>
-  <div class="neon-glow" aria-hidden="true"></div>
-
-  <!-- HEADER (без логотипов) -->
-  <header class="header" id="header">
-    <div class="container header-container">
-      <a href="#hero" class="brand" aria-label="VEKTOR Web">
-        VEKTOR WEB
-      </a>
-
-      <nav class="nav" id="nav" aria-label="Навигация">
-        <ul class="nav-list">
-          <li><a href="#services" class="nav-link">Пакеты</a></li>
-          <li><a href="#cases" class="nav-link">Кейсы</a></li>
-          <li><a href="#process" class="nav-link">Процесс</a></li>
-          <li><a href="#guarantees" class="nav-link">Гарантии</a></li>
-          <li><a href="#contacts" class="nav-link">Контакты</a></li>
-        </ul>
-        <button class="btn btn-primary" type="button" onclick="scrollToSection('contacts')">
-          Обсудить проект
-        </button>
-      </nav>
-    </div>
-  </header>
-
-  <!-- HERO -->
-  <section class="hero" id="hero">
-    <div class="container hero-container">
-      <div class="hero-content">
-        <h1 class="hero-title">
-          Сайты и Telegram-боты.
-          <span class="neon-text">Структура, логика, запуск.</span>
-        </h1>
-
-        <p class="hero-subtitle">
-          Делаем сайт/бот под вашу задачу: понятная подача, связь с Telegram, базовая логика обработки обращений.
-        </p>
-
-        <div class="hero-buttons">
-          <a href="#services" class="btn btn-secondary">Смотреть пакеты</a>
-          <a href="https://t.me/vektorwebbot" target="_blank" rel="noopener" class="btn btn-primary">Написать в Telegram</a>
-        </div>
-
-        <div class="trust-strip" role="group" aria-label="Показатели">
-          <div class="trust-item">
-            <div class="trust-title">Фокус</div>
-            <div class="trust-value">сайт + логика</div>
-            <div class="trust-note">под вашу задачу</div>
-          </div>
-
-          <div class="trust-item">
-            <div class="trust-title">Формат</div>
-            <div class="trust-value">под ключ</div>
-            <div class="trust-note">передача доступов и инструкции</div>
-          </div>
-
-          <div class="trust-item">
-            <div class="trust-title">Коммуникация</div>
-            <div class="trust-value">Telegram</div>
-            <div class="trust-note">быстрое согласование</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ДЛЯ КОГО -->
-  <section class="section for-whom" id="for-whom">
-    <div class="container">
-      <h2 class="section-title">Это подойдет, если вы:</h2>
-
-      <div class="for-whom-grid">
-        <div class="for-whom-card" onclick="openTelegramBot('Solo-специалист')">
-          <div class="icon-circle" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#FF00F0" stroke-width="2">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-          </div>
-          <h3>Solo-специалист</h3>
-          <p>Нужна страница и понятная подача услуги/продукта.</p>
-          <span class="card-action">Нажмите для деталей</span>
-        </div>
-
-        <div class="for-whom-card" onclick="openTelegramBot('Бизнес / агентство')">
-          <div class="icon-circle" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#00FFFF" stroke-width="2">
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-              <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-          </div>
-          <h3>Бизнес / агентство</h3>
-          <p>Нужно сделать по ТЗ и под процесс именно вашей команды.</p>
-          <span class="card-action">Нажмите для деталей</span>
-        </div>
-
-        <div class="for-whom-card" onclick="openTelegramBot('Магазин / каталог / оплата')">
-          <div class="icon-circle" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#B800FF" stroke-width="2">
-              <path d="M6 7h15l-1.5 9h-13z"/>
-              <path d="M6 7l-2-4H1"/>
-              <circle cx="9" cy="20" r="1.5"/>
-              <circle cx="18" cy="20" r="1.5"/>
-            </svg>
-          </div>
-          <h3>Магазин / каталог</h3>
-          <p>Нужна витрина, корзина, заявки или оплата по сценарию.</p>
-          <span class="card-action">Нажмите для деталей</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ПАКЕТЫ -->
-  <section class="section services" id="services">
-    <div class="container">
-      <h2 class="section-title">Пакеты под ключ</h2>
-      <p class="section-subtitle">Выбор подходящего варианта — под вашу задачу. Детали уточняются в переписке.</p>
-
-      <div class="services-grid services-grid-3">
-
-        <div class="service-card">
-          <div class="service-card-header">
-            <h3 class="service-name">1) Сайт-визитка</h3>
-            <p class="service-price">10 000 ₽</p>
-          </div>
-          <p class="service-desc">Кому подходит: простая подача услуги/продукта.</p>
-          <ul class="service-list">
-            <li>Выбор подходящего варианта</li>
-            <li>Построение сайта и логики</li>
-            <li>Гарантия: 1 год</li>
-            <li>Ваш домен или бесплатный домен</li>
-            <li>Первые 3 дня: до 10 правок бесплатно</li>
-            <li>Далее: правка 2 000 ₽</li>
-            <li>Срок: 2 дня</li>
-          </ul>
-          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 1: Сайт-визитка')">Выбрать</button>
-        </div>
-
-        <div class="service-card">
-          <div class="service-card-header">
-            <h3 class="service-name">2) Сайт-визитка (бизнес/агентство)</h3>
-            <p class="service-price">25 000 ₽</p>
-          </div>
-          <p class="service-desc">Работа по ТЗ: как нужно именно вам.</p>
-          <ul class="service-list">
-            <li>Работа по ТЗ</li>
-            <li>Структура и логика под процесс</li>
-            <li>Гарантия: 1 год</li>
-            <li>Ваш домен или бесплатный домен</li>
-            <li>Первые 3 дня: до 10 правок бесплатно</li>
-            <li>Далее: правка 2 000 ₽</li>
-            <li>Срок: до 3 дней</li>
-          </ul>
-          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 2: Сайт-визитка для бизнеса/агентства')">Выбрать</button>
-        </div>
-
-        <div class="service-card">
-          <div class="service-card-header">
-            <h3 class="service-name">3) Сайт-магазин + каталог + оплата</h3>
-            <p class="service-price">25 000 ₽</p>
-          </div>
-          <p class="service-desc">Каталог, данные о компании, корзина, покупка/оплата или аналог по ТЗ.</p>
-          <ul class="service-list">
-            <li>Каталог + корзина</li>
-            <li>Оплата на сайте или аналог по ТЗ</li>
-            <li>Заявка менеджеру или в базу данных</li>
-            <li>Гарантия: 1 год</li>
-            <li>Ваш домен или бесплатный домен</li>
-            <li>Первые 3 дня: до 10 правок бесплатно</li>
-            <li>Далее: правка 2 000 ₽</li>
-            <li>Срок: до 5 дней</li>
-          </ul>
-          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 3: Сайт-магазин + каталог + оплата')">Выбрать</button>
-        </div>
-
-        <div class="service-card">
-          <div class="service-card-header">
-            <h3 class="service-name">4) Telegram-бот</h3>
-            <p class="service-price">10 000 ₽</p>
-          </div>
-          <p class="service-desc">Модератор, новости, идеи, картинки, агрегатор — или аналог.</p>
-          <ul class="service-list">
-            <li>Бот под задачу</li>
-            <li>Сценарий и логика</li>
-            <li>Гарантия: 1 год</li>
-            <li>Ваш хост или бесплатный хост</li>
-            <li>Первые 3 дня: до 10 правок бесплатно</li>
-            <li>Далее: правка 2 000 ₽</li>
-            <li>Срок: до 2 дней</li>
-          </ul>
-          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 4: Telegram-бот')">Выбрать</button>
-        </div>
-
-        <div class="service-card">
-          <div class="service-card-header">
-            <h3 class="service-name">5) Telegram-бот магазин/каталог + оплата</h3>
-            <p class="service-price">25 000 ₽</p>
-          </div>
-          <p class="service-desc">Подключение сервиса, прием оплат, выдача данных клиенту.</p>
-          <ul class="service-list">
-            <li>Каталог/витрина в боте</li>
-            <li>Оплата: карта/крипта</li>
-            <li>Подключение сервиса + выдача данных</li>
-            <li>Гарантия: 1 год</li>
-            <li>Ваш хост или бесплатный хост</li>
-            <li>Первые 3 дня: до 10 правок бесплатно</li>
-            <li>Далее: правка 2 000 ₽</li>
-            <li>Срок: до 5 дней</li>
-          </ul>
-          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 5: Telegram-магазин/каталог + оплата')">Выбрать</button>
-        </div>
-
-        <div class="service-card">
-          <div class="service-card-header">
-            <h3 class="service-name">6) Сайт-визитка + Telegram-бот</h3>
-            <p class="service-price">25 000 ₽</p>
-          </div>
-          <p class="service-desc">Подойдет для продажи курсов.</p>
-          <ul class="service-list">
-            <li>Сайт-визитка</li>
-            <li>Бот под воронку/обработку</li>
-            <li>Гарантия: 1 год</li>
-            <li>Ваш хост или бесплатный хост</li>
-            <li>Первые 3 дня: до 10 правок бесплатно</li>
-            <li>Далее: правка 2 000 ₽</li>
-            <li>Срок: до 5 дней</li>
-          </ul>
-          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 6: Сайт-визитка + Telegram-бот')">Выбрать</button>
-        </div>
-
-        <div class="service-card featured">
-          <div class="service-card-header">
-            <h3 class="service-name">7) Сайт компании/сервиса + Telegram-бот</h3>
-            <p class="service-price">25 000 ₽</p>
-          </div>
-          <p class="service-desc">Фильтр заявок и разгрузка менеджера: бот решает простое, сложное — передает.</p>
-          <ul class="service-list">
-            <li>Сайт + бот</li>
-            <li>Фильтр целевых заявок</li>
-            <li>Техподдержка: бот решает типовое</li>
-            <li>Если не удалось — заявка менеджеру</li>
-            <li>Гарантия: 1 год</li>
-            <li>Ваш хост или бесплатный хост</li>
-            <li>Первые 3 дня: до 10 правок бесплатно</li>
-            <li>Далее: правка 2 000 ₽</li>
-            <li>Срок: до 5 дней</li>
-          </ul>
-          <button class="btn btn-primary" type="button" onclick="openTelegramBot('Пакет 7: Сайт сервиса + Telegram-бот (фильтр/поддержка)')">Выбрать</button>
-        </div>
-
-        <div class="service-card">
-          <div class="service-card-header">
-            <h3 class="service-name">8) Полноценный сайт/сервис</h3>
-            <p class="service-price">250 000 ₽</p>
-          </div>
-          <p class="service-desc">Сервисный проект: обучение, CRM, онлайн-товары, форум, блог и т.д.</p>
-          <ul class="service-list">
-            <li>Сроки: 5–60 дней (от теста до релиза)</li>
-            <li>Работа/оплата/правки — по договору</li>
-            <li>Правки 1 месяц: до 10 правок бесплатно</li>
-            <li>Далее: правка 10 000 ₽</li>
-            <li>Ваш хост (подниму и передам при необходимости)</li>
-            <li>Юридическая защита: договор о владении проектом</li>
-            <li>Документы физические, бумажные</li>
-          </ul>
-          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 8: Полноценный сайт/сервис (по договору)')">Обсудить</button>
-        </div>
-
-        <div class="service-card">
-          <div class="service-card-header">
-            <h3 class="service-name">9) Индивидуальный проект</h3>
-            <p class="service-price">по согласованию</p>
-          </div>
-          <p class="service-desc">Сроки, цена, гарантии и детали обсуждаются с менеджером.</p>
-          <ul class="service-list">
-            <li>Обсуждение: Telegram / Zoom / Google Meets</li>
-            <li>Яндекс Телемост / Discord</li>
-            <li>Фиксация условий после согласования</li>
-          </ul>
-          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Пакет 9: Индивидуальный проект')">Обсудить</button>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- КЕЙСЫ -->
-  <section class="section cases" id="cases">
-    <div class="container">
-      <h2 class="section-title">Кейсы</h2>
-      <p class="section-subtitle">Примеры задач и формата реализации.</p>
-
-      <div class="cases-grid">
-        <div class="case-card" onclick="openTelegramBot('Кейс: Лендинг/визитка')">
-          <div class="case-badge">WEB</div>
-          <h3>Лендинг/визитка</h3>
-          <p class="case-niche">Структура + подача</p>
-          <p>Сборка страницы, логика блоков, CTA, связка с Telegram.</p>
-          <div class="case-results">
-            <span class="result-item">Структура: по задаче</span>
-            <span class="result-item">Связь: Telegram</span>
-            <span class="result-item">Формат: под ключ</span>
-          </div>
-          <span class="case-more">Запросить детали</span>
-        </div>
-
-        <div class="case-card" onclick="openTelegramBot('Кейс: Бот для заявок/поддержки')">
-          <div class="case-badge">BOT</div>
-          <h3>Бот для заявок/поддержки</h3>
-          <p class="case-niche">Сценарии</p>
-          <p>Вопросы, фильтр, передача менеджеру, уведомления.</p>
-          <div class="case-results">
-            <span class="result-item">Сценарий: по процессу</span>
-            <span class="result-item">Передача: менеджеру</span>
-            <span class="result-item">Логика: под ТЗ</span>
-          </div>
-          <span class="case-more">Запросить детали</span>
-        </div>
-
-        <div class="case-card" onclick="openTelegramBot('Кейс: Магазин/каталог')">
-          <div class="case-badge">SHOP</div>
-          <h3>Магазин/каталог</h3>
-          <p class="case-niche">Корзина/оплата</p>
-          <p>Каталог, корзина, оплата или заявка — по доступности провайдера и ТЗ.</p>
-          <div class="case-results">
-            <span class="result-item">Каталог: по задаче</span>
-            <span class="result-item">Оплата: опционально</span>
-            <span class="result-item">Интеграции: по ТЗ</span>
-          </div>
-          <span class="case-more">Запросить детали</span>
-        </div>
-
-        <div class="case-card" onclick="openTelegramBot('Кейс: Сайт + бот (курс/воронка)')">
-          <div class="case-badge">WEB+BOT</div>
-          <h3>Сайт + бот</h3>
-          <p class="case-niche">Продажа/заявки</p>
-          <p>Связка сайта и бота: сбор данных, выдача материала, заявки менеджеру.</p>
-          <div class="case-results">
-            <span class="result-item">Связка: сайт → бот</span>
-            <span class="result-item">Сценарий: по задаче</span>
-            <span class="result-item">Передача: менеджеру</span>
-          </div>
-          <span class="case-more">Запросить детали</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ПРОЦЕСС -->
-  <section class="section process" id="process">
-    <div class="container">
-      <h2 class="section-title">Процесс</h2>
-
-      <div class="timeline">
-        <div class="timeline-step">
-          <div class="step-circle">1</div>
-          <div class="step-content">
-            <h3>Сбор задачи</h3>
-            <p>Формулируем цель, аудиторию, структуру и ограничения.</p>
-          </div>
-        </div>
-
-        <div class="timeline-step">
-          <div class="step-circle">2</div>
-          <div class="step-content">
-            <h3>Структура</h3>
-            <p>Согласуем блоки, логику и сценарии.</p>
-          </div>
-        </div>
-
-        <div class="timeline-step">
-          <div class="step-circle">3</div>
-          <div class="step-content">
-            <h3>Сборка</h3>
-            <p>Сайт/бот, интеграции, базовые проверки.</p>
-          </div>
-        </div>
-
-        <div class="timeline-step">
-          <div class="step-circle">4</div>
-          <div class="step-content">
-            <h3>Запуск</h3>
-            <p>Публикация, доступы, инструкция.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ГАРАНТИИ -->
-  <section class="section guarantees" id="guarantees">
-    <div class="container">
-      <h2 class="section-title">Гарантии</h2>
-
-      <div class="guarantees-grid">
-        <div class="guarantee-left" onclick="openTelegramBot('Уточнить гарантию')">
-          <h3>Гарантия на работоспособность</h3>
-          <p>Условия фиксируются по выбранному пакету и задаче.</p>
-          <span class="guarantee-action">Уточнить условия</span>
-        </div>
-
-        <div class="guarantee-right">
-          <div class="guarantee-item" onclick="openTelegramBot('Уточнить сроки')">
-            <div class="icon-check" aria-hidden="true">✓</div>
-            <div>
-              <h4>Сроки</h4>
-              <p>Согласование и фиксация до старта.</p>
-            </div>
-          </div>
-
-          <div class="guarantee-item" onclick="openTelegramBot('Уточнить состав работ')">
-            <div class="icon-check" aria-hidden="true">✓</div>
-            <div>
-              <h4>Состав работ</h4>
-              <p>Что входит и что считается правкой.</p>
-            </div>
-          </div>
-
-          <div class="guarantee-item" onclick="openTelegramBot('Уточнить поддержку')">
-            <div class="icon-check" aria-hidden="true">✓</div>
-            <div>
-              <h4>Поддержка</h4>
-              <p>По пакету и договоренностям.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="section cta" id="contacts">
-    <div class="container">
-      <div class="cta-container">
-        <div class="cta-text">
-          <h2 class="section-title">Обсудим ваш проект?</h2>
-          <p>Пришлите детали — отвечу по формату, срокам и составу работ.</p>
-          <p class="cta-hint">Заявки обрабатываются через Telegram</p>
-        </div>
-
-        <form class="cta-form" id="contactForm">
-          <div class="form-group">
-            <input type="text" id="mainName" placeholder="Ваше имя" required />
-          </div>
-
-          <div class="form-group">
-            <input type="text" id="mainContact" placeholder="Email или Telegram" required />
-          </div>
-
-          <div class="form-group select-form-group">
-            <select id="mainPackage" required>
-              <option value="">Выберите пакет</option>
-              <option value="1) Сайт-визитка">1) Сайт-визитка</option>
-              <option value="2) Сайт-визитка (бизнес/агентство)">2) Сайт-визитка (бизнес/агентство)</option>
-              <option value="3) Сайт-магазин + каталог + оплата">3) Сайт-магазин + каталог + оплата</option>
-              <option value="4) Telegram-бот">4) Telegram-бот</option>
-              <option value="5) Telegram-бот магазин/каталог + оплата">5) Telegram-бот магазин/каталог + оплата</option>
-              <option value="6) Сайт-визитка + Telegram-бот">6) Сайт-визитка + Telegram-бот</option>
-              <option value="7) Сайт компании/сервиса + Telegram-бот">7) Сайт компании/сервиса + Telegram-бот</option>
-              <option value="8) Полноценный сайт/сервис">8) Полноценный сайт/сервис</option>
-              <option value="9) Индивидуальный проект">9) Индивидуальный проект</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <textarea id="mainDescription" placeholder="Кратко: что нужно сделать" rows="4" required></textarea>
-          </div>
-
-          <div class="form-group checkbox-group">
-            <input type="checkbox" id="privacy" required />
-            <label for="privacy">
-              Согласен с
-              <button type="button" class="link-btn" onclick="openPrivacyModal()">политикой конфиденциальности</button>
-            </label>
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-large">Отправить заявку</button>
-
-          <div class="telegram-link">
-            Или напишите в Telegram:
-            <a href="https://t.me/vektorwebbot" target="_blank" rel="noopener">@vektorwebbot</a>
-          </div>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER (без логотипов) -->
-  <footer class="footer" id="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <div class="brand brand-footer" aria-label="VEKTOR Web footer">VEKTOR WEB</div>
-          <p>Сайты и Telegram-боты</p>
-        </div>
-
-        <div class="footer-nav">
-          <h4>Навигация</h4>
-          <ul>
-            <li><a href="#services">Пакеты</a></li>
-            <li><a href="#cases">Кейсы</a></li>
-            <li><a href="#process">Процесс</a></li>
-            <li><a href="#guarantees">Гарантии</a></li>
-            <li><a href="#contacts">Контакты</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-contacts">
-          <h4>Контакты</h4>
-          <ul>
-            <li><a href="https://t.me/vektorwebbot" target="_blank" rel="noopener">Telegram</a></li>
-            <li><a href="mailto:vectorweb9881@gmail.com">vectorweb9881@gmail.com</a></li>
-            <li><a href="https://instagram.com/vektor_web" target="_blank" rel="noopener">Instagram</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-legal">
-          <p class="copyright">© Vektor Web, 2024</p>
-        </div>
-      </div>
-
-      <div class="legal-accordions">
-        <div class="legal-accordion">
-          <button class="legal-toggle" type="button" data-accordion="offer">
-            Не является публичной офертой
-            <span class="chev" aria-hidden="true"></span>
-          </button>
-          <div class="legal-panel" id="offer" aria-hidden="true">
-            <div class="legal-panel-inner">
-              <p class="legal-text">
-                Информация на сайте носит справочный характер и не является публичной офертой в смысле ст. 437 ГК РФ.
-                Условия, сроки и стоимость работ уточняются индивидуально и фиксируются в переписке и/или договоре.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="legal-accordion">
-          <button class="legal-toggle" type="button" data-accordion="privacyFooter">
-            Политика конфиденциальности
-            <span class="chev" aria-hidden="true"></span>
-          </button>
-          <div class="legal-panel" id="privacyFooter" aria-hidden="true">
-            <div class="legal-panel-inner">
-              <p class="legal-text">
-                Мы обрабатываем данные, которые вы указываете в форме (имя, контакт, выбранный пакет, описание задачи) исключительно для связи с вами и подготовки предложения.
-                Данные не продаются и не передаются третьим лицам, кроме случаев, предусмотренных законом, либо когда это необходимо для доставки заявки в Telegram.
-                Вы можете запросить удаление данных, написав в Telegram @vektorwebbot или на email vectorweb9881@gmail.com.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </footer>
-
-  <!-- МОДАЛКИ (оставлены) -->
-  <div class="modal" id="modal" aria-hidden="true">
-    <div class="modal-content" role="dialog" aria-modal="true" aria-label="Оставить заявку">
-      <button class="modal-close" type="button" onclick="closeModal()" aria-label="Закрыть">×</button>
-      <h3>Оставить заявку</h3>
-      <p id="modal-package">Выбранный пакет: <span></span></p>
-      <form id="modalForm">
-        <div class="form-group">
-          <input type="text" id="modalName" placeholder="Ваше имя" required />
-        </div>
-        <div class="form-group">
-          <input type="text" id="modalContact" placeholder="Email или Telegram" required />
-        </div>
-        <div class="form-group">
-          <textarea id="modalDescription" placeholder="Краткое описание задачи" rows="4" required></textarea>
-        </div>
-        <div class="form-group checkbox-group">
-          <input type="checkbox" id="modal-privacy" required />
-          <label for="modal-privacy">
-            Согласен с
-            <button type="button" class="link-btn" onclick="openPrivacyModal()">политикой конфиденциальности</button>
-          </label>
-        </div>
-        <button type="submit" class="btn btn-primary btn-large">Отправить заявку</button>
-      </form>
-    </div>
-  </div>
-
-  <div class="policy-modal" id="privacyModal" aria-hidden="true">
-    <div class="policy-content" role="dialog" aria-modal="true" aria-label="Политика конфиденциальности">
-      <button class="modal-close" type="button" onclick="closePrivacyModal()" aria-label="Закрыть">×</button>
-      <h3>Политика конфиденциальности</h3>
-
-      <div class="policy-text">
-        <p><strong>1) Какие данные собираются</strong></p>
-        <p>Имя, контакт для связи (email/Telegram), выбранный пакет, описание задачи, а также технические данные: URL страницы и UTM-метки (если есть).</p>
-
-        <p><strong>2) Зачем это нужно</strong></p>
-        <p>Для обработки заявки, связи с вами, подготовки расчёта и улучшения качества сервиса.</p>
-
-        <p><strong>3) Передача третьим лицам</strong></p>
-        <p>Данные не продаются и не передаются третьим лицам, кроме случаев, когда это требуется законом или необходимо для обработки заявки.</p>
-
-        <p><strong>4) Срок хранения</strong></p>
-        <p>Данные хранятся столько, сколько нужно для обработки заявки и последующей коммуникации, либо до отзыва согласия.</p>
-
-        <p><strong>5) Ваши права</strong></p>
-        <p>Вы можете запросить уточнение, обновление или удаление своих данных, написав в Telegram: <strong>@vektorwebbot</strong> или на email: <strong>vectorweb9881@gmail.com</strong>.</p>
-
-        <p><strong>6) Согласие</strong></p>
-        <p>Отправляя форму, вы подтверждаете согласие на обработку персональных данных.</p>
-      </div>
-
-      <button class="btn btn-outline policy-ok" type="button" onclick="closePrivacyModal()">Понятно</button>
-    </div>
-  </div>
-
-  <div class="success-message" id="successMessage" aria-hidden="true">
-    <div class="success-content" role="status" aria-live="polite">
-      <h3>Заявка принята</h3>
-      <p>Менеджер напишет вам в ближайшие 30 минут.</p>
-      <p class="copy-hint" style="display:none;"></p>
-      <button class="btn btn-outline success-ok" type="button" onclick="hideSuccess()">ОК</button>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>
+// FILE: script.js
+// ========================================
+// VEKTOR WEB — отправка заявок напрямую в Fly.io бот
+// Endpoint: POST https://<fly-app>/lead
+// ========================================
+
+// 1) Публичный URL Fly приложения (без слэша в конце)
+const LEAD_API_BASE_URL = 'https://vektor-web-bot.fly.dev';
+const LEAD_API_ENDPOINT = `${LEAD_API_BASE_URL}/lead`;
+
+// 2) Если включишь секрет на Fly (LEAD_SECRET), пропиши здесь тот же
+const LEAD_API_SECRET = ''; // пример: 'my-secret'
+
+// ========================================
+// Lock helpers
+// ========================================
+function lockBody() { document.body.classList.add('is-locked'); }
+function unlockBody() { document.body.classList.remove('is-locked'); }
+
+// ========================================
+// Success overlay
+// ========================================
+function showSuccessMessage(message, opts = {}) {
+  const { title = 'Заявка отправлена', hint = '', autoHideMs = 0 } = opts;
+
+  const successMessage = document.getElementById('successMessage');
+  if (!successMessage) return;
+
+  const successContent = successMessage.querySelector('.success-content');
+  if (!successContent) return;
+
+  const h3 = successContent.querySelector('h3');
+  const p = successContent.querySelector('p');
+  const hintEl = successContent.querySelector('.copy-hint');
+
+  if (h3) h3.textContent = title;
+  if (p) p.textContent = message;
+
+  if (hint && hintEl) {
+    hintEl.textContent = hint;
+    hintEl.style.display = 'block';
+  } else if (hintEl) {
+    hintEl.style.display = 'none';
+  }
+
+  successMessage.classList.add('active');
+  successMessage.setAttribute('aria-hidden', 'false');
+  lockBody();
+
+  if (autoHideMs && autoHideMs > 0) setTimeout(() => hideSuccess(), autoHideMs);
+}
+
+function hideSuccess() {
+  const successMessage = document.getElementById('successMessage');
+  if (!successMessage) return;
+
+  successMessage.classList.remove('active');
+  successMessage.setAttribute('aria-hidden', 'true');
+
+  const modal = document.getElementById('modal');
+  const privacyModal = document.getElementById('privacyModal');
+  const modalOpen = modal && modal.classList.contains('active');
+  const privacyOpen = privacyModal && privacyModal.classList.contains('active');
+
+  if (!modalOpen && !privacyOpen) unlockBody();
+}
+
+// Закрытие success по клику на фон
+document.addEventListener('click', (e) => {
+  const sm = document.getElementById('successMessage');
+  if (sm && sm.classList.contains('active') && e.target === sm) hideSuccess();
+});
+
+// ========================================
+// Privacy policy modal (для формы)
+// ========================================
+function openPrivacyModal() {
+  const privacyModal = document.getElementById('privacyModal');
+  if (!privacyModal) return;
+
+  privacyModal.classList.add('active');
+  privacyModal.setAttribute('aria-hidden', 'false');
+  lockBody();
+}
+
+function closePrivacyModal() {
+  const privacyModal = document.getElementById('privacyModal');
+  if (!privacyModal) return;
+
+  privacyModal.classList.remove('active');
+  privacyModal.setAttribute('aria-hidden', 'true');
+
+  const modal = document.getElementById('modal');
+  const sm = document.getElementById('successMessage');
+  const modalOpen = modal && modal.classList.contains('active');
+  const smOpen = sm && sm.classList.contains('active');
+
+  if (!modalOpen && !smOpen) unlockBody();
+}
+
+document.addEventListener('click', (e) => {
+  const pm = document.getElementById('privacyModal');
+  if (pm && pm.classList.contains('active') && e.target === pm) closePrivacyModal();
+});
+
+// ========================================
+// UTM helpers
+// ========================================
+function getUtmFromUrl() {
+  const p = new URLSearchParams(window.location.search);
+  const utmKeys = [
+    'utm_source','utm_medium','utm_campaign','utm_term','utm_content',
+    'gclid','yclid','fbclid'
+  ];
+  const utm = {};
+  for (const k of utmKeys) {
+    const v = p.get(k);
+    if (v) utm[k] = v;
+  }
+  return utm;
+}
+
+function persistUtm() {
+  try {
+    const utm = getUtmFromUrl();
+    if (Object.keys(utm).length) localStorage.setItem('vektor_utm', JSON.stringify(utm));
+  } catch {}
+}
+
+function readPersistedUtm() {
+  try {
+    const raw = localStorage.getItem('vektor_utm');
+    if (!raw) return {};
+    const utm = JSON.parse(raw);
+    return utm && typeof utm === 'object' ? utm : {};
+  } catch { return {}; }
+}
+
+function getUtmMerged() {
+  const fromUrl = getUtmFromUrl();
+  const stored = readPersistedUtm();
+  return { ...stored, ...fromUrl };
+}
+
+// ========================================
+// POST to Fly /lead
+// ========================================
+async function sendLeadToApi(payload) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (LEAD_API_SECRET) headers['X-Lead-Secret'] = LEAD_API_SECRET;
+
+  const res = await fetch(LEAD_API_ENDPOINT, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(payload),
+  });
+
+  let data = null;
+  try { data = await res.json(); } catch {}
+
+  if (!res.ok || !data || data.ok !== true) {
+    const code = data && data.code ? data.code : '';
+    throw new Error(code || `http_${res.status}`);
+  }
+
+  return data;
+}
+
+// ========================================
+// Forms submit (без открытия Telegram)
+// ========================================
+async function handleTelegramSubmit(event, formId) {
+  event.preventDefault();
+
+  const form = event.target;
+  const submitBtn = form ? form.querySelector('button[type="submit"]') : null;
+  const prevBtnText = submitBtn ? submitBtn.textContent : '';
+
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Отправка...';
+  }
+
+  try {
+    let name = '';
+    let contact = '';
+    let pkg = '';
+    let description = '';
+
+    if (formId === 'contactForm') {
+      name = (document.getElementById('mainName')?.value || '').trim();
+      contact = (document.getElementById('mainContact')?.value || '').trim();
+      pkg = (document.getElementById('mainPackage')?.value || '').trim();
+      description = (document.getElementById('mainDescription')?.value || '').trim();
+    } else if (formId === 'modalForm') {
+      const pkgSpan = document.getElementById('modal-package')?.querySelector('span');
+      pkg = (pkgSpan ? pkgSpan.textContent : '').trim();
+      name = (document.getElementById('modalName')?.value || '').trim();
+      contact = (document.getElementById('modalContact')?.value || '').trim();
+      description = (document.getElementById('modalDescription')?.value || '').trim();
+    } else {
+      throw new Error('unknown_form');
+    }
+
+    if (!name || !contact || !pkg || !description) throw new Error('fill_all_fields');
+
+    const payload = {
+      name,
+      contact,
+      package: pkg,
+      message: description,
+      page: window.location.href,
+      utm: getUtmMerged(),
+      source: 'site_form',
+    };
+
+    await sendLeadToApi(payload);
+
+    showSuccessMessage(
+      'Заявка отправлена. Менеджер напишет вам в ближайшие 30 минут.',
+      { title: 'Заявка принята', hint: '', autoHideMs: 0 }
+    );
+
+    if (form && typeof form.reset === 'function') form.reset();
+    if (formId === 'modalForm') closeModal();
+  } catch (err) {
+    const msg = (err && err.message) ? String(err.message) : '';
+    let hint = '';
+
+    if (msg === 'cors_blocked') hint = 'CORS: домен сайта не добавлен в ALLOWED_ORIGINS на Fly.';
+    else if (msg === 'bad_secret') hint = 'Секрет не совпал: проверь X-Lead-Secret и LEAD_SECRET.';
+    else if (msg === 'fill_all_fields') hint = 'Заполните все поля.';
+    else hint = msg;
+
+    showSuccessMessage(
+      'Не удалось отправить заявку. Напишите в Telegram @vektorwebbot.',
+      { title: 'Ошибка отправки', hint, autoHideMs: 0 }
+    );
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = prevBtnText || 'Отправить заявку';
+    }
+  }
+}
+
+// ========================================
+// Telegram open helper (карточки/кейсы)
+// ========================================
+function openTelegramBot(additionalInfo = '') {
+  const username = 'vektorwebbot';
+  const url = `https://t.me/${username}`;
+
+  const utm = getUtmMerged();
+  const utmStr = Object.keys(utm).length ? `\n\nUTM: ${JSON.stringify(utm)}` : '';
+
+  const message = additionalInfo
+    ? `Здравствуйте! Меня интересует: ${additionalInfo}\n\nОпишите задачу, сроки и желаемый результат.${utmStr}`
+    : `Здравствуйте! Хочу консультацию по разработке сайта/бота.\n\nОпишите задачу, сроки и примеры.${utmStr}`;
+
+  copyToClipboard(message).catch(() => {});
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+function copyToClipboard(text) {
+  return new Promise((resolve, reject) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(resolve).catch(reject);
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try { document.execCommand('copy'); resolve(); }
+      catch (err) { reject(err); }
+      finally { document.body.removeChild(textarea); }
+    }
+  });
+}
+
+// ========================================
+// Scroll helper
+// ========================================
+function scrollToSection(sectionId) {
+  const section = document.getElementById(sectionId);
+  if (!section) return;
+
+  const headerEl = document.querySelector('.header');
+  const headerHeight = headerEl ? headerEl.offsetHeight : 0;
+  const targetPosition = section.getBoundingClientRect().top + window.pageYOffset - headerHeight - 14;
+
+  window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+}
+
+// ========================================
+// Footer accordions
+// ========================================
+function initFooterAccordions() {
+  const toggles = document.querySelectorAll('.legal-toggle[data-accordion]');
+  if (!toggles || !toggles.length) return;
+
+  toggles.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-accordion');
+      const panel = id ? document.getElementById(id) : null;
+      if (!panel) return;
+
+      const isOpen = panel.classList.contains('open');
+
+      document.querySelectorAll('.legal-panel.open').forEach(p => {
+        p.classList.remove('open');
+        p.setAttribute('aria-hidden', 'true');
+        p.style.maxHeight = '0px';
+        const inner = p.querySelector('.legal-panel-inner');
+        if (inner) inner.style.opacity = '0';
+      });
+      document.querySelectorAll('.legal-toggle.open').forEach(b => b.classList.remove('open'));
+
+      if (!isOpen) {
+        btn.classList.add('open');
+        panel.classList.add('open');
+        panel.setAttribute('aria-hidden', 'false');
+
+        const inner = panel.querySelector('.legal-panel-inner');
+        const target = inner ? inner.scrollHeight : panel.scrollHeight;
+
+        panel.style.maxHeight = `${target}px`;
+        if (inner) inner.style.opacity = '1';
+      } else {
+        btn.classList.remove('open');
+        panel.classList.remove('open');
+        panel.setAttribute('aria-hidden', 'true');
+        panel.style.maxHeight = '0px';
+        const inner = panel.querySelector('.legal-panel-inner');
+        if (inner) inner.style.opacity = '0';
+      }
+    });
+  });
+}
+
+// ========================================
+// Modal (оставлено, если понадобится)
+// ========================================
+function openModal(packageName) {
+  const modal = document.getElementById('modal');
+  const pkgSpan = document.getElementById('modal-package')?.querySelector('span');
+  if (!modal || !pkgSpan) return;
+
+  pkgSpan.textContent = packageName;
+  modal.classList.add('active');
+  modal.setAttribute('aria-hidden', 'false');
+  lockBody();
+}
+
+function closeModal() {
+  const modal = document.getElementById('modal');
+  if (!modal) return;
+
+  modal.classList.remove('active');
+  modal.setAttribute('aria-hidden', 'true');
+
+  const modalForm = document.getElementById('modalForm');
+  if (modalForm) modalForm.reset();
+
+  const pm = document.getElementById('privacyModal');
+  const sm = document.getElementById('successMessage');
+  const pmOpen = pm && pm.classList.contains('active');
+  const smOpen = sm && sm.classList.contains('active');
+  if (!pmOpen && !smOpen) unlockBody();
+}
+
+// ========================================
+// Init after DOM ready (ключевой фикс)
+// ========================================
+document.addEventListener('DOMContentLoaded', () => {
+  persistUtm();
+
+  // Header shadow
+  const header = document.getElementById('header');
+  const scrollThreshold = 50;
+  window.addEventListener('scroll', () => {
+    if (!header) return;
+    if (window.scrollY > scrollThreshold) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  });
+
+  // Fade-in observer
+  if ('IntersectionObserver' in window) {
+    const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.section').forEach(section => {
+      section.style.opacity = '0';
+      section.style.transform = 'translateY(15px)';
+      section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(section);
+    });
+
+    document.querySelectorAll('.service-card').forEach((card, index) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(12px)';
+      card.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
+      observer.observe(card);
+    });
+
+    document.querySelectorAll('.case-card').forEach((card, index) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(12px)';
+      card.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
+      observer.observe(card);
+    });
+
+    document.querySelectorAll('.timeline-step').forEach((step, index) => {
+      step.style.opacity = '0';
+      step.style.transform = 'translateY(12px)';
+      step.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
+      observer.observe(step);
+    });
+  }
+
+  // Footer accordions
+  initFooterAccordions();
+
+  // Form handlers (строго после DOM)
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) contactForm.addEventListener('submit', (e) => handleTelegramSubmit(e, 'contactForm'));
+
+  const modalForm = document.getElementById('modalForm');
+  if (modalForm) modalForm.addEventListener('submit', (e) => handleTelegramSubmit(e, 'modalForm'));
+
+  // Close modal by background click
+  const modal = document.getElementById('modal');
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  }
+
+  // ESC close (success / privacy / modal)
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+
+    const pm = document.getElementById('privacyModal');
+    const sm = document.getElementById('successMessage');
+
+    if (pm && pm.classList.contains('active')) closePrivacyModal();
+    else if (sm && sm.classList.contains('active')) hideSuccess();
+    else if (modal && modal.classList.contains('active')) closeModal();
+  });
+
+  // Micro interactions (строго после DOM) — FIX: убрана лишняя запятая в селекторе
+  document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left').forEach(el => {
+    el.addEventListener('mousedown', () => { el.style.transform = 'scale(0.99)'; });
+    el.addEventListener('mouseup', () => { setTimeout(() => { if (!el.matches(':hover')) el.style.transform = ''; }, 100); });
+    el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+  });
+});
