@@ -4,33 +4,29 @@
 // Endpoint: POST https://<fly-app>/lead
 // ========================================
 
-// 1) Укажи публичный URL Fly приложения (без слэша в конце)
+// 1) Публичный URL Fly приложения (без слэша в конце)
 const LEAD_API_BASE_URL = 'https://vektor-web-bot.fly.dev';
 const LEAD_API_ENDPOINT = `${LEAD_API_BASE_URL}/lead`;
 
 // 2) Если включишь секрет на Fly (LEAD_SECRET), пропиши здесь тот же
-// Иначе оставь пустым.
 const LEAD_API_SECRET = ''; // пример: 'my-secret'
 
 // ========================================
-// Lock helpers (единый контроль блокировки скролла)
+// Lock helpers
 // ========================================
-function lockBody() {
-  document.body.classList.add('is-locked');
-}
-function unlockBody() {
-  document.body.classList.remove('is-locked');
-}
+function lockBody() { document.body.classList.add('is-locked'); }
+function unlockBody() { document.body.classList.remove('is-locked'); }
 
 // ========================================
-// UI: Success message overlay (#successMessage) — фикс на viewport
+// Success overlay
 // ========================================
 function showSuccessMessage(message, opts = {}) {
   const { title = 'Заявка отправлена', hint = '', autoHideMs = 0 } = opts;
 
   const successMessage = document.getElementById('successMessage');
-  const successContent = successMessage.querySelector('.success-content');
+  if (!successMessage) return;
 
+  const successContent = successMessage.querySelector('.success-content');
   const h3 = successContent.querySelector('h3');
   const p = successContent.querySelector('p');
   const hintEl = successContent.querySelector('.copy-hint');
@@ -47,33 +43,62 @@ function showSuccessMessage(message, opts = {}) {
 
   successMessage.classList.add('active');
   successMessage.setAttribute('aria-hidden', 'false');
-
   lockBody();
 
-  if (autoHideMs && autoHideMs > 0) {
-    setTimeout(() => hideSuccess(), autoHideMs);
-  }
+  if (autoHideMs && autoHideMs > 0) setTimeout(() => hideSuccess(), autoHideMs);
 }
 
 function hideSuccess() {
   const successMessage = document.getElementById('successMessage');
+  if (!successMessage) return;
+
   successMessage.classList.remove('active');
   successMessage.setAttribute('aria-hidden', 'true');
 
-  // если меню/модалка не открыты — разблокируем
-  const nav = document.getElementById('nav');
   const modal = document.getElementById('modal');
-  const navOpen = nav && nav.classList.contains('active');
+  const privacyModal = document.getElementById('privacyModal');
   const modalOpen = modal && modal.classList.contains('active');
+  const privacyOpen = privacyModal && privacyModal.classList.contains('active');
 
-  if (!navOpen && !modalOpen) unlockBody();
+  if (!modalOpen && !privacyOpen) unlockBody();
 }
 
 // Закрытие success по клику на фон
 document.addEventListener('click', (e) => {
   const sm = document.getElementById('successMessage');
-  if (!sm || !sm.classList.contains('active')) return;
-  if (e.target === sm) hideSuccess();
+  if (sm && sm.classList.contains('active') && e.target === sm) hideSuccess();
+});
+
+// ========================================
+// Privacy policy modal (для формы)
+// ========================================
+function openPrivacyModal() {
+  const privacyModal = document.getElementById('privacyModal');
+  if (!privacyModal) return;
+
+  privacyModal.classList.add('active');
+  privacyModal.setAttribute('aria-hidden', 'false');
+  lockBody();
+}
+
+function closePrivacyModal() {
+  const privacyModal = document.getElementById('privacyModal');
+  if (!privacyModal) return;
+
+  privacyModal.classList.remove('active');
+  privacyModal.setAttribute('aria-hidden', 'true');
+
+  const modal = document.getElementById('modal');
+  const sm = document.getElementById('successMessage');
+  const modalOpen = modal && modal.classList.contains('active');
+  const smOpen = sm && sm.classList.contains('active');
+
+  if (!modalOpen && !smOpen) unlockBody();
+}
+
+document.addEventListener('click', (e) => {
+  const pm = document.getElementById('privacyModal');
+  if (pm && pm.classList.contains('active') && e.target === pm) closePrivacyModal();
 });
 
 // ========================================
@@ -82,16 +107,9 @@ document.addEventListener('click', (e) => {
 function getUtmFromUrl() {
   const p = new URLSearchParams(window.location.search);
   const utmKeys = [
-    'utm_source',
-    'utm_medium',
-    'utm_campaign',
-    'utm_term',
-    'utm_content',
-    'gclid',
-    'yclid',
-    'fbclid'
+    'utm_source','utm_medium','utm_campaign','utm_term','utm_content',
+    'gclid','yclid','fbclid'
   ];
-
   const utm = {};
   for (const k of utmKeys) {
     const v = p.get(k);
@@ -103,9 +121,7 @@ function getUtmFromUrl() {
 function persistUtm() {
   try {
     const utm = getUtmFromUrl();
-    if (Object.keys(utm).length) {
-      localStorage.setItem('vektor_utm', JSON.stringify(utm));
-    }
+    if (Object.keys(utm).length) localStorage.setItem('vektor_utm', JSON.stringify(utm));
   } catch {}
 }
 
@@ -115,9 +131,7 @@ function readPersistedUtm() {
     if (!raw) return {};
     const utm = JSON.parse(raw);
     return utm && typeof utm === 'object' ? utm : {};
-  } catch {
-    return {};
-  }
+  } catch { return {}; }
 }
 
 function getUtmMerged() {
@@ -127,8 +141,7 @@ function getUtmMerged() {
 }
 
 // ========================================
-// Helper: POST to Fly /lead
-// Bot expects: name, contact, package, message, page, utm, source
+// POST to Fly /lead
 // ========================================
 async function sendLeadToApi(payload) {
   const headers = { 'Content-Type': 'application/json' };
@@ -141,7 +154,7 @@ async function sendLeadToApi(payload) {
   });
 
   let data = null;
-  try { data = await res.json(); } catch { /* ignore */ }
+  try { data = await res.json(); } catch {}
 
   if (!res.ok || !data || data.ok !== true) {
     const code = data && data.code ? data.code : '';
@@ -152,7 +165,7 @@ async function sendLeadToApi(payload) {
 }
 
 // ========================================
-// Forms: отправка заявки на Fly, без открытия Telegram
+// Forms submit (без открытия Telegram)
 // ========================================
 async function handleTelegramSubmit(event, formId) {
   event.preventDefault();
@@ -178,7 +191,8 @@ async function handleTelegramSubmit(event, formId) {
       pkg = document.getElementById('mainPackage').value.trim();
       description = document.getElementById('mainDescription').value.trim();
     } else if (formId === 'modalForm') {
-      pkg = document.getElementById('modal-package').querySelector('span').textContent.trim();
+      const pkgSpan = document.getElementById('modal-package')?.querySelector('span');
+      pkg = pkgSpan ? pkgSpan.textContent.trim() : '';
       name = document.getElementById('modalName').value.trim();
       contact = document.getElementById('modalContact').value.trim();
       description = document.getElementById('modalDescription').value.trim();
@@ -186,9 +200,7 @@ async function handleTelegramSubmit(event, formId) {
       throw new Error('unknown_form');
     }
 
-    if (!name || !contact || !pkg || !description) {
-      throw new Error('fill_all_fields');
-    }
+    if (!name || !contact || !pkg || !description) throw new Error('fill_all_fields');
 
     const payload = {
       name,
@@ -204,15 +216,15 @@ async function handleTelegramSubmit(event, formId) {
 
     showSuccessMessage(
       'Заявка отправлена. Менеджер напишет вам в ближайшие 30 минут.',
-      { title: 'Заявка принята', hint: '', autoHideMs: 0 } // без автоскрытия: всегда на экране, закрывается кнопкой/фоном
+      { title: 'Заявка принята', hint: '', autoHideMs: 0 }
     );
 
     form.reset();
     if (formId === 'modalForm') closeModal();
   } catch (err) {
     const msg = (err && err.message) ? String(err.message) : '';
-
     let hint = '';
+
     if (msg === 'cors_blocked') hint = 'CORS: домен сайта не добавлен в ALLOWED_ORIGINS на Fly.';
     else if (msg === 'bad_secret') hint = 'Секрет не совпал: проверь X-Lead-Secret и LEAD_SECRET.';
     else if (msg === 'fill_all_fields') hint = 'Заполните все поля.';
@@ -225,13 +237,13 @@ async function handleTelegramSubmit(event, formId) {
   } finally {
     if (submitBtn) {
       submitBtn.disabled = false;
-      submitBtn.textContent = prevBtnText || 'Отправить заявку в бота →';
+      submitBtn.textContent = prevBtnText || 'Отправить заявку';
     }
   }
 }
 
 // ========================================
-// Открытие Telegram (карточки/кейсы/для кого)
+// Telegram open helper (карточки/кейсы)
 // ========================================
 function openTelegramBot(additionalInfo = '') {
   const username = 'vektorwebbot';
@@ -245,10 +257,9 @@ function openTelegramBot(additionalInfo = '') {
     : `Здравствуйте! Хочу консультацию по разработке сайта/бота.\n\nОпишите задачу, сроки и примеры.${utmStr}`;
 
   copyToClipboard(message).catch(() => {});
-  window.open(url, '_blank');
+  window.open(url, '_blank', 'noopener,noreferrer');
 }
 
-// Clipboard helper
 function copyToClipboard(text) {
   return new Promise((resolve, reject) => {
     if (navigator.clipboard) {
@@ -260,20 +271,15 @@ function copyToClipboard(text) {
       textarea.style.opacity = '0';
       document.body.appendChild(textarea);
       textarea.select();
-      try {
-        document.execCommand('copy');
-        resolve();
-      } catch (err) {
-        reject(err);
-      } finally {
-        document.body.removeChild(textarea);
-      }
+      try { document.execCommand('copy'); resolve(); }
+      catch (err) { reject(err); }
+      finally { document.body.removeChild(textarea); }
     }
   });
 }
 
 // ========================================
-// Scroll helpers
+// Scroll helper
 // ========================================
 function scrollToSection(sectionId) {
   const section = document.getElementById(sectionId);
@@ -284,12 +290,9 @@ function scrollToSection(sectionId) {
   const targetPosition = section.getBoundingClientRect().top + window.pageYOffset - headerHeight - 14;
 
   window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-
-  // close mobile nav
-  closeNav();
 }
 
-// Header scroll
+// Header scroll shadow
 const header = document.getElementById('header');
 const scrollThreshold = 50;
 
@@ -300,48 +303,9 @@ window.addEventListener('scroll', () => {
 });
 
 // ========================================
-// Mobile menu (единое управление + lock)
-// ========================================
-const burger = document.getElementById('burger');
-const nav = document.getElementById('nav');
-
-function openNav() {
-  burger.classList.add('active');
-  nav.classList.add('active');
-  burger.setAttribute('aria-expanded', 'true');
-  lockBody();
-}
-
-function closeNav() {
-  burger.classList.remove('active');
-  nav.classList.remove('active');
-  burger.setAttribute('aria-expanded', 'false');
-
-  // если модалка/успех не открыты — разблокируем
-  const modal = document.getElementById('modal');
-  const sm = document.getElementById('successMessage');
-  const modalOpen = modal && modal.classList.contains('active');
-  const smOpen = sm && sm.classList.contains('active');
-
-  if (!modalOpen && !smOpen) unlockBody();
-}
-
-burger.addEventListener('click', () => {
-  if (nav.classList.contains('active')) closeNav();
-  else openNav();
-});
-
-document.addEventListener('click', (e) => {
-  if (!nav.classList.contains('active')) return;
-  if (nav.contains(e.target) || burger.contains(e.target)) return;
-  closeNav();
-});
-
-// ========================================
-// Fade-in observer (без изменения логики)
+// Fade-in observer
 // ========================================
 const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -381,16 +345,66 @@ document.addEventListener('DOMContentLoaded', () => {
     step.style.transition = `opacity 0.4s ease ${index * 0.06}s, transform 0.4s ease ${index * 0.06}s`;
     observer.observe(step);
   });
+
+  // Footer accordions (Не оферта / Политика)
+  initFooterAccordions();
 });
 
 // ========================================
-// Modal
+// Footer accordions
+// ========================================
+function initFooterAccordions() {
+  const toggles = document.querySelectorAll('.legal-toggle[data-accordion]');
+  toggles.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-accordion');
+      const panel = document.getElementById(id);
+      if (!panel) return;
+
+      const isOpen = panel.classList.contains('open');
+
+      // Закрыть все, открыть только выбранное
+      document.querySelectorAll('.legal-panel.open').forEach(p => {
+        p.classList.remove('open');
+        p.setAttribute('aria-hidden', 'true');
+        const inner = p.querySelector('.legal-panel-inner');
+        p.style.maxHeight = '0px';
+        if (inner) inner.style.opacity = '0';
+      });
+      document.querySelectorAll('.legal-toggle.open').forEach(b => b.classList.remove('open'));
+
+      if (!isOpen) {
+        btn.classList.add('open');
+        panel.classList.add('open');
+        panel.setAttribute('aria-hidden', 'false');
+
+        const inner = panel.querySelector('.legal-panel-inner');
+        const target = inner ? inner.scrollHeight : panel.scrollHeight;
+
+        panel.style.maxHeight = `${target}px`;
+        if (inner) inner.style.opacity = '1';
+      } else {
+        btn.classList.remove('open');
+        panel.classList.remove('open');
+        panel.setAttribute('aria-hidden', 'true');
+        panel.style.maxHeight = '0px';
+        const inner = panel.querySelector('.legal-panel-inner');
+        if (inner) inner.style.opacity = '0';
+      }
+    });
+  });
+}
+
+// ========================================
+// Modal (оставлено, если понадобится)
 // ========================================
 const modal = document.getElementById('modal');
-const modalPackage = document.getElementById('modal-package').querySelector('span');
+const modalPackageEl = document.getElementById('modal-package');
+const modalPackage = modalPackageEl ? modalPackageEl.querySelector('span') : null;
 const modalForm = document.getElementById('modalForm');
 
 function openModal(packageName) {
+  if (!modal || !modalPackage) return;
   modalPackage.textContent = packageName;
   modal.classList.add('active');
   modal.setAttribute('aria-hidden', 'false');
@@ -398,44 +412,46 @@ function openModal(packageName) {
 }
 
 function closeModal() {
+  if (!modal) return;
   modal.classList.remove('active');
   modal.setAttribute('aria-hidden', 'true');
-  modalForm.reset();
+  if (modalForm) modalForm.reset();
 
-  // если меню/успех не открыты — разблокируем
-  const navOpen = nav && nav.classList.contains('active');
+  const pm = document.getElementById('privacyModal');
   const sm = document.getElementById('successMessage');
+  const pmOpen = pm && pm.classList.contains('active');
   const smOpen = sm && sm.classList.contains('active');
-  if (!navOpen && !smOpen) unlockBody();
+  if (!pmOpen && !smOpen) unlockBody();
 }
 
-modal.addEventListener('click', (e) => {
-  if (e.target === modal) closeModal();
-});
+if (modal) {
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+}
 
+// ESC close (success / privacy / modal)
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    if (modal.classList.contains('active')) closeModal();
-    const sm = document.getElementById('successMessage');
-    if (sm && sm.classList.contains('active')) hideSuccess();
-    if (nav.classList.contains('active')) closeNav();
-  }
+  if (e.key !== 'Escape') return;
+
+  const pm = document.getElementById('privacyModal');
+  const sm = document.getElementById('successMessage');
+
+  if (pm && pm.classList.contains('active')) closePrivacyModal();
+  else if (sm && sm.classList.contains('active')) hideSuccess();
+  else if (modal && modal.classList.contains('active')) closeModal();
 });
 
 // Form handlers
-document.getElementById('contactForm').addEventListener('submit', function(e) {
-  handleTelegramSubmit(e, 'contactForm');
-});
+const contactForm = document.getElementById('contactForm');
+if (contactForm) contactForm.addEventListener('submit', (e) => handleTelegramSubmit(e, 'contactForm'));
+if (modalForm) modalForm.addEventListener('submit', (e) => handleTelegramSubmit(e, 'modalForm'));
 
-modalForm.addEventListener('submit', function(e) {
-  handleTelegramSubmit(e, 'modalForm');
-});
-
-// Animations micro-interactions
-document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left').forEach(element => {
-  element.addEventListener('mousedown', () => { element.style.transform = 'scale(0.99)'; });
-  element.addEventListener('mouseup', () => { setTimeout(() => { if (!element.matches(':hover')) element.style.transform = ''; }, 100); });
-  element.addEventListener('mouseleave', () => { element.style.transform = ''; });
+// Micro interactions
+document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left, .review-card').forEach(el => {
+  el.addEventListener('mousedown', () => { el.style.transform = 'scale(0.99)'; });
+  el.addEventListener('mouseup', () => { setTimeout(() => { if (!el.matches(':hover')) el.style.transform = ''; }, 100); });
+  el.addEventListener('mouseleave', () => { el.style.transform = ''; });
 });
 
 window.addEventListener('load', () => {
