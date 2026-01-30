@@ -457,8 +457,8 @@ document.addEventListener('DOMContentLoaded', () => {
     else if (modal && modal.classList.contains('active')) closeModal();
   });
 
-  // Micro interactions (строго после DOM)
-  document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left,').forEach(el => {
+  // Micro interactions (строго после DOM) — FIX: убрана лишняя запятая в селекторе
+  document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left').forEach(el => {
     el.addEventListener('mousedown', () => { el.style.transform = 'scale(0.99)'; });
     el.addEventListener('mouseup', () => { setTimeout(() => { if (!el.matches(':hover')) el.style.transform = ''; }, 100); });
     el.addEventListener('mouseleave', () => { el.style.transform = ''; });
