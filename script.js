@@ -1,3 +1,4 @@
+// FILE: script.js
 // ========================================
 // VEKTOR WEB — отправка заявок напрямую в Fly.io бот
 // Endpoint: POST https://<fly-app>/lead
@@ -12,10 +13,20 @@ const LEAD_API_ENDPOINT = `${LEAD_API_BASE_URL}/lead`;
 const LEAD_API_SECRET = ''; // пример: 'my-secret'
 
 // ========================================
-// UI: Success message overlay (#successMessage)
+// Lock helpers (единый контроль блокировки скролла)
+// ========================================
+function lockBody() {
+  document.body.classList.add('is-locked');
+}
+function unlockBody() {
+  document.body.classList.remove('is-locked');
+}
+
+// ========================================
+// UI: Success message overlay (#successMessage) — фикс на viewport
 // ========================================
 function showSuccessMessage(message, opts = {}) {
-  const { title = 'Заявка отправлена', hint = '', autoHideMs = 3500 } = opts;
+  const { title = 'Заявка отправлена', hint = '', autoHideMs = 0 } = opts;
 
   const successMessage = document.getElementById('successMessage');
   const successContent = successMessage.querySelector('.success-content');
@@ -35,7 +46,9 @@ function showSuccessMessage(message, opts = {}) {
   }
 
   successMessage.classList.add('active');
-  document.body.style.overflow = 'hidden';
+  successMessage.setAttribute('aria-hidden', 'false');
+
+  lockBody();
 
   if (autoHideMs && autoHideMs > 0) {
     setTimeout(() => hideSuccess(), autoHideMs);
@@ -45,8 +58,23 @@ function showSuccessMessage(message, opts = {}) {
 function hideSuccess() {
   const successMessage = document.getElementById('successMessage');
   successMessage.classList.remove('active');
-  document.body.style.overflow = '';
+  successMessage.setAttribute('aria-hidden', 'true');
+
+  // если меню/модалка не открыты — разблокируем
+  const nav = document.getElementById('nav');
+  const modal = document.getElementById('modal');
+  const navOpen = nav && nav.classList.contains('active');
+  const modalOpen = modal && modal.classList.contains('active');
+
+  if (!navOpen && !modalOpen) unlockBody();
 }
+
+// Закрытие success по клику на фон
+document.addEventListener('click', (e) => {
+  const sm = document.getElementById('successMessage');
+  if (!sm || !sm.classList.contains('active')) return;
+  if (e.target === sm) hideSuccess();
+});
 
 // ========================================
 // UTM helpers
@@ -95,7 +123,6 @@ function readPersistedUtm() {
 function getUtmMerged() {
   const fromUrl = getUtmFromUrl();
   const stored = readPersistedUtm();
-  // URL utm имеет приоритет
   return { ...stored, ...fromUrl };
 }
 
@@ -167,7 +194,7 @@ async function handleTelegramSubmit(event, formId) {
       name,
       contact,
       package: pkg,
-      message: description,            // важно: bot ждёт поле message
+      message: description,
       page: window.location.href,
       utm: getUtmMerged(),
       source: 'site_form',
@@ -177,7 +204,7 @@ async function handleTelegramSubmit(event, formId) {
 
     showSuccessMessage(
       'Заявка отправлена. Менеджер напишет вам в ближайшие 30 минут.',
-      { title: 'Заявка принята', hint: '', autoHideMs: 4500 }
+      { title: 'Заявка принята', hint: '', autoHideMs: 0 } // без автоскрытия: всегда на экране, закрывается кнопкой/фоном
     );
 
     form.reset();
@@ -193,7 +220,7 @@ async function handleTelegramSubmit(event, formId) {
 
     showSuccessMessage(
       'Не удалось отправить заявку. Напишите в Telegram @vektorwebbot.',
-      { title: 'Ошибка отправки', hint, autoHideMs: 5500 }
+      { title: 'Ошибка отправки', hint, autoHideMs: 0 }
     );
   } finally {
     if (submitBtn) {
@@ -204,7 +231,7 @@ async function handleTelegramSubmit(event, formId) {
 }
 
 // ========================================
-// Открытие Telegram (карточки/кейсы/для кого) — оставляем, но делаем контекстнее
+// Открытие Telegram (карточки/кейсы/для кого)
 // ========================================
 function openTelegramBot(additionalInfo = '') {
   const username = 'vektorwebbot';
@@ -246,19 +273,20 @@ function copyToClipboard(text) {
 }
 
 // ========================================
-// Универсальные функции (без изменений логики)
+// Scroll helpers
 // ========================================
 function scrollToSection(sectionId) {
   const section = document.getElementById(sectionId);
-  if (section) {
-    const headerHeight = document.querySelector('.header').offsetHeight;
-    const targetPosition = section.getBoundingClientRect().top + window.pageYOffset - headerHeight - 20;
+  if (!section) return;
 
-    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+  const headerEl = document.querySelector('.header');
+  const headerHeight = headerEl ? headerEl.offsetHeight : 0;
+  const targetPosition = section.getBoundingClientRect().top + window.pageYOffset - headerHeight - 14;
 
-    document.getElementById('nav').classList.remove('active');
-    document.getElementById('burger').classList.remove('active');
-  }
+  window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+
+  // close mobile nav
+  closeNav();
 }
 
 // Header scroll
@@ -266,29 +294,52 @@ const header = document.getElementById('header');
 const scrollThreshold = 50;
 
 window.addEventListener('scroll', () => {
+  if (!header) return;
   if (window.scrollY > scrollThreshold) header.classList.add('scrolled');
   else header.classList.remove('scrolled');
 });
 
-// Mobile menu
+// ========================================
+// Mobile menu (единое управление + lock)
+// ========================================
 const burger = document.getElementById('burger');
 const nav = document.getElementById('nav');
 
+function openNav() {
+  burger.classList.add('active');
+  nav.classList.add('active');
+  burger.setAttribute('aria-expanded', 'true');
+  lockBody();
+}
+
+function closeNav() {
+  burger.classList.remove('active');
+  nav.classList.remove('active');
+  burger.setAttribute('aria-expanded', 'false');
+
+  // если модалка/успех не открыты — разблокируем
+  const modal = document.getElementById('modal');
+  const sm = document.getElementById('successMessage');
+  const modalOpen = modal && modal.classList.contains('active');
+  const smOpen = sm && sm.classList.contains('active');
+
+  if (!modalOpen && !smOpen) unlockBody();
+}
+
 burger.addEventListener('click', () => {
-  burger.classList.toggle('active');
-  nav.classList.toggle('active');
-  document.body.style.overflow = nav.classList.contains('active') ? 'hidden' : '';
+  if (nav.classList.contains('active')) closeNav();
+  else openNav();
 });
 
 document.addEventListener('click', (e) => {
-  if (nav.classList.contains('active') && !nav.contains(e.target) && !burger.contains(e.target)) {
-    nav.classList.remove('active');
-    burger.classList.remove('active');
-    document.body.style.overflow = '';
-  }
+  if (!nav.classList.contains('active')) return;
+  if (nav.contains(e.target) || burger.contains(e.target)) return;
+  closeNav();
 });
 
-// Fade-in observer
+// ========================================
+// Fade-in observer (без изменения логики)
+// ========================================
 const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
 
 const observer = new IntersectionObserver((entries) => {
@@ -332,7 +383,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// ========================================
 // Modal
+// ========================================
 const modal = document.getElementById('modal');
 const modalPackage = document.getElementById('modal-package').querySelector('span');
 const modalForm = document.getElementById('modalForm');
@@ -340,13 +393,20 @@ const modalForm = document.getElementById('modalForm');
 function openModal(packageName) {
   modalPackage.textContent = packageName;
   modal.classList.add('active');
-  document.body.style.overflow = 'hidden';
+  modal.setAttribute('aria-hidden', 'false');
+  lockBody();
 }
 
 function closeModal() {
   modal.classList.remove('active');
-  document.body.style.overflow = '';
+  modal.setAttribute('aria-hidden', 'true');
   modalForm.reset();
+
+  // если меню/успех не открыты — разблокируем
+  const navOpen = nav && nav.classList.contains('active');
+  const sm = document.getElementById('successMessage');
+  const smOpen = sm && sm.classList.contains('active');
+  if (!navOpen && !smOpen) unlockBody();
 }
 
 modal.addEventListener('click', (e) => {
@@ -354,7 +414,12 @@ modal.addEventListener('click', (e) => {
 });
 
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+  if (e.key === 'Escape') {
+    if (modal.classList.contains('active')) closeModal();
+    const sm = document.getElementById('successMessage');
+    if (sm && sm.classList.contains('active')) hideSuccess();
+    if (nav.classList.contains('active')) closeNav();
+  }
 });
 
 // Form handlers
@@ -366,37 +431,23 @@ modalForm.addEventListener('submit', function(e) {
   handleTelegramSubmit(e, 'modalForm');
 });
 
-// Animations
-document.querySelectorAll('.timeline-step').forEach(step => {
-  step.addEventListener('mouseenter', () => {
-    step.querySelector('.step-content').style.transform = 'scale(1.005)';
-  });
-
-  step.addEventListener('mouseleave', () => {
-    step.querySelector('.step-content').style.transform = 'scale(1)';
-  });
+// Animations micro-interactions
+document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left').forEach(element => {
+  element.addEventListener('mousedown', () => { element.style.transform = 'scale(0.99)'; });
+  element.addEventListener('mouseup', () => { setTimeout(() => { if (!element.matches(':hover')) element.style.transform = ''; }, 100); });
+  element.addEventListener('mouseleave', () => { element.style.transform = ''; });
 });
 
 window.addEventListener('load', () => {
   const heroSvg = document.querySelector('.hero-svg');
-  if (heroSvg) {
-    heroSvg.style.opacity = '0';
-    heroSvg.style.transform = 'scale(0.8) rotate(-10deg)';
-    heroSvg.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+  if (!heroSvg) return;
 
-    setTimeout(() => {
-      heroSvg.style.opacity = '1';
-      heroSvg.style.transform = 'scale(1) rotate(0deg)';
-    }, 300);
-  }
-});
+  heroSvg.style.opacity = '0';
+  heroSvg.style.transform = 'scale(0.9) rotate(-8deg)';
+  heroSvg.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
 
-document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left').forEach(element => {
-  element.addEventListener('mousedown', () => { element.style.transform = 'scale(0.99)'; });
-
-  element.addEventListener('mouseup', () => {
-    setTimeout(() => { if (!element.matches(':hover')) element.style.transform = ''; }, 100);
-  });
-
-  element.addEventListener('mouseleave', () => { element.style.transform = ''; });
+  setTimeout(() => {
+    heroSvg.style.opacity = '1';
+    heroSvg.style.transform = 'scale(1) rotate(0deg)';
+  }, 250);
 });
