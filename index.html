@@ -81,33 +81,6 @@
           </div>
         </div>
       </div>
-
-      <div class="hero-visual" aria-hidden="true">
-        <svg viewBox="0 0 400 300" class="hero-svg">
-          <defs>
-            <linearGradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:#B800FF;stop-opacity:1" />
-              <stop offset="50%" style="stop-color:#FF00F0;stop-opacity:1" />
-              <stop offset="100%" style="stop-color:#00FFFF;stop-opacity:1" />
-            </linearGradient>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
-              <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-          <circle cx="200" cy="150" r="120" fill="none" stroke="url(#neonGrad)" stroke-width="2" filter="url(#glow)"/>
-          <circle cx="200" cy="150" r="80" fill="none" stroke="#FF00F0" stroke-width="2" filter="url(#glow)"/>
-          <circle cx="200" cy="150" r="40" fill="none" stroke="#00FFFF" stroke-width="1" opacity="0.7" filter="url(#glow)"/>
-          <line x1="50" y1="150" x2="350" y2="150" stroke="#B800FF" stroke-width="1" opacity="0.5" filter="url(#glow)"/>
-          <line x1="200" y1="50" x2="200" y2="250" stroke="#00FFFF" stroke-width="1" opacity="0.5" filter="url(#glow)"/>
-          <polygon points="200,150 220,110 180,110" fill="#FF00F0" opacity="0.6" filter="url(#glow)">
-            <animateTransform attributeName="transform" type="rotate" from="0 200 150" to="360 200 150" dur="20s" repeatCount="indefinite"/>
-          </polygon>
-        </svg>
-      </div>
     </div>
   </section>
 
