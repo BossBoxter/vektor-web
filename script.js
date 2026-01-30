@@ -372,7 +372,7 @@ function closeModal() {
 }
 
 // ========================================
-// Init after DOM ready (ключевой фикс)
+// Init after DOM ready
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {
   persistUtm();
@@ -430,7 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Footer accordions
   initFooterAccordions();
 
-  // Form handlers (строго после DOM)
+  // Form handlers
   const contactForm = document.getElementById('contactForm');
   if (contactForm) contactForm.addEventListener('submit', (e) => handleTelegramSubmit(e, 'contactForm'));
 
@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
     else if (modal && modal.classList.contains('active')) closeModal();
   });
 
-  // Micro interactions (строго после DOM) — FIX: убрана лишняя запятая в селекторе
+  // Micro interactions — FIX: без лишней запятой в селекторе
   document.querySelectorAll('.btn, .service-card, .case-card, .for-whom-card, .guarantee-item, .guarantee-left').forEach(el => {
     el.addEventListener('mousedown', () => { el.style.transform = 'scale(0.99)'; });
     el.addEventListener('mouseup', () => { setTimeout(() => { if (!el.matches(':hover')) el.style.transform = ''; }, 100); });
