@@ -1,3 +1,4 @@
+<!-- FILE: index.html -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -15,27 +16,6 @@
   <link rel="icon" type="image/svg+xml" href="assets/loggoo.svg">
 
   <link rel="stylesheet" href="style.css">
-
-  <!-- LOCAL FIXES (без глобального scale) -->
-  <style>
-    html, body { overflow-x: hidden; }
-
-    .logo {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
-    .logo img {
-      display: block;
-      height: 44px;
-      width: auto;
-      filter: drop-shadow(0 0 10px rgba(0,255,255,.25)) drop-shadow(0 0 16px rgba(255,0,240,.18));
-    }
-    @media (max-width: 480px) {
-      .logo img { height: 38px; }
-    }
-  </style>
 </head>
 
 <body>
@@ -45,12 +25,12 @@
 
   <!-- HEADER -->
   <header class="header" id="header">
-    <div class="container">
+    <div class="container header-container">
       <a href="#" class="logo" aria-label="Vector Web">
         <img src="assets/loggoo.svg" alt="Vector Web">
       </a>
 
-      <nav class="nav" id="nav">
+      <nav class="nav" id="nav" aria-label="Навигация">
         <ul class="nav-list">
           <li><a href="#services" class="nav-link">Услуги</a></li>
           <li><a href="#cases" class="nav-link">Кейсы</a></li>
@@ -58,12 +38,12 @@
           <li><a href="#guarantees" class="nav-link">Гарантии</a></li>
           <li><a href="#contacts" class="nav-link">Контакты</a></li>
         </ul>
-        <button class="btn btn-primary" onclick="scrollToSection('contacts')">
+        <button class="btn btn-primary" type="button" onclick="scrollToSection('contacts')">
           Обсудить проект
         </button>
       </nav>
 
-      <button class="burger" id="burger" aria-label="Меню">
+      <button class="burger" id="burger" aria-label="Меню" aria-controls="nav" aria-expanded="false" type="button">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -73,15 +53,21 @@
   <section class="hero" id="hero">
     <div class="container hero-container">
       <div class="hero-content">
-        <h1 class="hero-title">Сайты и боты для вашего роста. <span class="neon-text">Быстро. Надежно.</span> С пожизненной гарантией.</h1>
-        <p class="hero-subtitle">Разрабатываем лендинги, сайты-визитки и Telegram-бота за 2-25 дней. Вы получаете готовый инструмент, который работает.</p>
+        <h1 class="hero-title">
+          Сайты и боты для вашего роста.
+          <span class="neon-text">Быстро. Надежно.</span>
+          С пожизненной гарантией.
+        </h1>
+        <p class="hero-subtitle">
+          Разрабатываем лендинги, сайты-визитки и Telegram-бота за 2-25 дней. Вы получаете готовый инструмент, который работает.
+        </p>
         <div class="hero-buttons">
           <a href="#services" class="btn btn-secondary">Смотреть пакеты</a>
           <a href="https://t.me/vektorwebbot" target="_blank" class="btn btn-primary" rel="noopener">Бесплатный разбор →</a>
         </div>
       </div>
 
-      <div class="hero-visual">
+      <div class="hero-visual" aria-hidden="true">
         <svg viewBox="0 0 400 300" class="hero-svg">
           <defs>
             <linearGradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -175,7 +161,7 @@
             <li>Хостинг на 3 месяца</li>
             <li>Срок: 2 дня</li>
           </ul>
-          <button class="btn btn-outline" onclick="openTelegramBot('Мини-сайт')">Выбрать</button>
+          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Мини-сайт')">Выбрать</button>
         </div>
 
         <div class="service-card">
@@ -191,7 +177,7 @@
             <li>Хостинг на 1 год</li>
             <li>Срок: 4 дня</li>
           </ul>
-          <button class="btn btn-outline" onclick="openTelegramBot('Блогер Старт')">Выбрать</button>
+          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Блогер Старт')">Выбрать</button>
         </div>
 
         <div class="service-card featured">
@@ -208,7 +194,7 @@
             <li>Хостинг на 2 года</li>
             <li>Срок: 5-7 дней</li>
           </ul>
-          <button class="btn btn-primary" onclick="openTelegramBot('Профи')">Выбрать</button>
+          <button class="btn btn-primary" type="button" onclick="openTelegramBot('Профи')">Выбрать</button>
         </div>
 
         <div class="service-card">
@@ -226,7 +212,7 @@
             <li>Хостинг на 3 года</li>
             <li>Срок: 7-10 дней</li>
           </ul>
-          <button class="btn btn-outline" onclick="openTelegramBot('Бизнес-Лендинг')">Выбрать</button>
+          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Бизнес-Лендинг')">Выбрать</button>
         </div>
 
         <div class="service-card">
@@ -244,7 +230,7 @@
             <li>Хостинг на 3 года + 1 мес. поддержки</li>
             <li>Срок: 10-14 дней</li>
           </ul>
-          <button class="btn btn-outline" onclick="openTelegramBot('Магазин')">Выбрать</button>
+          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Магазин')">Выбрать</button>
         </div>
 
         <div class="service-card featured">
@@ -262,7 +248,7 @@
             <li>Пожизненная гарантия</li>
             <li>Срок: 14-18 дней</li>
           </ul>
-          <button class="btn btn-primary" onclick="openTelegramBot('Автоматизация')">Выбрать</button>
+          <button class="btn btn-primary" type="button" onclick="openTelegramBot('Автоматизация')">Выбрать</button>
         </div>
 
         <div class="service-card">
@@ -280,7 +266,7 @@
             <li>Пожизненная гарантия + 3 мес. приоритетной поддержки</li>
             <li>Срок: 18-25 дней</li>
           </ul>
-          <button class="btn btn-outline" onclick="openTelegramBot('Портфолио Pro')">Выбрать</button>
+          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Портфолио Pro')">Выбрать</button>
         </div>
 
         <div class="service-card">
@@ -297,7 +283,7 @@
             <li>Пожизненная гарантия и поддержка по SLA</li>
             <li>Срок: от 30 дней</li>
           </ul>
-          <button class="btn btn-outline" onclick="openTelegramBot('Индивидуальное решение')">Выбрать</button>
+          <button class="btn btn-outline" type="button" onclick="openTelegramBot('Индивидуальное решение')">Выбрать</button>
         </div>
 
       </div>
@@ -565,9 +551,9 @@
   </footer>
 
   <!-- МОДАЛЬНОЕ ОКНО ФОРМЫ -->
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeModal()">×</button>
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-label="Оставить заявку">
+      <button class="modal-close" type="button" onclick="closeModal()" aria-label="Закрыть">×</button>
       <h3>Оставить заявку</h3>
       <p id="modal-package">Выбранный пакет: <span></span></p>
       <form id="modalForm">
@@ -590,11 +576,12 @@
   </div>
 
   <!-- СООБЩЕНИЕ ОБ УСПЕШНОЙ ОТПРАВКЕ -->
-  <div class="success-message" id="successMessage">
-    <div class="success-content">
+  <div class="success-message" id="successMessage" aria-hidden="true">
+    <div class="success-content" role="status" aria-live="polite">
       <h3>Заявка принята</h3>
       <p>Менеджер напишет вам в ближайшие 30 минут.</p>
       <p class="copy-hint" style="display:none;"></p>
+      <button class="btn btn-outline success-ok" type="button" onclick="hideSuccess()">ОК</button>
     </div>
   </div>
 
