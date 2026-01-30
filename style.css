@@ -31,27 +31,28 @@ body{
   line-height:1.5;
   overflow-x:hidden;
 
-  /* Мягкие фоновые градиенты без резких границ */
+  /* Плавный читаемый фон без резких стыков */
   background:
-    radial-gradient(1400px 900px at 50% -15%,
-      rgba(184,0,255,0.18) 0%,
-      rgba(184,0,255,0.10) 35%,
-      rgba(184,0,255,0.05) 55%,
-      rgba(184,0,255,0.00) 75%),
-    radial-gradient(1100px 900px at 15% 25%,
-      rgba(0,255,255,0.12) 0%,
-      rgba(0,255,255,0.07) 38%,
-      rgba(0,255,255,0.03) 58%,
+    radial-gradient(1200px 900px at 20% 10%,
+      rgba(184,0,255,0.12) 0%,
+      rgba(184,0,255,0.06) 35%,
+      rgba(184,0,255,0.00) 70%),
+    radial-gradient(1100px 900px at 80% 20%,
+      rgba(255,0,240,0.10) 0%,
+      rgba(255,0,240,0.05) 38%,
+      rgba(255,0,240,0.00) 72%),
+    radial-gradient(1000px 900px at 55% 75%,
+      rgba(0,255,255,0.09) 0%,
+      rgba(0,255,255,0.04) 42%,
       rgba(0,255,255,0.00) 78%),
-    radial-gradient(1100px 900px at 85% 35%,
-      rgba(255,0,240,0.12) 0%,
-      rgba(255,0,240,0.07) 40%,
-      rgba(255,0,240,0.03) 60%,
-      rgba(255,0,240,0.00) 80%),
+    linear-gradient(180deg,
+      rgba(11,16,32,0.00) 0%,
+      rgba(11,16,32,0.35) 45%,
+      rgba(11,16,32,0.55) 100%),
     var(--bg);
 }
 
-/* Noise overlay для устранения banding (рваных переходов) */
+/* Лёгкий шум для устранения banding (рваных переходов) */
 body::before{
   content:"";
   position:fixed;
@@ -64,24 +65,24 @@ body::before{
   mix-blend-mode: overlay;
 }
 
-/* Доп. мягкий размытый слой поверх фона */
+/* Доп. мягкий размытый слой */
 .neon-glow{
   position:fixed;
   inset:-45%;
   pointer-events:none;
   background:
-    radial-gradient(closest-side at 30% 30%,
-      rgba(184,0,255,0.22) 0%,
-      rgba(184,0,255,0.10) 40%,
-      rgba(184,0,255,0.00) 75%),
-    radial-gradient(closest-side at 70% 40%,
-      rgba(0,255,255,0.14) 0%,
-      rgba(0,255,255,0.07) 42%,
-      rgba(0,255,255,0.00) 78%),
-    radial-gradient(closest-side at 60% 80%,
-      rgba(255,0,240,0.12) 0%,
-      rgba(255,0,240,0.06) 45%,
-      rgba(255,0,240,0.00) 80%);
+    radial-gradient(closest-side at 25% 25%,
+      rgba(184,0,255,0.16) 0%,
+      rgba(184,0,255,0.06) 45%,
+      rgba(184,0,255,0.00) 78%),
+    radial-gradient(closest-side at 78% 32%,
+      rgba(255,0,240,0.14) 0%,
+      rgba(255,0,240,0.05) 48%,
+      rgba(255,0,240,0.00) 80%),
+    radial-gradient(closest-side at 55% 80%,
+      rgba(0,255,255,0.12) 0%,
+      rgba(0,255,255,0.05) 50%,
+      rgba(0,255,255,0.00) 82%);
   filter: blur(70px);
   opacity:0.75;
   z-index:-2;
@@ -196,9 +197,7 @@ ul{ margin:0; padding:0; list-style:none; }
   background: linear-gradient(135deg, rgba(0,255,255,0.14), rgba(184,0,255,0.10));
   box-shadow: 0 12px 40px rgba(0,255,255,0.08);
 }
-.btn-outline{
-  background:rgba(255,255,255,0.02);
-}
+.btn-outline{ background:rgba(255,255,255,0.02); }
 
 .btn-large{
   width:100%;
@@ -220,19 +219,14 @@ ul{ margin:0; padding:0; list-style:none; }
   color:var(--muted);
   max-width:860px;
 }
-.section-head{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
 
 /* Hero */
 .hero{ padding: 62px 0 28px; }
 .hero-container{
   display:grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 1fr;
   align-items:center;
-  gap:28px;
+  gap:18px;
 }
 .hero-title{
   font-family:var(--font-head);
@@ -258,14 +252,6 @@ ul{ margin:0; padding:0; list-style:none; }
   gap:12px;
   flex-wrap:wrap;
 }
-.hero-visual{
-  background: rgba(255,255,255,0.03);
-  border:1px solid var(--stroke);
-  border-radius: var(--r28);
-  padding:18px;
-  box-shadow: var(--shadow);
-}
-.hero-svg{ width:100%; height:auto; }
 
 /* Trust strip */
 .trust-strip{
@@ -343,9 +329,8 @@ ul{ margin:0; padding:0; list-style:none; }
   gap:14px;
   margin-top:20px;
 }
-.services-grid-3{
-  grid-template-columns: repeat(3, 1fr);
-}
+.services-grid-3{ grid-template-columns: repeat(3, 1fr); }
+
 .service-card{
   border:1px solid var(--stroke);
   background: rgba(255,255,255,0.03);
@@ -754,7 +739,6 @@ textarea{ resize:vertical; min-height:110px; }
 
 /* Responsive */
 @media (max-width: 1024px){
-  .hero-container{ grid-template-columns: 1fr; }
   .services-grid-3{ grid-template-columns: repeat(2, 1fr); }
   .cases-grid{ grid-template-columns: repeat(2, 1fr); }
   .guarantees-grid{ grid-template-columns: 1fr; }
