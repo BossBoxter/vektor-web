@@ -43,53 +43,63 @@
     </div>
   </header>
 
-  <!-- HERO -->
-  <section class="hero" id="hero">
-    <div class="container hero-container">
-      <div class="hero-content">
-        <h1 class="hero-title">
+  <!-- HERO (СТАРТОВЫЙ ЭКРАН / МОДЕРНИЗМ) -->
+  <section class="hero hero-modern" id="hero">
+    <div class="container hero-container hero-modern-container">
+      <div class="hero-content hero-modern-content">
+        <div class="hero-kicker">Сайты и Telegram-боты под ключ</div>
+
+        <h1 class="hero-title hero-modern-title">
           Vector - ваш помощник в создании актуальных и рабочих решений.
         </h1>
 
-        <p class="hero-subtitle">
+        <p class="hero-subtitle hero-modern-subtitle">
           Создаем проекты под ключ. Даем годовую гарантию + предоставляем бесплатный хост. Успешно работаем с 2018 года и завершили более 300 проектов за последние 2 года.
         </p>
 
-        <div class="hero-buttons">
-          <a href="#services" class="btn btn-secondary">Смотреть пакеты</a>
-          <a href="https://t.me/vektorwebbot" target="_blank" rel="noopener" class="btn btn-primary">Написать в Telegram</a>
+        <div class="hero-buttons hero-modern-buttons">
+          <button class="btn btn-primary btn-hero-primary" type="button" onclick="scrollToSection('contacts')">
+            Обсудить проект
+          </button>
+          <a href="#services" class="btn btn-secondary btn-hero-secondary">Смотреть пакеты</a>
+          <a href="https://t.me/vektorwebbot" target="_blank" rel="noopener" class="hero-link">
+            Написать в Telegram
+          </a>
         </div>
 
-        <div class="trust-strip" role="group" aria-label="Показатели">
-          <div class="trust-item">
-            <div class="trust-title">Формат</div>
-            <div class="trust-value">под ключ</div>
-            <div class="trust-note">от идеи до запуска</div>
-          </div>
-
-          <div class="trust-item">
-            <div class="trust-title">Гарантия</div>
-            <div class="trust-value">12 месяцев</div>
-            <div class="trust-note">на работоспособность</div>
-          </div>
-
-          <div class="trust-item">
-            <div class="trust-title">Хостинг</div>
-            <div class="trust-value">бесплатно</div>
-            <div class="trust-note">поможем разместить проект</div>
-          </div>
-
-          <div class="trust-item">
-            <div class="trust-title">Опыт</div>
-            <div class="trust-value">с 2018</div>
-            <div class="trust-note">300+ проектов за 2 года</div>
-          </div>
+        <div class="hero-proofline" aria-label="Ключевые факты">
+          <span>Работаем с 2018</span>
+          <span class="dot">•</span>
+          <span>300+ проектов за 2 года</span>
+          <span class="dot">•</span>
+          <span>Гарантия 12 месяцев</span>
+          <span class="dot">•</span>
+          <span>Хостинг включен</span>
         </div>
       </div>
+
+      <div class="hero-modern-art" aria-hidden="true">
+        <div class="art-grid"></div>
+        <div class="art-shape"></div>
+        <div class="art-shape-2"></div>
+      </div>
+    </div>
+
+    <div class="hero-scrollhint" aria-hidden="true">
+      <div class="scroll-line"></div>
+      <div class="scroll-text">листайте вниз</div>
     </div>
   </section>
 
-  <!-- ДЛЯ КОГО -->
+  <!-- РАЗДЕЛИТЕЛЬ (ДВОЙНАЯ ЧЕРТА) + СТАРТ “ДРУГОГО СТИЛЯ” -->
+  <div class="section-divider" aria-hidden="true">
+    <div class="divider-inner container">
+      <div class="divider-line thick"></div>
+      <div class="divider-line thin"></div>
+    </div>
+  </div>
+
+  <!-- ДЛЯ КОГО (КИБЕР/НЕОН СТИЛЬ) -->
   <section class="section for-whom" id="for-whom">
     <div class="container">
       <h2 class="section-title">Это подойдет, если вы:</h2>
